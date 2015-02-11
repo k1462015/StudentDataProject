@@ -17,7 +17,12 @@ public class Student {
 		return name;
 	}
 	
+	public String getStudentNumber(){
+		String s = Integer.toString(studentNumber);
+		return s;
+	}
+	
 	public String toString(){
-		return name + "(" + studentNumber + ")";
+		return name + " (" + studentNumber + ")";
 	}
 }
