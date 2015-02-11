@@ -58,7 +58,7 @@ public class StudentFrame extends JFrame{
 		
 		ArrayList<Student> searchStudents = new ArrayList<Student>();
 		ArrayList<Student> empty = new ArrayList<Student>();
-		JList list = createJList(students);
+		final JList list = createJList(students);
 		
 		
 		JTextField search = new JTextField(10);
@@ -71,13 +71,13 @@ public class StudentFrame extends JFrame{
 	        	StringBuffer buffer = new StringBuffer(search.getText().substring(0,search.getText().length()));      
 	        	//store all matching students in serachStudent arraylist
 	        	for(Student i:students){
-	        		if (i.getName().contains(buffer)){
+	        		if (i.getName().toLowerCase().contains(buffer.toString().toLowerCase())){
 	        			searchStudents.add(i);
 	        		}
 	        	}
-	        	list = createJList(searchStudents);
+	        	
 	        	//System.out.println(buffer);
-	        	                                  
+	        	list =  createJList(searchStudents);                                  
 	            }
 	     });
 			
