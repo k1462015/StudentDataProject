@@ -71,7 +71,7 @@ public class StudentFrame extends JFrame{
 	            String buffer = search.getText();
 	        	//store all matching students in serachStudent arraylist
 	        	for(Student i:students){
-	        		if (i.getName().toLowerCase().contains(buffer.toString().toLowerCase()) || i.getStudentNumber().contains(buffer)){     
+	        		if (i.getName().toLowerCase().contains(buffer.toLowerCase()) || i.getStudentNumber().contains(buffer)){     
 	        			searchStudents.add(i);
 	        			listModel.addElement(i);
 	        		}
