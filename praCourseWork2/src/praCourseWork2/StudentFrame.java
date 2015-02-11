@@ -7,6 +7,11 @@ import javax.swing.*;
 
 public class StudentFrame extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public StudentFrame(){
 		//Initialises frame and sets title to team name
 		super("PRA Coursework - TMH");
@@ -23,19 +28,42 @@ public class StudentFrame extends JFrame{
 		Student dus = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
 		Student jus = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
 		Student rus = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
-		ArrayList<Student> students = new ArrayList<Student>();
+		Student dus1 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student jus1 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student rus1 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student dus2 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student jus2 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student rus2 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student dus3 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student jus3 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
+		Student rus3 = new Student("Musta Rohman","mustarohman@gmail.com", 21234, "Mr Dude");
 		
+		ArrayList<Student> students = new ArrayList<Student>();
+		students.add(mus);
+		students.add(gus);
+		students.add(dus);
+		students.add(jus);
+		students.add(rus);
+		students.add(dus1);
+		students.add(jus1);
+		students.add(rus1);
+		students.add(dus2);
+		students.add(jus2);
+		students.add(rus2);
+		students.add(dus3);
+		students.add(jus3);
+		students.add(rus3);
 		JList list = createJList(students);
 		
 		//creates scrollbar and adds list to scrollbar
-		 JScrollPane scroller = new JScrollPane(list,
-					JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		// JScrollPane scroller = new JScrollPane(list,
+					//JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 			
 			list.setFixedCellHeight(30);//cell formatting
 			list.setFixedCellWidth(150);//same thing
-			
-		panel.add(list);
-		panel.add(scroller);
+		
+		panel.add(new JScrollPane(list));
+		//panel.add(scroller);
 		this.add(panel);
 		setVisible(true);
 		
