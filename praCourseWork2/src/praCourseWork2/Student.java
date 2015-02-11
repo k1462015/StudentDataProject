@@ -12,4 +12,8 @@ public class Student {
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
 	}
+	
+	public String toString(){
+		return name + "(" + studentNumber + ")";
+	}
 }
