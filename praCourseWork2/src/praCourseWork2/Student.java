@@ -1,10 +1,10 @@
 package praCourseWork2;
 
 public class Student {
-	private String name;
-	private String email;
-	private int studentNumber;
-	private String tutor;
+	protected String name;
+	protected String email;
+	protected int studentNumber;
+	protected String tutor;
 	
 	public Student(String name,String email,int studentNumber,String tutor){
 		this.name =  name;
