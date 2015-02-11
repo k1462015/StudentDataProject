@@ -13,6 +13,10 @@ public class Student {
 		this.tutor = tutor;
 	}
 	
+	public String getName(){
+		return name;
+	}
+	
 	public String toString(){
 		return name + "(" + studentNumber + ")";
 	}
