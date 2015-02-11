@@ -68,7 +68,7 @@ public class StudentFrame extends JFrame{
 	        	DefaultListModel listModel = (DefaultListModel) list.getModel();
 	            listModel.removeAllElements();
 	            //get whatever user types into text field
-	        	StringBuffer buffer = new StringBuffer(search.getText().substring(0,search.getText().length()));
+	            String buffer = search.getText();
 	        	//store all matching students in serachStudent arraylist
 	        	for(Student i:students){
 	        		if (i.getName().toLowerCase().contains(buffer.toString().toLowerCase()) || i.getStudentNumber().contains(buffer)){     
