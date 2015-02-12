@@ -93,7 +93,7 @@ public class StudentFrame extends JFrame{
 			 public void mouseClicked(MouseEvent e) {
 				 System.out.println("Hello");
 				 Student findStudent = null;
-				 String selectedItem = (String) list.getSelectedValue();
+				 String selectedItem = (String) list.getSelectedValue().toString();
 				 findStudent  = findStudent(selectedItem,students);
 				 DisplayPopUpFrame display = new DisplayPopUpFrame(findStudent);
 			 }
