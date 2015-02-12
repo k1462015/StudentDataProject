@@ -2,14 +2,18 @@ package praCourseWork2;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
@@ -42,6 +46,19 @@ public class StudentFrame extends JFrame{
 		JMenu file = new JMenu("File");
 		menu.add(file);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
+		load.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e){
+				
+				JFileChooser choosy = new JFileChooser();
+				File f = new File("C://Users//Saif//workspace");
+				
+				choosy.setCurrentDirectory(f);
+				choosy.showOpenDialog(null);
+				
+			}
+			
+		});
 		file.add(load);
 		menu.add(file);
 		this.setJMenuBar(menu);
