@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -34,7 +36,11 @@ public class StudentFrame extends JFrame{
 		setLocationRelativeTo(null);//MR:added location
 		
 		JPanel panel = new JPanel();//panel to contain other components
-		
+
+		JMenuBar menu = new JMenuBar();
+		JMenu file = new JMenu("File");
+		menu.add(file);
+		setJMenuBar(menu);
 		
 	    ArrayList<Student> students = new ArrayList<Student>();
 	    //Fetches all student details from the server and adds to the student ArrayList
