@@ -145,6 +145,7 @@ public class StudentFrame extends JFrame{
             //Makes tempWord blank again
             tempWord = "";
         }
+        System.out.println(studentDetails.toString());
         for(int i = 0;i < studentDetails.size();i++){
         	String temp = studentDetails.get(i);
         	//Splits the student details according to where the comma is

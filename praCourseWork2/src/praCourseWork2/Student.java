@@ -6,7 +6,7 @@ public class Student {
 	protected int studentNumber;
 	protected String tutor;
 	
-	public Student(String name,String email,int studentNumber,String tutor){
+	public Student(String email,String name,int studentNumber,String tutor){
 		this.name =  name;
 		this.email = email;
 		this.studentNumber = studentNumber;
