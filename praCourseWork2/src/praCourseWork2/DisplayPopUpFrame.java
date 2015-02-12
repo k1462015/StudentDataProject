@@ -55,10 +55,10 @@ public class DisplayPopUpFrame extends JFrame {
 		main.setLayout(new BorderLayout());
 		
 		//Sets font size
-		name.setFont (this.name.getFont ().deriveFont (64.0f));
+		name.setFont (this.name.getFont ().deriveFont (30.0f));
 		//this.emailAddress.setFont (this.emailAddress.getFont ().deriveFont (40.0f));
-		studentNumber.setFont (this.studentNumber.getFont ().deriveFont (32.0f));
-		tutor.setFont (this.tutor.getFont ().deriveFont (32.0f));
+		studentNumber.setFont (this.studentNumber.getFont ().deriveFont (20.0f));
+		tutor.setFont (this.tutor.getFont ().deriveFont (20.0f));
 
 		//Aligns all JLabels
 		name.setHorizontalAlignment(SwingConstants.CENTER);
@@ -67,7 +67,7 @@ public class DisplayPopUpFrame extends JFrame {
 		tutor.setHorizontalAlignment(SwingConstants.LEFT);
 
 		//Sets email address to italics
-		emailAddress.setFont(new Font("Arial",Font.ITALIC,40));
+		emailAddress.setFont(new Font("Arial",Font.ITALIC,30));
 		
 		//Adds sNumber and tutor email to bottom JPanel
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.PAGE_AXIS));
