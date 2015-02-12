@@ -1,6 +1,8 @@
 package praCourseWork2;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -57,7 +59,6 @@ public class StudentFrame extends JFrame{
 		students.add(jus3);
 		students.add(rus3);
 		
-		ArrayList<Student> searchStudents = new ArrayList<Student>();
 		JList list = createJList(students);
 
 		
@@ -71,19 +72,27 @@ public class StudentFrame extends JFrame{
 	            String buffer = search.getText();
 	        	//store all matching students in serachStudent arraylist
 	        	for(Student i:students){
-	        		if (i.getName().toLowerCase().contains(buffer.toString().toLowerCase()) || i.getStudentNumber().contains(buffer)){     
-	        			searchStudents.add(i);
+	        		if (i.getName().toLowerCase().contains(buffer.toLowerCase()) || i.getStudentNumber().contains(buffer)){     
 	        			listModel.addElement(i);
 	        		}
 	        	}                                 
-	            }
+	        }
 	     });
-			list.setFixedCellHeight(30);//cell formatting
-			list.setFixedCellWidth(150);//same thing
-			panel.add(search);
-		panel.add(new JScrollPane(list));
-		this.add(panel);
 		
+		panel.setLayout(new GridBagLayout());
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.weightx = 0.01;
+		c.weighty = 0.01;
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx=0;
+		c.gridy=0;
+		list.setFixedCellHeight(30);//cell formatting
+		list.setFixedCellWidth(150);//same thing
+		panel.add(search,c);
+		c.gridy =1;
+		panel.add(new JScrollPane(list),c);
+		add(panel);
 		setVisible(true);
 		
 	}
