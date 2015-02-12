@@ -1,15 +1,20 @@
 package praCourseWork2;
 
-import java.awt.BorderLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.text.Position;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 
 public class StudentFrame extends JFrame{
@@ -43,7 +48,7 @@ public class StudentFrame extends JFrame{
 		Student jus3 = new Student("nty ","mustarohman@gmail.com", 2, "Mr Dude");
 		Student rus3 = new Student("has","mustarohman@gmail.com", 1, "Mr Dude");
 		
-	    protected ArrayList<Student> students = new ArrayList<Student>();
+	    ArrayList<Student> students = new ArrayList<Student>();
 
 		students.add(mus);
 		students.add(gus);
@@ -109,6 +114,18 @@ public class StudentFrame extends JFrame{
 		 }
 		 
 		 JList list = new JList(defListMod);//creates a new JList using the DLM
+		 MouseListener mouseListener = new MouseAdapter(){
+			 public void mouseClicked(MouseEvent e) {
+				 System.out.println("Hello");
+				 Student findStudent = null;
+				 String selectedItem = (String) list.getSelectedValue();
+				 findStudent  = findStudent(selectedItem,students);
+				 DisplayPopUpFrame display = new DisplayPopUpFrame(findStudent);
+			 }
+			 
+		 };
+		 list.addMouseListener(mouseListener);
+
 			
 		 return list;
 	}
