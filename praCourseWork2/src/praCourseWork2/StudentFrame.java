@@ -43,7 +43,8 @@ public class StudentFrame extends JFrame{
 		Student jus3 = new Student("nty ","mustarohman@gmail.com", 2, "Mr Dude");
 		Student rus3 = new Student("has","mustarohman@gmail.com", 1, "Mr Dude");
 		
-		ArrayList<Student> students = new ArrayList<Student>();
+	    protected ArrayList<Student> students = new ArrayList<Student>();
+
 		students.add(mus);
 		students.add(gus);
 		students.add(dus);
@@ -111,5 +112,19 @@ public class StudentFrame extends JFrame{
 			
 		 return list;
 	}
+	
+	public Student findStudent(String name, ArrayList<Student> studentArrayList){
+		Student found = null;
+		for(int i = 0;i < studentArrayList.size();i++){
+			if(studentArrayList.get(i).toString().equals(name)){
+				found = studentArrayList.get(i);
+			}
+		}
+		return found;
+		
+	}
+
+	
+	
 
 }
