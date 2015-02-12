@@ -151,7 +151,7 @@ public class StudentFrame extends JFrame{
         	String[] studentDetails1 = temp.split(",");
         	int studentNumber = Integer.parseInt(studentDetails1[2]);
         	
-        	Student temp1 = new Student(studentDetails1[0],studentDetails1[1],studentNumber,studentDetails1[3]);
+        	Student temp1 = new Student(studentDetails1[1],studentDetails1[0],studentNumber,studentDetails1[3]);
         	students.add(temp1);
         	
         }
