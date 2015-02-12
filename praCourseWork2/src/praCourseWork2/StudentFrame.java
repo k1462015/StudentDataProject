@@ -16,6 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import studentdata.Connector;
+import studentdata.DataTable;
+
 
 public class StudentFrame extends JFrame{
 	
@@ -32,39 +35,11 @@ public class StudentFrame extends JFrame{
 		
 		JPanel panel = new JPanel();//panel to contain other components
 		
-		//array of Students to test the JList
-		Student mus = new Student("Musta ","mustarohman@gmail.com", 21234, "Mr Dude");
-		Student gus = new Student("Rohman ","mustarohman@gmail.com", 4621234, "Mr Dude");
-		Student dus = new Student("Musa ","mustarohman@gmail.com", 215234, "Mr Dude");
-		Student jus = new Student("uta ","mustarohman@gmail.com", 45621234, "Mr Dude");
-		Student rus = new Student("Mta ","mustarohman@gmail.com", 6754, "Mr Dude");
-		Student dus1 = new Student("Mst ","mustarohman@gmail.com", 21234, "Mr Dude");
-		Student jus1 = new Student("tahmidul ","mustarohman@gmail.com", 21234, "Mr Dude");
-		Student rus1 = new Student("tahmi ","mustarohman@gmail.com", 21234, "Mr Dude");
-		Student dus2 = new Student("dul ","mustarohman@gmail.com", 346, "Mr Dude");
-		Student jus2 = new Student("tam ","mustarohman@gmail.com", 3456, "Mr Dude");
-		Student rus2 = new Student("sta ","mustarohman@gmail.com", 786, "Mr Dude");
-		Student dus3 = new Student("asdf ","mustarohman@gmail.com", 3, "Mr Dude");
-		Student jus3 = new Student("nty ","mustarohman@gmail.com", 2, "Mr Dude");
-		Student rus3 = new Student("has","mustarohman@gmail.com", 1, "Mr Dude");
 		
 	    ArrayList<Student> students = new ArrayList<Student>();
+	    //Fetches all student details from the server and adds to the student ArrayList
+	    fetchStudentData(students);
 
-		students.add(mus);
-		students.add(gus);
-		students.add(dus);
-		students.add(jus);
-		students.add(rus);
-		students.add(dus1);
-		students.add(jus1);
-		students.add(rus1);
-		students.add(dus2);
-		students.add(jus2);
-		students.add(rus2);
-		students.add(dus3);
-		students.add(jus3);
-		students.add(rus3);
-		
 		JList list = createJList(students);
 
 		
@@ -138,6 +113,48 @@ public class StudentFrame extends JFrame{
 			}
 		}
 		return found;
+		
+	}
+	
+	public void fetchStudentData(ArrayList<Student> students){
+		 // Create a Connector object and open the connection to the server
+        Connector server = new Connector();
+        boolean success = server.connect("TMH",
+
+"944ff2da7cd193c64ec9459a42f38786");
+        
+        if (success == false) {
+            System.out.println("Fatal error: could not open connection to server");
+            System.exit(1);
+        }
+        
+        DataTable data = server.getData();
+        
+        int rowCount = data.getRowCount();
+        ArrayList<String> studentDetails = new ArrayList<String>();
+        String tempWord = "";
+        //Loops through all data from server and puts into a studentDetail arrayList
+        for (int row = 0; row < rowCount; ++row) {
+            for (int col = 0; col < 4; ++col) {
+                if (col > 0) {
+                	tempWord += ",";
+                }
+                tempWord += data.getCell(row,col);
+            }
+            studentDetails.add(tempWord);
+            //Makes tempWord blank again
+            tempWord = "";
+        }
+        for(int i = 0;i < studentDetails.size();i++){
+        	String temp = studentDetails.get(i);
+        	//Splits the student details according to where the comma is
+        	String[] studentDetails1 = temp.split(",");
+        	int studentNumber = Integer.parseInt(studentDetails1[2]);
+        	
+        	Student temp1 = new Student(studentDetails1[0],studentDetails1[1],studentNumber,studentDetails1[3]);
+        	students.add(temp1);
+        	
+        }
 		
 	}
 
