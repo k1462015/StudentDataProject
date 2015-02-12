@@ -36,7 +36,7 @@ public class DisplayPopUpFrame extends JFrame {
 		// Required JFrame
 		setVisible(true);
 		setSize(700, 500);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getRootPane().setBorder(
 				BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
 		setBackground(Color.white);
