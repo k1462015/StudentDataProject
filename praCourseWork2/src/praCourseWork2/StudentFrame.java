@@ -1,7 +1,6 @@
 package praCourseWork2;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -87,21 +86,18 @@ public class StudentFrame extends JFrame{
 	        	}                                 
 	        }
 	     });
-		
-		panel.setLayout(new GridBagLayout());
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 0.01;
-		c.weighty = 0.01;
-		c.anchor = GridBagConstraints.WEST;
-		c.gridx=0;
-		c.gridy=0;
 		list.setFixedCellHeight(30);//cell formatting
-		list.setFixedCellWidth(150);//same thing
-		panel.add(search,c);
-		c.gridy =1;
-		panel.add(new JScrollPane(list),c);
-		add(panel);
+		list.setFixedCellWidth(250);//same thing
+		
+		//Sets top panel with search to borderLayout, so search JTextField 
+		//Stretches through the top dynamically
+		panel.setLayout(new BorderLayout());
+		panel.add(search,BorderLayout.CENTER);
+	
+		//Adds the list as a ScrollPane so there is a scrollBar
+		add(new JScrollPane(list),BorderLayout.WEST);
+		add(panel, BorderLayout.NORTH);
+
 		setVisible(true);
 		
 	}
@@ -180,7 +176,7 @@ public class StudentFrame extends JFrame{
         	String[] studentDetails1 = temp.split(",");
         	int studentNumber = Integer.parseInt(studentDetails1[2]);
         	
-        	Student temp1 = new Student(studentDetails1[1],studentDetails1[0],studentNumber,studentDetails1[3]);
+            Student temp1 = new Student(studentDetails1[0],studentDetails1[1],studentNumber,studentDetails1[3]);
         	students.add(temp1);
         	
         }
