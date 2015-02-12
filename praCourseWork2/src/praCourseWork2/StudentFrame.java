@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -40,6 +41,10 @@ public class StudentFrame extends JFrame{
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		menu.add(file);
+		JMenuItem load = new JMenuItem("Load anonymous marking codes");
+		file.add(load);
+		menu.add(file);
+		this.setJMenuBar(menu);
 		setJMenuBar(menu);
 		
 	    ArrayList<Student> students = new ArrayList<Student>();
