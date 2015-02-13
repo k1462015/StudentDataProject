@@ -1,6 +1,7 @@
 package praCourseWork2;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -135,6 +136,7 @@ public class StudentFrame extends JFrame {
 		 };
 		 list.addMouseListener(mouseListener);
 		 list.setFont(new Font("Arial",Font.PLAIN,20));
+		 list.setBackground(Color.blue);
 		 return list;
 	}
 
