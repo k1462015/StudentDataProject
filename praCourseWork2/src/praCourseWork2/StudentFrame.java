@@ -53,7 +53,8 @@ public class StudentFrame extends JFrame{
 				File f = new File("C://Users//Saif//workspace");
 				
 				choosy.setCurrentDirectory(f);
-				choosy.showOpenDialog(null);
+				choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre)
+				//alternatively, we can change parameter to 
 				
 			}
 			
