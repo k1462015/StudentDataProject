@@ -53,8 +53,9 @@ public class StudentFrame extends JFrame{
 				File f = new File("C://Users//Saif//workspace");
 				
 				choosy.setCurrentDirectory(f);
-				choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre)
-				//alternatively, we can change parameter to 
+				choosy.showOpenDialog(null);//sets position of dialog box to default(centre) of the screen
+				//alternatively, we can change parameter to "StudentFrame.this". This means thatdialog box will appear
+				//wherever the main frame is. 
 				
 			}
 			

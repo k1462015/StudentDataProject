@@ -5,6 +5,8 @@ public class Student {
 	protected String email;
 	protected int studentNumber;
 	protected String tutor;
+	protected String amc;
+
 	
 	public Student(String email,String name,int studentNumber,String tutor){
 		this.name =  name;
