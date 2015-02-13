@@ -156,7 +156,6 @@ public class StudentFrame extends JFrame {
 		 };
 		 list.addMouseListener(mouseListener);
 		 list.setFont(new Font("Arial",Font.PLAIN,20));
-		 list.setBackground(new Color(145,128,255,155));
 		 return list;
 	}
 
