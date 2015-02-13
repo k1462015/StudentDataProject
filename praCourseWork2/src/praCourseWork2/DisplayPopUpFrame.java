@@ -13,7 +13,7 @@ import javax.swing.SwingConstants;
 
 public class DisplayPopUpFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JLabel name;
+	protected JLabel name;
 	private JLabel emailAddress;
 	private JLabel studentNumber;
 	private JLabel tutor;
@@ -21,7 +21,7 @@ public class DisplayPopUpFrame extends JFrame {
 	private JPanel bottom;
 
 	public DisplayPopUpFrame(Student student) {
-		super("Student Information - Display");
+		super(student.getName()+" - Information Card");
 		// Initialises all required fields with constructor arguments
 		this.name = new JLabel(student.name);
 		this.emailAddress = new JLabel(student.email);

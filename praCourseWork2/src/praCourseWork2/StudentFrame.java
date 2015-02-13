@@ -34,6 +34,8 @@ public class StudentFrame extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	 private DisplayPopUpFrame display = null;
+
 
 	public StudentFrame() {
 		// Initialises frame and sets title to team name
@@ -69,6 +71,7 @@ public class StudentFrame extends JFrame {
 				int returnValue = choosy.showOpenDialog(StudentFrame.this);
 				if(returnValue == JFileChooser.APPROVE_OPTION){
 					//Just some code to help with debugging later
+					File file = choosy.getSelectedFile();
 					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
 					
 				}else{
@@ -137,11 +140,17 @@ public class StudentFrame extends JFrame {
 		 JList list = new JList(defListMod);//creates a new JList using the DLM
 		 MouseListener mouseListener = new MouseAdapter(){
 			 public void mouseClicked(MouseEvent e) {
-				 System.out.println("Hello");
 				 Student findStudent = null;
 				 String selectedItem = (String) list.getSelectedValue().toString();
 				 findStudent  = findStudent(selectedItem,students);
-				 DisplayPopUpFrame display = new DisplayPopUpFrame(findStudent);
+				 if(display != null){
+				 if(display.name.getText().equals(findStudent.name)){
+					 //Debugging purposes
+					 System.out.println("Disposed");
+					 display.dispose();
+				 }
+				 }
+				 display = new DisplayPopUpFrame(findStudent);
 			 }
 			 
 		 };
