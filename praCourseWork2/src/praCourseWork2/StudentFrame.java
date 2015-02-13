@@ -23,6 +23,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -53,12 +54,25 @@ public class StudentFrame extends JFrame {
 
 				JFileChooser choosy = new JFileChooser();
 				File f = new File("C://Users//Saif//workspace");
-
 				choosy.setCurrentDirectory(f);
-				choosy.showOpenDialog(null);//sets position of dialog box to default(centre) of the screen
-				//alternatively, we can change parameter to "StudentFrame.this". This means thatdialog box will appear
+				
+				//Creates filter so user can only select CSV file
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files","csv");
+				choosy.setFileFilter(filter);
+
+				
+				choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre) of the screen
+				//alternatively, we can change parameter to "StudentFrame.this". This means that dialog box will appear
 				//wherever the main frame is. 
 				
+				int returnValue = choosy.showOpenDialog(null);
+				if(returnValue == JFileChooser.APPROVE_OPTION){
+					//Just some code to help with debugging later
+					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
+					
+				}else{
+					
+				}
 
 			}
 
