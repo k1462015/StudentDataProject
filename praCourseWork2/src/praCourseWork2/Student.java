@@ -5,7 +5,7 @@ public class Student {
 	protected String email;
 	protected int studentNumber;
 	protected String tutor;
-	protected String amc;
+	protected String aMC;
 
 	
 	public Student(String email,String name,int studentNumber,String tutor){
