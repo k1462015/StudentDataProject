@@ -55,10 +55,6 @@ public class StudentFrame extends JFrame {
 				File f = new File("C://Users//Saif//workspace");
 
 				choosy.setCurrentDirectory(f);
-
-				choosy.showOpenDialog(null);
-
-
 				choosy.showOpenDialog(null);//sets position of dialog box to default(centre) of the screen
 				//alternatively, we can change parameter to "StudentFrame.this". This means thatdialog box will appear
 				//wherever the main frame is. 
@@ -136,7 +132,7 @@ public class StudentFrame extends JFrame {
 		 };
 		 list.addMouseListener(mouseListener);
 		 list.setFont(new Font("Arial",Font.PLAIN,20));
-		 list.setBackground(Color.blue);
+		 list.setBackground(new Color(145,128,255,155));
 		 return list;
 	}
 
