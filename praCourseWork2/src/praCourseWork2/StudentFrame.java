@@ -53,6 +53,7 @@ public class StudentFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 
 				JFileChooser choosy = new JFileChooser();
+			
 				File f = new File("C://Users//Saif//workspace");
 				choosy.setCurrentDirectory(f);
 				
@@ -61,11 +62,11 @@ public class StudentFrame extends JFrame {
 				choosy.setFileFilter(filter);
 
 				
-				choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre) of the screen
-				//alternatively, we can change parameter to "StudentFrame.this". This means that dialog box will appear
-				//wherever the main frame is. 
+//				choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre) of the screen
+//				//alternatively, we can change parameter to "StudentFrame.this". This means that dialog box will appear
+//				//wherever the main frame is. 
 				
-				int returnValue = choosy.showOpenDialog(null);
+				int returnValue = choosy.showOpenDialog(StudentFrame.this);
 				if(returnValue == JFileChooser.APPROVE_OPTION){
 					//Just some code to help with debugging later
 					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
