@@ -70,7 +70,7 @@ public class StudentFrame extends JFrame{
 		JList list = createJList(students);
 
 		
-		JTextField search = new JTextField(10);
+		JTextField search = new JTextField(22);
 		search.addKeyListener(new KeyAdapter() {
 	        public void keyReleased(KeyEvent e) {
 	        	//clear the list
@@ -92,7 +92,7 @@ public class StudentFrame extends JFrame{
 		//Sets top panel with search to borderLayout, so search JTextField 
 		//Stretches through the top dynamically
 		panel.setLayout(new BorderLayout());
-		panel.add(search,BorderLayout.CENTER);
+		panel.add(search,BorderLayout.WEST);
 	
 		//Adds the list as a ScrollPane so there is a scrollBar
 		add(new JScrollPane(list),BorderLayout.WEST);
