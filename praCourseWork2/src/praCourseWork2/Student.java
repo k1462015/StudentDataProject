@@ -27,4 +27,8 @@ public class Student {
 	public String toString(){
 		return name + " (" + studentNumber + ")";
 	}
+	
+	public void setAMC(String anon){
+		this.aMC = anon;
+	}
 }
