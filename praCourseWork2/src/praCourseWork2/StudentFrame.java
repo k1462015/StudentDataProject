@@ -1,7 +1,6 @@
 package praCourseWork2;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +9,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -72,7 +74,15 @@ public class StudentFrame extends JFrame {
 				if(returnValue == JFileChooser.APPROVE_OPTION){
 					//Just some code to help with debugging later
 					File file = choosy.getSelectedFile();
+					try {
+						BufferedReader bf = new BufferedReader(new FileReader(file));
+						
+					} catch (FileNotFoundException e1) {
+						System.out.println("File not found");
+					}
+					
 					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
+					
 					
 				}else{
 					
