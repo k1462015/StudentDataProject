@@ -79,8 +79,12 @@ public class StudentFrame extends JFrame {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
 						while(bf.ready()){
 							String[] line = bf.readLine().split(",");
-							System.out.println(line[0]);
-							System.out.println(line[1]);
+							//System.out.println(line[0]); debugging
+							//System.out.println(line[1]); debugging
+							
+							int studentNo = Integer.parseInt(line[0]);
+							String anonMarkCode = line[1]; // saved into variables in preparation for Student checking
+							
 						}
 						
 					} catch (FileNotFoundException p) {
