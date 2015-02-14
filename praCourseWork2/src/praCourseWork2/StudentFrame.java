@@ -96,7 +96,7 @@ public class StudentFrame extends JFrame {
 					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
 					
 					
-				}else {}
+				}
 				
 
 			}
