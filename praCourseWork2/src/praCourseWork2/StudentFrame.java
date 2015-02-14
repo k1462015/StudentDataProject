@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -76,9 +77,14 @@ public class StudentFrame extends JFrame {
 					File file = choosy.getSelectedFile();
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
+						while(bf.ready()){
+							String[] line = bf.readLine().split(",");
+						}
 						
-					} catch (FileNotFoundException e1) {
+					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
+					} catch (IOException g){
+						System.out.println("Error");
 					}
 					
 					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
