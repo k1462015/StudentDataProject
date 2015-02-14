@@ -79,11 +79,11 @@ public class StudentFrame extends JFrame {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
 						while(bf.ready()){
 							String[] line = bf.readLine().split(",");
-							//System.out.println(line[0]); debugging
-							//System.out.println(line[1]); debugging
+							System.out.println(line[0]); //test
+							System.out.println(line[1]); //test
 							
-							int studentNo = Integer.parseInt(line[0]);
-							String anonMarkCode = line[1]; // saved into variables in preparation for Student checking
+							String studentNo = line[0];
+							String anonMarkCode = line[1]; 
 							
 						}
 						
@@ -96,9 +96,8 @@ public class StudentFrame extends JFrame {
 					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
 					
 					
-				}else{
-					
-				}
+				}else {}
+				
 
 			}
 
