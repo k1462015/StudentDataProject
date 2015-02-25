@@ -32,6 +32,8 @@ import studentdata.Connector;
 import studentdata.DataTable;
 
 public class StudentFrame extends JFrame {
+	private ArrayList<Student> students; 
+
 
 	/**
 	 * 
@@ -75,18 +77,21 @@ public class StudentFrame extends JFrame {
 				if(returnValue == JFileChooser.APPROVE_OPTION){
 					//Just some code to help with debugging later
 					File file = choosy.getSelectedFile();
+					
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
 						while(bf.ready()){
 							String[] line = bf.readLine().split(",");
-							System.out.println(line[0]); //test
-							System.out.println(line[1]); //test
-							
-							String studentNo = line[0];
-							String anonMarkCode = line[1]; 
-							
-						}
+							for(Student s:students){
+								int temp = Integer.parseInt(line[0]);
+								if(temp == s.studentNumber){
+									s.setAMC(line[1]);
+								
+								}
+							}
+
 						
+						}
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
 					} catch (IOException g){
