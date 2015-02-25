@@ -13,6 +13,7 @@ public class Student {
 		this.email = email;
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
+		this.tutor = "";
 	}
 	
 	public String getName(){

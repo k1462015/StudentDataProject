@@ -23,6 +23,7 @@ import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -77,11 +78,10 @@ public class StudentFrame extends JFrame {
 				if(returnValue == JFileChooser.APPROVE_OPTION){
 					//Just some code to help with debugging later
 					File file = choosy.getSelectedFile();
-					
+					int succesImport = 0;
+					int totalImports = 0;
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
-						int succesImport = 0;
-						int totalImports = 0;
 						while(bf.ready()){
 							String[] line = bf.readLine().split(",");
 							for(Student s:students){
@@ -94,6 +94,12 @@ public class StudentFrame extends JFrame {
 
 							totalImports++;
 						}
+						int failedImports = totalImports - succesImport;
+						String results = "Annonymous marking codes imported. "+succesImport+" codes were \nfor known students; "+failedImports+" were or unknown students";
+						JOptionPane.showMessageDialog(StudentFrame.this,
+							    results);
+						
+						
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
 					} catch (IOException g){
@@ -114,7 +120,7 @@ public class StudentFrame extends JFrame {
 		this.setJMenuBar(menu);
 		setJMenuBar(menu);
 
-		ArrayList<Student> students = new ArrayList<Student>();
+		students = new ArrayList<Student>();
 		// Fetches all student details from the server and adds to the student
 		// ArrayList
 		fetchStudentData(students);
@@ -171,6 +177,7 @@ public class StudentFrame extends JFrame {
 				 Student findStudent = null;
 				 String selectedItem = (String) list.getSelectedValue().toString();
 				 findStudent  = findStudent(selectedItem,students);
+				 System.out.println("AMC code is: "+findStudent.aMC);
 				 if(display != null){
 				 if(display.name.getText().equals(findStudent.name)){
 					 //Debugging purposes
