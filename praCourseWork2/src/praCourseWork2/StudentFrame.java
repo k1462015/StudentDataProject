@@ -80,17 +80,19 @@ public class StudentFrame extends JFrame {
 					
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
+						int succesImport = 0;
+						int totalImports = 0;
 						while(bf.ready()){
 							String[] line = bf.readLine().split(",");
 							for(Student s:students){
 								int temp = Integer.parseInt(line[0]);
 								if(temp == s.studentNumber){
 									s.setAMC(line[1]);
-								
+									succesImport++;
 								}
 							}
 
-						
+							totalImports++;
 						}
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
