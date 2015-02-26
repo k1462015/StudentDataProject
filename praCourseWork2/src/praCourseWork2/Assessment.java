@@ -3,9 +3,9 @@ package praCourseWork2;
 import java.util.ArrayList;
 
 public class Assessment {
-	private ArrayList<Student> students;
+	private ArrayList<Result> results;
 	
 	public Assessment(){
-		students = new ArrayList<Student>();
+		results = new ArrayList<Result>();
 	}
 }
