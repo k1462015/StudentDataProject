@@ -56,8 +56,14 @@ public class StudentFrame extends JFrame {
 		JMenu file = new JMenu("File");
 		menu.add(file);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
+		JMenuItem loadExam = new JMenuItem("Load exam results");
+		
+		
 		LoadListener loadListen = new LoadListener();
+		loadExam.addActionListener(loadListen);
 		load.addActionListener(loadListen);
+		
+		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
 		this.setJMenuBar(menu);
@@ -247,12 +253,8 @@ public class StudentFrame extends JFrame {
 				
 				
 			}
-			
-
-			
+				
 		}
-		
-
 		
 	}
 	
