@@ -56,65 +56,8 @@ public class StudentFrame extends JFrame {
 		JMenu file = new JMenu("File");
 		menu.add(file);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
-		load.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-
-				JFileChooser choosy = new JFileChooser();
-			
-				File f = new File("C://Users//Saif//workspace");
-				choosy.setCurrentDirectory(f);
-				
-				//Creates filter so user can only select CSV file
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files","csv");
-				choosy.setFileFilter(filter);
-
-				
-//				choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre) of the screen
-//				//alternatively, we can change parameter to "StudentFrame.this". This means that dialog box will appear
-//				//wherever the main frame is. 
-				
-				int returnValue = choosy.showOpenDialog(StudentFrame.this);
-				if(returnValue == JFileChooser.APPROVE_OPTION){
-					//Just some code to help with debugging later
-					File file = choosy.getSelectedFile();
-					int succesImport = 0;
-					int totalImports = 0;
-					try {
-						BufferedReader bf = new BufferedReader(new FileReader(file));
-						while(bf.ready()){
-							String[] line = bf.readLine().split(",");
-							for(Student s:students){
-								int temp = Integer.parseInt(line[0]);
-								if(temp == s.studentNumber){
-									s.setAMC(line[1]);
-									succesImport++;
-								}
-							}
-
-							totalImports++;
-						}
-						int failedImports = totalImports - succesImport;
-						String results = "Annonymous marking codes imported. "+succesImport+" codes were \nfor known students; "+failedImports+" were or unknown students";
-						JOptionPane.showMessageDialog(StudentFrame.this,
-							    results);
-						
-						
-					} catch (FileNotFoundException p) {
-						System.out.println("File not found");
-					} catch (IOException g){
-						System.out.println("Error");
-					}
-					
-					System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
-					
-					
-				}
-				
-
-			}
-
-		});
+		LoadListener loadListen = new LoadListener();
+		load.addActionListener(loadListen);
 		file.add(load);
 		menu.add(file);
 		this.setJMenuBar(menu);
@@ -249,5 +192,72 @@ public class StudentFrame extends JFrame {
 		}
 
 	}
+	
+	private class LoadListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser choosy = new JFileChooser();
+			
+			File f = new File("C://Users//Saif//workspace");
+			choosy.setCurrentDirectory(f);
+			
+			//Creates filter so user can only select CSV file
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files","csv");
+			choosy.setFileFilter(filter);
+
+			
+//			choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre) of the screen
+//			//alternatively, we can change parameter to "StudentFrame.this". This means that dialog box will appear
+//			//wherever the main frame is. 
+			
+			int returnValue = choosy.showOpenDialog(StudentFrame.this);
+			if(returnValue == JFileChooser.APPROVE_OPTION){
+				//Just some code to help with debugging later
+				File file = choosy.getSelectedFile();
+				int succesImport = 0;
+				int totalImports = 0;
+				try {
+					BufferedReader bf = new BufferedReader(new FileReader(file));
+					while(bf.ready()){
+						String[] line = bf.readLine().split(",");
+						for(Student s:students){
+							int temp = Integer.parseInt(line[0]);
+							if(temp == s.studentNumber){
+								s.setAMC(line[1]);
+								succesImport++;
+							}
+						}
+
+						totalImports++;
+					}
+					int failedImports = totalImports - succesImport;
+					String results = "Annonymous marking codes imported. "+succesImport+" codes were \nfor known students; "+failedImports+" were or unknown students";
+					JOptionPane.showMessageDialog(StudentFrame.this,
+						    results);
+					
+					
+				} catch (FileNotFoundException p) {
+					System.out.println("File not found");
+				} catch (IOException g){
+					System.out.println("Error");
+				}
+				
+				System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
+				
+				
+			}
+			
+
+			
+		}
+		
+
+		
+	}
+	
+	
+	
+	
 
 }
