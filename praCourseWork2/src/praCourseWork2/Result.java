@@ -14,4 +14,8 @@ public class Result {
 		this.mark = mark;
 		this.grade = grade;
 	}
+	
+	public String toString(){
+		return moduleCode + assessment + candKey + mark + grade;
+	}
 }
