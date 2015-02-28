@@ -15,6 +15,10 @@ public class Result {
 		this.grade = grade;
 	}
 	
+	public String getModuleCode(){
+		return moduleCode;
+	}
+	
 	public String toString(){
 		return moduleCode + assessment + candKey + mark + grade;
 	}
