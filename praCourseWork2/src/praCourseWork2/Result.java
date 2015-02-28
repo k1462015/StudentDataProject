@@ -31,6 +31,9 @@ public class Result {
 		return mark;
 	}
 	
+	public String getGrade(){
+		return grade;
+	}
 	
 	public String toString(){
 		return moduleCode + assessment + candKey + mark + grade;
