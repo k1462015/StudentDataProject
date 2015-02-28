@@ -23,6 +23,10 @@ public class Result {
 		return assessment;
 	}
 	
+	public String getCandKey(){
+		return candKey;
+	}
+	
 	
 	public String toString(){
 		return moduleCode + assessment + candKey + mark + grade;
