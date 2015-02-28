@@ -27,6 +27,10 @@ public class Result {
 		return candKey;
 	}
 	
+	public int getMark(){
+		return mark;
+	}
+	
 	
 	public String toString(){
 		return moduleCode + assessment + candKey + mark + grade;
