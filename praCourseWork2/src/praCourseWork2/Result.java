@@ -19,6 +19,11 @@ public class Result {
 		return moduleCode;
 	}
 	
+	public int getAssessment(){
+		return assessment;
+	}
+	
+	
 	public String toString(){
 		return moduleCode + assessment + candKey + mark + grade;
 	}
