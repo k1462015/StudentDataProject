@@ -46,6 +46,11 @@ public class StudentFrame extends JFrame {
 	public StudentFrame() {
 		// Initialises frame and sets title to team name
 		super("PRA Coursework - TMH");
+		InitUI();
+
+	}
+	
+	public void InitUI(){
 		setSize(700, 500);// MR:added size
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);// MR:added location
@@ -107,7 +112,7 @@ public class StudentFrame extends JFrame {
 		add(panel, BorderLayout.NORTH);
 
 		setVisible(true);
-
+		
 	}
 
 	public JList createJList(ArrayList<Student> students){
