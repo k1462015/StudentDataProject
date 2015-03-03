@@ -258,10 +258,23 @@ public class StudentFrame extends JFrame {
 			for (Result t : a.results) {
 				String candKey = t.getCandKey();
 				candKey = candKey.replaceAll("\"", "");
-				if (candKey.substring(candKey.length() - 2,
-						candKey.length() - 1).equals("/")) {
-					//Need to deal with coursework here
+				
+				//Checks if candKey is actually student number
+				//If it is
+				//Then deal with it like coursework
+				if (candKey.substring(candKey.length() - 2,candKey.length() - 1).equals("/")) {
 					System.out.println("Coursework");
+					//Removes the end /1 or /2 after student number
+					candKey = candKey.substring(0, candKey.length() - 2);
+					
+					for (Student s : students) {
+						candKey = candKey.replaceAll("#", "");
+						if (candKey.equals(s.studentNumber+"")) {
+							//Finds student with matching student numbers
+							System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
+							//Don't know what to do, once found matching student??
+						}
+					}	
 				}
 				for (Student s : students) {
 					candKey = candKey.replaceAll("#", "");
