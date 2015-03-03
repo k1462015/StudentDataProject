@@ -30,6 +30,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -300,6 +303,23 @@ public class StudentFrame extends JFrame {
 		model.addColumn("Mark");
 		model.addColumn("Grade");
 		
+		table.setCellSelectionEnabled(true);
+	    ListSelectionModel cellSelectionModel = table.getSelectionModel();
+	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+	      public void valueChanged(ListSelectionEvent e) {
+	        int row = table.getSelectedRow();
+	        int column = table.getSelectedColumn();
+	        if(column == 2){
+	        	//Create Display PopUp
+		        System.out.println("Selected: " + table.getValueAt(row, column));
+	        	System.out.println("Create Display PopUp");
+	        }
+	      }
+
+	    });
+
 		
 
 		
@@ -311,6 +331,7 @@ public class StudentFrame extends JFrame {
 					model.addRow(new Object[] {r.getModuleCode().replaceAll("\"",""),r.getAssessment(),r.getCandKey().replaceAll("\"",""),r.getMark(),r.getGrade()});
 		}
 	}
+
 
 		table.setPreferredScrollableViewportSize(new Dimension(200,300));
 		table.setFillsViewportHeight(true);
