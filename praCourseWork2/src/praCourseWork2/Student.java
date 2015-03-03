@@ -14,6 +14,7 @@ public class Student {
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
 		this.tutor = "";
+		aMC = "";
 	}
 	
 	public String getName(){
