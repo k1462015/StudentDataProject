@@ -68,6 +68,9 @@ public class StudentFrame extends JFrame {
 		menu.add(file);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
+		
+		//Initiliases assesment arrayList
+		assesments = new ArrayList<Assessment>();
 
 		LoadListener loadListen = new LoadListener();
 		// loadExam.addActionListener(loadListen);
@@ -106,10 +109,6 @@ public class StudentFrame extends JFrame {
 						// Finds corresponding column indexes
 						String line = bf.readLine();
 						String[] linesplit = line.split(",");
-						for (int i = 0; i < linesplit.length; i++) {
-							System.out.println("index " + i + " is "
-									+ linesplit[i]);
-						}
 
 						int moduleCol = 0;
 						int assCol = 0;
@@ -136,50 +135,27 @@ public class StudentFrame extends JFrame {
 							}
 							;
 						}
-						System.out.println(moduleCol + " " + assCol + " "
-								+ candCol + " " + markCol + " " + gradeCol);
 
-						assesments = new ArrayList<Assessment>();
+						
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
 
-							System.out.println("Module code is: "
-									+ linesplit[moduleCol]);
-							System.out.println("Assessement is: "
-									+ linesplit[assCol]);
-
-							System.out.println("Candidate Key is: "
-									+ linesplit[candCol]);
-
-							System.out.println("Mark code is: "
-									+ linesplit[markCol]);
-
-							System.out.println("Grade code is: "
-									+ linesplit[gradeCol]);
-
-							System.out.println("Succesfully split row");
 							String ass = linesplit[assCol].replaceAll("\"", "");
 							// int assInt = Integer.parseInt(ass);
 							Result temp = new Result(linesplit[moduleCol], ass,
 									linesplit[candCol], Integer
 											.parseInt(linesplit[markCol]),
 									linesplit[gradeCol]);
-							System.out
-									.println("Created temporary result object from first row");
+
 							if (assesments.isEmpty()) {
-								System.out
-										.println("Array is empty: created assesment and added class");
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
 							} else if (!checkAllAss(temp.getAssessment())) {
-								System.out
-										.println("No assesment with that acc code so created new one");
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
 							} else {
-								System.out.println("added to current record");
 								for (int i = 0; i < assesments.size(); i++) {
 									if (assesments.get(i).results.get(0)
 											.getAssessment()
@@ -190,7 +166,6 @@ public class StudentFrame extends JFrame {
 							}
 
 						}
-						System.out.println(assesments.size());
 						deAnnonymise();
 						addJTable();
 
@@ -275,10 +250,7 @@ public class StudentFrame extends JFrame {
 					System.out.println("Coursework");
 				}
 				for (Student s : students) {
-					// System.out.println(t.getCandKey());
 					candKey = candKey.replaceAll("#", "");
-					// System.out.println(candKey);
-					// System.out.println(s.aMC);
 					if (candKey.equals(s.aMC)) {
 						System.out.println("Student number "
 								+ s.getStudentNumber() + " deannonymised "
@@ -296,7 +268,7 @@ public class StudentFrame extends JFrame {
 		DefaultTableModel model = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				// Disables all columns
+				// Disables all cells from being editable
 				return false;
 			}
 		};
@@ -319,9 +291,6 @@ public class StudentFrame extends JFrame {
 						int column = table.getSelectedColumn();
 						if (column == 2) {
 							// Create Display PopUp
-							System.out.println("Selected: "
-									+ table.getValueAt(row, column));
-							
 							String selectedItem = (String) table.getValueAt(row,column);
 							if(!selectedItem.substring(0, 1).equals("#")){
 								System.out.println("Create Display PopUp");
@@ -336,17 +305,15 @@ public class StudentFrame extends JFrame {
 				});
 
 		System.out.println("Making JTable");
+		//Fetches first assessment and adds to table
 		for (Assessment t : assesments) {
 			for (Result r : t.results) {
-				System.out.println(r.getModuleCode() + " " + r.getAssessment()
-						+ " " + r.getCandKey() + " " + r.getMark() + " "
-						+ r.getGrade());
-
-				model.addRow(new Object[] {
+						model.addRow(new Object[] {
 						r.getModuleCode().replaceAll("\"", ""),
 						r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
 						r.getMark(), r.getGrade() });
 			}
+			break;
 		}
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
@@ -409,12 +376,10 @@ public class StudentFrame extends JFrame {
 			if (!check.substring(check.length() - 1, check.length())
 					.equals(")")) {
 				if (studentArrayList.get(i).getStudentNumber().equals(check)) {
-					System.out.println("Found by student Number");
 					found = studentArrayList.get(i);
 				}
 			} else {
 				if (studentArrayList.get(i).toString().equals(check)) {
-					System.out.println("Found using toString");
 					found = studentArrayList.get(i);
 				}
 
@@ -425,35 +390,7 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	public Student findWStudentNum(String sNumber,
-			ArrayList<Student> studentArrayList) {
-		Student found = null;
-		// Checks if to check by name or studentNumber
-		boolean isNumber;
-		try {
-			Integer.parseInt(sNumber);
-		} catch (NumberFormatException e) {
-			isNumber = false;
-		}
-		// only got here if we didn't return false
-		isNumber = true;
-
-		for (int i = 0; i < studentArrayList.size(); i++) {
-			// if (isNumber) {
-			// if (studentArrayList.get(i).getStudentNumber().equals(check)) {
-			// found = studentArrayList.get(i);
-			// }
-			// }
-			// else {
-			if (studentArrayList.get(i).getStudentNumber().equals(sNumber)) {
-				found = studentArrayList.get(i);
-			}
-			// }
-		}
-		return found;
-
-	}
-
+	
 	public void fetchStudentData(ArrayList<Student> students) {
 		// Create a Connector object and open the connection to the server
 		Connector server = new Connector();
