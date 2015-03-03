@@ -90,23 +90,18 @@ public class StudentFrame extends JFrame {
 						"CSV Files", "csv");
 				choosy.setFileFilter(filter);
 
-				// choosy.showOpenDialog(StudentFrame.this);//sets position of
-				// dialog box to default(centre) of the screen
-				// //alternatively, we can change parameter to
-				// "StudentFrame.this". This means that dialog box will appear
-				// //wherever the main frame is.
-
+				//Checks if a file has been opened
 				int returnValue = choosy.showOpenDialog(StudentFrame.this);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					// Just some code to help with debugging later
+					//Sets file to chosen file
 					File file = choosy.getSelectedFile();
-					int succesImport = 0;
-					int totalImports = 0;
+
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(
 								file));
 
-						// Finds corresponding column indexes
+						//Finds corresponding column indexes
+						//Reads first line to get column headings
 						String line = bf.readLine();
 						String[] linesplit = line.split(",");
 
@@ -136,26 +131,30 @@ public class StudentFrame extends JFrame {
 							;
 						}
 
-						
+						//Adds records to assesments
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
-
 							String ass = linesplit[assCol].replaceAll("\"", "");
-							// int assInt = Integer.parseInt(ass);
 							Result temp = new Result(linesplit[moduleCol], ass,
 									linesplit[candCol], Integer
 											.parseInt(linesplit[markCol]),
 									linesplit[gradeCol]);
-
+							//First checks if Assesment array is empty
 							if (assesments.isEmpty()) {
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
+							//Now checks if there is already an assesment object
+							//With same assessment number
+							//If not make new assesment object
+							//Then add record
 							} else if (!checkAllAss(temp.getAssessment())) {
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
 							} else {
+							//Since there is existing assesment object
+							//Finds it, and adds record
 								for (int i = 0; i < assesments.size(); i++) {
 									if (assesments.get(i).results.get(0)
 											.getAssessment()
@@ -166,7 +165,9 @@ public class StudentFrame extends JFrame {
 							}
 
 						}
+						//De-annonymises records
 						deAnnonymise();
+						//Creates JTable
 						addJTable();
 
 					} catch (FileNotFoundException p) {
@@ -228,6 +229,14 @@ public class StudentFrame extends JFrame {
 
 	}
 
+	/**
+	 * Checks through all Assesment Objects
+	 * Within Assesment ArrayList
+	 * If finds existing one, that matches string
+	 * returns true
+	 * @param s - assesment code
+	 * @return
+	 */
 	public boolean checkAllAss(String s) {
 		for (Assessment t : assesments) {
 			if (t.results.get(0).getAssessment().equals(s)) {
@@ -237,9 +246,13 @@ public class StudentFrame extends JFrame {
 		}
 		return false;
 	}
-
+	/**
+	 * matches anonymous marking codes
+	 * in records
+	 * with students in arraylist
+	 * If found, replaces with student numbers
+	 */
 	public void deAnnonymise() {
-
 		System.out.println("Starting deannonymising...");
 		for (Assessment a : assesments) {
 			for (Result t : a.results) {
@@ -247,14 +260,14 @@ public class StudentFrame extends JFrame {
 				candKey = candKey.replaceAll("\"", "");
 				if (candKey.substring(candKey.length() - 2,
 						candKey.length() - 1).equals("/")) {
+					//Need to deal with coursework here
 					System.out.println("Coursework");
 				}
 				for (Student s : students) {
 					candKey = candKey.replaceAll("#", "");
 					if (candKey.equals(s.aMC)) {
-						System.out.println("Student number "
-								+ s.getStudentNumber() + " deannonymised "
-								+ t.candKey);
+						//Finds student with matching anonymous marking code
+						//Replaces it with student number
 						t.candKey = s.getStudentNumber();
 					}
 				}
@@ -273,22 +286,27 @@ public class StudentFrame extends JFrame {
 			}
 		};
 		table = new JTable(model);
+		
+		//Assings column headings
 		model.addColumn("Module Code");
 		model.addColumn("Ass");
 		model.addColumn("Cand Key");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
 
+		//Sets cell selection to single
+		//So only one cell is selected
+		//Also retreives data when column 2 is clicked
 		table.setCellSelectionEnabled(true);
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
-		cellSelectionModel
-				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		cellSelectionModel
 				.addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
 						int row = table.getSelectedRow();
 						int column = table.getSelectedColumn();
+						//Checks if column is candidate key column/student number
 						if (column == 2) {
 							// Create Display PopUp
 							String selectedItem = (String) table.getValueAt(row,column);
@@ -296,7 +314,7 @@ public class StudentFrame extends JFrame {
 								System.out.println("Create Display PopUp");
 								showDisplayPopUp(selectedItem);
 							}else{
-								System.out.println("Not valid student Number");
+								System.out.println("Not valid student Number/Anonymous marking code present");
 							}
 							
 						}
@@ -315,7 +333,7 @@ public class StudentFrame extends JFrame {
 			}
 			break;
 		}
-
+		
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.GRAY);
