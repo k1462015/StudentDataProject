@@ -174,6 +174,10 @@ public class StudentFrame extends JFrame {
 						//Creates JTable
 						tabbedPane.addTab(assessment, addJTable());
 						
+						//clears both arraylists
+						assesments.clear();
+						students.clear();
+						
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
 					} catch (IOException g) {
