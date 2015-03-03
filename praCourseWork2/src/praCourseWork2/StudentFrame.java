@@ -84,7 +84,7 @@ public class StudentFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser choosy = new JFileChooser();
-
+				String assessment="";
 				File f = new File("C://Users//Saif//workspace");
 				choosy.setCurrentDirectory(f);
 
@@ -142,6 +142,7 @@ public class StudentFrame extends JFrame {
 									linesplit[candCol], Integer
 											.parseInt(linesplit[markCol]),
 									linesplit[gradeCol]);
+							assessment = temp.getModuleCode();
 							//First checks if Assesment array is empty
 							if (assesments.isEmpty()) {
 								Assessment t1 = new Assessment();
@@ -171,7 +172,7 @@ public class StudentFrame extends JFrame {
 						//De-annonymises records
 						deAnnonymise();
 						//Creates JTable
-						tabbedPane.addTab(, addJTable());
+						tabbedPane.addTab(assessment, addJTable());
 						
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
