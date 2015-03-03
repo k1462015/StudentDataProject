@@ -180,6 +180,10 @@ public class StudentFrame extends JFrame {
 									}
 								}
 							}
+							
+							System.out.println(assesments.size());
+							deAnnonymise();
+
 					}
 
 
@@ -254,6 +258,32 @@ public class StudentFrame extends JFrame {
 		}
 		return false;
 	}
+	
+	public void deAnnonymise(){
+		
+		System.out.println("Starting deannonymising...");
+			for(Assessment a:assesments){
+				for(Result t:a.results){
+					String candKey = t.getCandKey();
+					candKey = candKey.replaceAll("\"", "");
+					if(candKey.substring(candKey.length() - 2, candKey.length() - 1).equals("/")){
+						System.out.println("Coursework");
+					}
+					for(Student s:students){
+//						System.out.println(t.getCandKey());
+						candKey = candKey.replaceAll("#", "");
+//						System.out.println(candKey);
+//						System.out.println(s.aMC);
+						if(candKey.equals(s.aMC)){
+							System.out.println("Student number "+s.getStudentNumber() +" deannonymised "+t.candKey);
+							t.candKey = s.getStudentNumber();
+						}
+					}
+				}
+			}
+		
+	}
+
 
 
 	public JList createJList(ArrayList<Student> students){
