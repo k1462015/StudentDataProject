@@ -37,16 +37,14 @@ import studentdata.Connector;
 import studentdata.DataTable;
 
 public class StudentFrame extends JFrame {
-	private ArrayList<Student> students; 
+	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
-
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	 private DisplayPopUpFrame display = null;
-
+	private DisplayPopUpFrame display = null;
 
 	public StudentFrame() {
 		// Initialises frame and sets title to team name
@@ -54,26 +52,27 @@ public class StudentFrame extends JFrame {
 		InitUI();
 
 	}
-	
-	public void InitUI(){
+
+	public void InitUI() {
 		setSize(700, 500);// MR:added size
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);// MR:added location
 
 		JPanel panel = new JPanel();// panel to contain other components
-
+		//addJTable();
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		menu.add(file);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
-		
-		
+
 		LoadListener loadListen = new LoadListener();
+		// loadExam.addActionListener(loadListen);
 		load.addActionListener(loadListen);
-		
+
 		loadExam.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser choosy = new JFileChooser();
 
@@ -134,6 +133,7 @@ public class StudentFrame extends JFrame {
 						}
 						System.out.println(moduleCol + " " + assCol + " "
 								+ candCol + " " + markCol + " " + gradeCol);
+
 						assesments = new ArrayList<Assessment>();
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
@@ -184,13 +184,11 @@ public class StudentFrame extends JFrame {
 									}
 								}
 							}
-							
-							System.out.println(assesments.size());
-							deAnnonymise();
-							addJTable();
 
-					}
-
+						}
+						System.out.println(assesments.size());
+						deAnnonymise();
+						addJTable();
 
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
@@ -204,9 +202,6 @@ public class StudentFrame extends JFrame {
 
 		});
 
-
-
-		
 		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
@@ -251,9 +246,9 @@ public class StudentFrame extends JFrame {
 		add(panel, BorderLayout.NORTH);
 
 		setVisible(true);
-		
+
 	}
-	
+
 	public boolean checkAllAss(String s) {
 		for (Assessment t : assesments) {
 			if (t.results.get(0).getAssessment().equals(s)) {
@@ -288,6 +283,7 @@ public class StudentFrame extends JFrame {
 			}
 		
 	}
+	
 	public void addJTable(){
 		JTable table;
 		DefaultTableModel model = new DefaultTableModel();
@@ -297,6 +293,8 @@ public class StudentFrame extends JFrame {
 		model.addColumn("Cand Key");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
+		
+
 		
 		System.out.println("Making JTable");
 		for(Assessment t:assesments){
@@ -314,42 +312,45 @@ public class StudentFrame extends JFrame {
 		add(scrollPane, BorderLayout.CENTER);
 		repaint();
 		revalidate();
+		
 	}
 
+	public JList createJList(ArrayList<Student> students) {
 
+		DefaultListModel defListMod = new DefaultListModel();// create a list of
+																// items that
+																// are editable.
+																// original list
+		// does not allow you to do that. this allows more flexibility
 
+		// goes through arraylist of Student objects, calls toString and adds
+		// the Strings to DefaultListModel (DLM)
+		for (Student s : students) {
+			defListMod.addElement(s.toString());
+		}
 
-	public JList createJList(ArrayList<Student> students){
-		
-	     DefaultListModel defListMod  = new DefaultListModel();//create a list of items that are editable. original list
-		//does not allow you to do that. this allows more flexibility
-		
-		//goes through arraylist of Student objects, calls toString and adds the Strings to DefaultListModel (DLM)
-		 for (Student s : students){
-			 defListMod.addElement(s.toString());
-		 }
-		 
-		 JList list = new JList(defListMod);//creates a new JList using the DLM
-		 MouseListener mouseListener = new MouseAdapter(){
-			 public void mouseClicked(MouseEvent e) {
-				 Student findStudent = null;
-				 String selectedItem = (String) list.getSelectedValue().toString();
-				 findStudent  = findStudent(selectedItem,students);
-				 System.out.println("AMC code is: "+findStudent.aMC);
-				 if(display != null){
-				 if(display.name.getText().equals(findStudent.name)){
-					 //Debugging purposes
-					 System.out.println("Disposed");
-					 display.dispose();
-				 }
-				 }
-				 display = new DisplayPopUpFrame(findStudent);
-			 }
-			 
-		 };
-		 list.addMouseListener(mouseListener);
-		 list.setFont(new Font("Arial",Font.PLAIN,20));
-		 return list;
+		JList list = new JList(defListMod);// creates a new JList using the DLM
+		MouseListener mouseListener = new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				Student findStudent = null;
+				String selectedItem = (String) list.getSelectedValue()
+						.toString();
+				findStudent = findStudent(selectedItem, students);
+				System.out.println("AMC code is: " + findStudent.aMC);
+				if (display != null) {
+					if (display.name.getText().equals(findStudent.name)) {
+						// Debugging purposes
+						System.out.println("Disposed");
+						display.dispose();
+					}
+				}
+				display = new DisplayPopUpFrame(findStudent);
+			}
+
+		};
+		list.addMouseListener(mouseListener);
+		list.setFont(new Font("Arial", Font.PLAIN, 20));
+		return list;
 	}
 
 	public Student findStudent(String name, ArrayList<Student> studentArrayList) {
@@ -407,38 +408,40 @@ public class StudentFrame extends JFrame {
 		}
 
 	}
-	
-	private class LoadListener implements ActionListener{
+
+	private class LoadListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser choosy = new JFileChooser();
-			
+
 			File f = new File("C://Users//Saif//workspace");
 			choosy.setCurrentDirectory(f);
-			
-			//Creates filter so user can only select CSV file
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files","csv");
+
+			// Creates filter so user can only select CSV file
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"CSV Files", "csv");
 			choosy.setFileFilter(filter);
 
-			
-//			choosy.showOpenDialog(StudentFrame.this);//sets position of dialog box to default(centre) of the screen
-//			//alternatively, we can change parameter to "StudentFrame.this". This means that dialog box will appear
-//			//wherever the main frame is. 
-			
+			// choosy.showOpenDialog(StudentFrame.this);//sets position of
+			// dialog box to default(centre) of the screen
+			// //alternatively, we can change parameter to "StudentFrame.this".
+			// This means that dialog box will appear
+			// //wherever the main frame is.
+
 			int returnValue = choosy.showOpenDialog(StudentFrame.this);
-			if(returnValue == JFileChooser.APPROVE_OPTION){
-				//Just some code to help with debugging later
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				// Just some code to help with debugging later
 				File file = choosy.getSelectedFile();
 				int succesImport = 0;
 				int totalImports = 0;
 				try {
 					BufferedReader bf = new BufferedReader(new FileReader(file));
-					while(bf.ready()){
+					while (bf.ready()) {
 						String[] line = bf.readLine().split(",");
-						for(Student s:students){
+						for (Student s : students) {
 							int temp = Integer.parseInt(line[0]);
-							if(temp == s.studentNumber){
+							if (temp == s.studentNumber) {
 								s.setAMC(line[1]);
 								succesImport++;
 							}
@@ -447,28 +450,26 @@ public class StudentFrame extends JFrame {
 						totalImports++;
 					}
 					int failedImports = totalImports - succesImport;
-					String results = "Annonymous marking codes imported. "+succesImport+" codes were \nfor known students; "+failedImports+" were or unknown students";
-					JOptionPane.showMessageDialog(StudentFrame.this,
-						    results);
-					
-					
+					String results = "Annonymous marking codes imported. "
+							+ succesImport
+							+ " codes were \nfor known students; "
+							+ failedImports + " were or unknown students";
+					JOptionPane.showMessageDialog(StudentFrame.this, results);
+
 				} catch (FileNotFoundException p) {
 					System.out.println("File not found");
-				} catch (IOException g){
+				} catch (IOException g) {
 					System.out.println("Error");
 				}
-				
-				System.out.println("You have chosen "+choosy.getSelectedFile().getName()+" to be imported");
-				
-				
+
+				System.out.println("You have chosen "
+						+ choosy.getSelectedFile().getName()
+						+ " to be imported");
+
 			}
-				
+
 		}
-		
+
 	}
-	
-	
-	
-	
 
 }
