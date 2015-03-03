@@ -1,6 +1,8 @@
 package praCourseWork2;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,8 +28,10 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -183,6 +187,7 @@ public class StudentFrame extends JFrame {
 							
 							System.out.println(assesments.size());
 							deAnnonymise();
+							addJTable();
 
 					}
 
@@ -283,6 +288,34 @@ public class StudentFrame extends JFrame {
 			}
 		
 	}
+	public void addJTable(){
+		JTable table;
+		DefaultTableModel model = new DefaultTableModel();
+		table = new JTable(model);
+		model.addColumn("Module Code");
+		model.addColumn("Ass");
+		model.addColumn("Cand Key");
+		model.addColumn("Mark");
+		model.addColumn("Grade");
+		
+		System.out.println("Making JTable");
+		for(Assessment t:assesments){
+		for(Result r:t.results){
+			System.out.println(r.getModuleCode()+" "+r.getAssessment()+" "+r.getCandKey()+" "+r.getMark()+" "+r.getGrade());
+				
+					model.addRow(new Object[] {r.getModuleCode().replaceAll("\"",""),r.getAssessment(),r.getCandKey().replaceAll("\"",""),r.getMark(),r.getGrade()});
+		}
+	}
+
+		table.setPreferredScrollableViewportSize(new Dimension(200,300));
+		table.setFillsViewportHeight(true);
+		table.setGridColor(Color.GRAY);
+		JScrollPane scrollPane = new JScrollPane(table);
+		add(scrollPane, BorderLayout.CENTER);
+		repaint();
+		revalidate();
+	}
+
 
 
 
