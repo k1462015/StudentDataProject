@@ -286,13 +286,20 @@ public class StudentFrame extends JFrame {
 	
 	public void addJTable(){
 		JTable table;
-		DefaultTableModel model = new DefaultTableModel();
+		DefaultTableModel model = new DefaultTableModel(){
+			@Override
+			   public boolean isCellEditable(int row, int column) {
+			       //Disables all columns
+			       return false;
+			   }
+		};
 		table = new JTable(model);
 		model.addColumn("Module Code");
 		model.addColumn("Ass");
 		model.addColumn("Cand Key");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
+		
 		
 
 		
