@@ -2,12 +2,12 @@ package praCourseWork2;
 
 public class Result {
 	protected String moduleCode;
-	protected int assessment;
+	protected String assessment;
 	protected String candKey;
 	protected int mark;
 	protected String grade;
 	
-	public Result(String moduleCode,int assessment,String candKey,int mark,String grade){
+	public Result(String moduleCode,String assessment,String candKey,int mark,String grade){
 		this.moduleCode = moduleCode;
 		this.assessment = assessment;
 		this.candKey = candKey;
@@ -19,7 +19,7 @@ public class Result {
 		return moduleCode;
 	}
 	
-	public int getAssessment(){
+	public String getAssessment(){
 		return assessment;
 	}
 	
