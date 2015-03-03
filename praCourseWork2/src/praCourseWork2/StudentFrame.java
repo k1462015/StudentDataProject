@@ -130,6 +130,57 @@ public class StudentFrame extends JFrame {
 						}
 						System.out.println(moduleCol + " " + assCol + " "
 								+ candCol + " " + markCol + " " + gradeCol);
+						assesments = new ArrayList<Assessment>();
+						while ((line = bf.readLine()) != null) {
+							linesplit = line.split(",");
+
+							System.out.println("Module code is: "
+									+ linesplit[moduleCol]);
+							System.out.println("Assessement is: "
+									+ linesplit[assCol]);
+
+							System.out.println("Candidate Key is: "
+									+ linesplit[candCol]);
+
+							System.out.println("Mark code is: "
+									+ linesplit[markCol]);
+
+							System.out.println("Grade code is: "
+									+ linesplit[gradeCol]);
+
+							System.out.println("Succesfully split row");
+							String ass = linesplit[assCol]
+									.replaceAll("\"", "");
+							//int assInt = Integer.parseInt(ass);
+							Result temp = new Result(linesplit[moduleCol],
+									ass, linesplit[candCol], Integer
+											.parseInt(linesplit[markCol]),
+									linesplit[gradeCol]);
+							System.out
+									.println("Created temporary result object from first row");
+							if (assesments.isEmpty()) {
+								System.out
+										.println("Array is empty: created assesment and added class");
+								Assessment t1 = new Assessment();
+								t1.addResult(temp);
+								assesments.add(t1);
+							} else if (!checkAllAss(temp.getAssessment())) {
+								System.out
+										.println("No assesment with that acc code so created new one");
+								Assessment t1 = new Assessment();
+								t1.addResult(temp);
+								assesments.add(t1);
+							} else {
+								System.out.println("added to current record");
+								for (int i = 0; i < assesments.size(); i++) {
+									if (assesments.get(i).results.get(0)
+											.getAssessment().equals(temp
+											.getAssessment())) {
+										assesments.get(i).addResult(temp);
+									}
+								}
+							}
+					}
 
 
 					} catch (FileNotFoundException p) {
@@ -193,6 +244,17 @@ public class StudentFrame extends JFrame {
 		setVisible(true);
 		
 	}
+	
+	public boolean checkAllAss(String s) {
+		for (Assessment t : assesments) {
+			if (t.results.get(0).getAssessment().equals(s)) {
+				// If does have assesment already
+				return true;
+			}
+		}
+		return false;
+	}
+
 
 	public JList createJList(ArrayList<Student> students){
 		
