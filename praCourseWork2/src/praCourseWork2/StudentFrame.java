@@ -321,9 +321,14 @@ public class StudentFrame extends JFrame {
 							// Create Display PopUp
 							System.out.println("Selected: "
 									+ table.getValueAt(row, column));
-							System.out.println("Create Display PopUp");
+							
 							String selectedItem = (String) table.getValueAt(row,column);
-							showDisplayPopUp(selectedItem);
+							if(!selectedItem.substring(0, 1).equals("#")){
+								System.out.println("Create Display PopUp");
+								showDisplayPopUp(selectedItem);
+							}else{
+								System.out.println("Not valid student Number");
+							}
 							
 						}
 					}
