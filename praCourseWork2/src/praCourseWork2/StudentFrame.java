@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -28,6 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
@@ -35,6 +37,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -42,7 +45,7 @@ import studentdata.DataTable;
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
-
+	private JTabbedPane tabbedPane;
 	/**
 	 * 
 	 */
@@ -60,7 +63,7 @@ public class StudentFrame extends JFrame {
 		setSize(700, 500);// MR:added size
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);// MR:added location
-
+		tabbedPane = new JTabbedPane();
 		JPanel panel = new JPanel();// panel to contain other components
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
@@ -168,8 +171,8 @@ public class StudentFrame extends JFrame {
 						//De-annonymises records
 						deAnnonymise();
 						//Creates JTable
-						addJTable();
-
+						tabbedPane.addTab(, addJTable());
+						
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
 					} catch (IOException g) {
@@ -181,7 +184,9 @@ public class StudentFrame extends JFrame {
 			}
 
 		});
-
+		tabbedPane.setTabPlacement(JTabbedPane.TOP);
+        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+        this.add(tabbedPane);
 		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
@@ -289,7 +294,7 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	public void addJTable() {
+	public JScrollPane addJTable() {
 		JTable table;
 		DefaultTableModel model = new DefaultTableModel() {
 			@Override
@@ -299,6 +304,7 @@ public class StudentFrame extends JFrame {
 			}
 		};
 		table = new JTable(model);
+		
 		
 		//Assings column headings
 		model.addColumn("Module Code");
@@ -354,6 +360,7 @@ public class StudentFrame extends JFrame {
 		add(scrollPane, BorderLayout.CENTER);
 		repaint();
 		revalidate();
+		return scrollPane;
 
 	}
 

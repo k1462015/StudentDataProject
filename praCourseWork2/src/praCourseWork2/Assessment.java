@@ -9,11 +9,8 @@ public class Assessment {
 		results = new ArrayList<Result>();
 	}
 	
-	
 	public void addResult(Result r){
 		results.add(r);
 	}
 	
-
-
 }
