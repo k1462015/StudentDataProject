@@ -42,6 +42,7 @@ import javax.swing.table.TableModel;
 import studentdata.Connector;
 import studentdata.DataTable;
 
+
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
@@ -87,7 +88,7 @@ public class StudentFrame extends JFrame {
 				String assessment="";
 				File f = new File("C://Users//Saif//workspace");
 				choosy.setCurrentDirectory(f);
-
+				
 				// Creates filter so user can only select CSV file
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
 						"CSV Files", "csv");
@@ -98,7 +99,8 @@ public class StudentFrame extends JFrame {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					//Sets file to chosen file
 					File file = choosy.getSelectedFile();
-
+					String fileName = file.getName();
+					fileName = fileName.substring(0, fileName.lastIndexOf(".")+1);
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(
 								file));
@@ -172,7 +174,7 @@ public class StudentFrame extends JFrame {
 						//De-annonymises records
 						deAnnonymise();
 						//Creates JTable
-						tabbedPane.addTab(assessment, addJTable());
+						tabbedPane.addTab(fileName, addJTable());
 						
 						//clears both arraylists
 						assesments.clear();
