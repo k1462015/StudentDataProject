@@ -176,7 +176,6 @@ public class StudentFrame extends JFrame {
 						
 						//clears both arraylists
 						assesments.clear();
-						students.clear();
 						
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
