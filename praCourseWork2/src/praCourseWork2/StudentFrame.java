@@ -34,6 +34,7 @@ import studentdata.DataTable;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students; 
+	private ArrayList<Assessment> assesments;
 
 
 	/**
@@ -65,8 +66,86 @@ public class StudentFrame extends JFrame {
 		
 		
 		LoadListener loadListen = new LoadListener();
-		loadExam.addActionListener(loadListen);
 		load.addActionListener(loadListen);
+		
+		loadExam.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser choosy = new JFileChooser();
+
+				File f = new File("C://Users//Saif//workspace");
+				choosy.setCurrentDirectory(f);
+
+				// Creates filter so user can only select CSV file
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"CSV Files", "csv");
+				choosy.setFileFilter(filter);
+
+				// choosy.showOpenDialog(StudentFrame.this);//sets position of
+				// dialog box to default(centre) of the screen
+				// //alternatively, we can change parameter to
+				// "StudentFrame.this". This means that dialog box will appear
+				// //wherever the main frame is.
+
+				int returnValue = choosy.showOpenDialog(StudentFrame.this);
+				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					// Just some code to help with debugging later
+					File file = choosy.getSelectedFile();
+					int succesImport = 0;
+					int totalImports = 0;
+					try {
+						BufferedReader bf = new BufferedReader(new FileReader(
+								file));
+
+						// Finds corresponding column indexes
+						String line = bf.readLine();
+						String[] linesplit = line.split(",");
+						for (int i = 0; i < linesplit.length; i++) {
+							System.out.println("index " + i + " is "
+									+ linesplit[i]);
+						}
+
+						int moduleCol = 0;
+						int assCol = 0;
+						int candCol = 0;
+						int markCol = 0;
+						int gradeCol = 0;
+						for (int i = 0; i < linesplit.length; i++) {
+							System.out.println(linesplit[i]);						
+							if(linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")){
+								moduleCol = i;
+								}else
+								if(linesplit[i].equals("\"#Ass#\"") || linesplit[i].equals("#Ass#")){
+								assCol = i;
+								}else
+								if(linesplit[i].equals("\"#Cand Key\"") || linesplit[i].equals("#Cand Key")){
+								candCol = i;
+								}else
+								if(linesplit[i].equals("\"Mark\"") || linesplit[i].equals("Mark")){
+								markCol = i;
+								}else
+								if(linesplit[i].equals("\"Grade\"") || linesplit[i].equals("Grade")){
+								gradeCol = i;
+								};
+						}
+						System.out.println(moduleCol + " " + assCol + " "
+								+ candCol + " " + markCol + " " + gradeCol);
+
+
+					} catch (FileNotFoundException p) {
+						System.out.println("File not found");
+					} catch (IOException g) {
+						System.out.println("Error");
+					}
+
+				}
+
+			}
+
+		});
+
+
+
 		
 		file.add(loadExam);
 		file.add(load);
