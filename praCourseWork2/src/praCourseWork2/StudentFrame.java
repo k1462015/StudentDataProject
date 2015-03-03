@@ -62,7 +62,7 @@ public class StudentFrame extends JFrame {
 		setLocationRelativeTo(null);// MR:added location
 
 		JPanel panel = new JPanel();// panel to contain other components
-		//addJTable();
+		// addJTable();
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
 		menu.add(file);
@@ -117,22 +117,24 @@ public class StudentFrame extends JFrame {
 						int markCol = 0;
 						int gradeCol = 0;
 						for (int i = 0; i < linesplit.length; i++) {
-							System.out.println(linesplit[i]);						
-							if(linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")){
+							System.out.println(linesplit[i]);
+							if (linesplit[i].equals("\"#Module\"")
+									|| linesplit[i].equals("#Module")) {
 								moduleCol = i;
-								}else
-								if(linesplit[i].equals("\"#Ass#\"") || linesplit[i].equals("#Ass#")){
+							} else if (linesplit[i].equals("\"#Ass#\"")
+									|| linesplit[i].equals("#Ass#")) {
 								assCol = i;
-								}else
-								if(linesplit[i].equals("\"#Cand Key\"") || linesplit[i].equals("#Cand Key")){
+							} else if (linesplit[i].equals("\"#Cand Key\"")
+									|| linesplit[i].equals("#Cand Key")) {
 								candCol = i;
-								}else
-								if(linesplit[i].equals("\"Mark\"") || linesplit[i].equals("Mark")){
+							} else if (linesplit[i].equals("\"Mark\"")
+									|| linesplit[i].equals("Mark")) {
 								markCol = i;
-								}else
-								if(linesplit[i].equals("\"Grade\"") || linesplit[i].equals("Grade")){
+							} else if (linesplit[i].equals("\"Grade\"")
+									|| linesplit[i].equals("Grade")) {
 								gradeCol = i;
-								};
+							}
+							;
 						}
 						System.out.println(moduleCol + " " + assCol + " "
 								+ candCol + " " + markCol + " " + gradeCol);
@@ -156,11 +158,10 @@ public class StudentFrame extends JFrame {
 									+ linesplit[gradeCol]);
 
 							System.out.println("Succesfully split row");
-							String ass = linesplit[assCol]
-									.replaceAll("\"", "");
-							//int assInt = Integer.parseInt(ass);
-							Result temp = new Result(linesplit[moduleCol],
-									ass, linesplit[candCol], Integer
+							String ass = linesplit[assCol].replaceAll("\"", "");
+							// int assInt = Integer.parseInt(ass);
+							Result temp = new Result(linesplit[moduleCol], ass,
+									linesplit[candCol], Integer
 											.parseInt(linesplit[markCol]),
 									linesplit[gradeCol]);
 							System.out
@@ -181,8 +182,8 @@ public class StudentFrame extends JFrame {
 								System.out.println("added to current record");
 								for (int i = 0; i < assesments.size(); i++) {
 									if (assesments.get(i).results.get(0)
-											.getAssessment().equals(temp
-											.getAssessment())) {
+											.getAssessment()
+											.equals(temp.getAssessment())) {
 										assesments.get(i).addResult(temp);
 									}
 								}
@@ -261,40 +262,43 @@ public class StudentFrame extends JFrame {
 		}
 		return false;
 	}
-	
-	public void deAnnonymise(){
-		
+
+	public void deAnnonymise() {
+
 		System.out.println("Starting deannonymising...");
-			for(Assessment a:assesments){
-				for(Result t:a.results){
-					String candKey = t.getCandKey();
-					candKey = candKey.replaceAll("\"", "");
-					if(candKey.substring(candKey.length() - 2, candKey.length() - 1).equals("/")){
-						System.out.println("Coursework");
-					}
-					for(Student s:students){
-//						System.out.println(t.getCandKey());
-						candKey = candKey.replaceAll("#", "");
-//						System.out.println(candKey);
-//						System.out.println(s.aMC);
-						if(candKey.equals(s.aMC)){
-							System.out.println("Student number "+s.getStudentNumber() +" deannonymised "+t.candKey);
-							t.candKey = s.getStudentNumber();
-						}
+		for (Assessment a : assesments) {
+			for (Result t : a.results) {
+				String candKey = t.getCandKey();
+				candKey = candKey.replaceAll("\"", "");
+				if (candKey.substring(candKey.length() - 2,
+						candKey.length() - 1).equals("/")) {
+					System.out.println("Coursework");
+				}
+				for (Student s : students) {
+					// System.out.println(t.getCandKey());
+					candKey = candKey.replaceAll("#", "");
+					// System.out.println(candKey);
+					// System.out.println(s.aMC);
+					if (candKey.equals(s.aMC)) {
+						System.out.println("Student number "
+								+ s.getStudentNumber() + " deannonymised "
+								+ t.candKey);
+						t.candKey = s.getStudentNumber();
 					}
 				}
 			}
-		
+		}
+
 	}
-	
-	public void addJTable(){
+
+	public void addJTable() {
 		JTable table;
-		DefaultTableModel model = new DefaultTableModel(){
+		DefaultTableModel model = new DefaultTableModel() {
 			@Override
-			   public boolean isCellEditable(int row, int column) {
-			       //Disables all columns
-			       return false;
-			   }
+			public boolean isCellEditable(int row, int column) {
+				// Disables all columns
+				return false;
+			}
 		};
 		table = new JTable(model);
 		model.addColumn("Module Code");
@@ -302,45 +306,52 @@ public class StudentFrame extends JFrame {
 		model.addColumn("Cand Key");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
-		
+
 		table.setCellSelectionEnabled(true);
-	    ListSelectionModel cellSelectionModel = table.getSelectionModel();
-	    cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		ListSelectionModel cellSelectionModel = table.getSelectionModel();
+		cellSelectionModel
+				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-	    cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
-	      public void valueChanged(ListSelectionEvent e) {
-	        int row = table.getSelectedRow();
-	        int column = table.getSelectedColumn();
-	        if(column == 2){
-	        	//Create Display PopUp
-		        System.out.println("Selected: " + table.getValueAt(row, column));
-	        	System.out.println("Create Display PopUp");
-	        }
-	      }
+		cellSelectionModel
+				.addListSelectionListener(new ListSelectionListener() {
+					public void valueChanged(ListSelectionEvent e) {
+						int row = table.getSelectedRow();
+						int column = table.getSelectedColumn();
+						if (column == 2) {
+							// Create Display PopUp
+							System.out.println("Selected: "
+									+ table.getValueAt(row, column));
+							System.out.println("Create Display PopUp");
+							String selectedItem = (String) table.getValueAt(row,column);
+							showDisplayPopUp(selectedItem);
+							
+						}
+					}
 
-	    });
+				});
 
-		
-
-		
 		System.out.println("Making JTable");
-		for(Assessment t:assesments){
-		for(Result r:t.results){
-			System.out.println(r.getModuleCode()+" "+r.getAssessment()+" "+r.getCandKey()+" "+r.getMark()+" "+r.getGrade());
-				
-					model.addRow(new Object[] {r.getModuleCode().replaceAll("\"",""),r.getAssessment(),r.getCandKey().replaceAll("\"",""),r.getMark(),r.getGrade()});
+		for (Assessment t : assesments) {
+			for (Result r : t.results) {
+				System.out.println(r.getModuleCode() + " " + r.getAssessment()
+						+ " " + r.getCandKey() + " " + r.getMark() + " "
+						+ r.getGrade());
+
+				model.addRow(new Object[] {
+						r.getModuleCode().replaceAll("\"", ""),
+						r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
+						r.getMark(), r.getGrade() });
+			}
 		}
-	}
 
-
-		table.setPreferredScrollableViewportSize(new Dimension(200,300));
+		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.GRAY);
 		JScrollPane scrollPane = new JScrollPane(table);
 		add(scrollPane, BorderLayout.CENTER);
 		repaint();
 		revalidate();
-		
+
 	}
 
 	public JList createJList(ArrayList<Student> students) {
@@ -360,19 +371,10 @@ public class StudentFrame extends JFrame {
 		JList list = new JList(defListMod);// creates a new JList using the DLM
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-				Student findStudent = null;
+//				Student findStudent = null;
 				String selectedItem = (String) list.getSelectedValue()
 						.toString();
-				findStudent = findStudent(selectedItem, students);
-				System.out.println("AMC code is: " + findStudent.aMC);
-				if (display != null) {
-					if (display.name.getText().equals(findStudent.name)) {
-						// Debugging purposes
-						System.out.println("Disposed");
-						display.dispose();
-					}
-				}
-				display = new DisplayPopUpFrame(findStudent);
+				showDisplayPopUp(selectedItem);
 			}
 
 		};
@@ -381,12 +383,67 @@ public class StudentFrame extends JFrame {
 		return list;
 	}
 
-	public Student findStudent(String name, ArrayList<Student> studentArrayList) {
+	public void showDisplayPopUp(String data) {
+		Student findStudent = null;
+		findStudent = findStudent(data, students);
+		if (display != null) {
+			if (display.name.getText().equals(findStudent.name)) {
+				// Debugging purposes
+				System.out.println("Disposed");
+				display.dispose();
+			}
+		}
+		display = new DisplayPopUpFrame(findStudent);
+	}
+
+	public Student findStudent(String check, ArrayList<Student> studentArrayList) {
 		Student found = null;
+
 		for (int i = 0; i < studentArrayList.size(); i++) {
-			if (studentArrayList.get(i).toString().equals(name)) {
+			// Checks if searching using student Number or toString
+			if (!check.substring(check.length() - 1, check.length())
+					.equals(")")) {
+				if (studentArrayList.get(i).getStudentNumber().equals(check)) {
+					System.out.println("Found by student Number");
+					found = studentArrayList.get(i);
+				}
+			} else {
+				if (studentArrayList.get(i).toString().equals(check)) {
+					System.out.println("Found using toString");
+					found = studentArrayList.get(i);
+				}
+
+			}
+
+		}
+		return found;
+
+	}
+
+	public Student findWStudentNum(String sNumber,
+			ArrayList<Student> studentArrayList) {
+		Student found = null;
+		// Checks if to check by name or studentNumber
+		boolean isNumber;
+		try {
+			Integer.parseInt(sNumber);
+		} catch (NumberFormatException e) {
+			isNumber = false;
+		}
+		// only got here if we didn't return false
+		isNumber = true;
+
+		for (int i = 0; i < studentArrayList.size(); i++) {
+			// if (isNumber) {
+			// if (studentArrayList.get(i).getStudentNumber().equals(check)) {
+			// found = studentArrayList.get(i);
+			// }
+			// }
+			// else {
+			if (studentArrayList.get(i).getStudentNumber().equals(sNumber)) {
 				found = studentArrayList.get(i);
 			}
+			// }
 		}
 		return found;
 
