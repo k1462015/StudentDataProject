@@ -1,6 +1,8 @@
 package praCourseWork2;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Student {
 	protected String name;
@@ -8,7 +10,7 @@ public class Student {
 	protected int studentNumber;
 	protected String tutor;
 	protected String aMC;
-	protected ArrayList<Integer> assessMarks;
+	protected ArrayList<String> assessMarks;
 
 	
 	public Student(String email,String name,int studentNumber,String tutor){
@@ -18,7 +20,7 @@ public class Student {
 		this.tutor = tutor;
 		aMC = "";
 		
-		assessMarks = new ArrayList<Integer>();
+		assessMarks = new ArrayList<String>();
 
 	}
 	
@@ -37,5 +39,10 @@ public class Student {
 	
 	public void setAMC(String anon){
 		this.aMC = anon;
+	}
+	
+	public void addMarks(String modAss, int mark){
+		String temp = modAss + " " + mark;
+		assessMarks.add(temp);
 	}
 }

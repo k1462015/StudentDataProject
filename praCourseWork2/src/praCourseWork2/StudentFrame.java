@@ -126,27 +126,27 @@ public class StudentFrame extends JFrame {
 							;
 						}
 
-						//Adds records to assesments
+						//Adds records to assessments
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
 							String ass = linesplit[assCol].replaceAll("\"", "");
 							Result temp = new Result(linesplit[moduleCol], ass, linesplit[candCol], Integer.parseInt(linesplit[markCol]),linesplit[gradeCol]);
 							assessment = temp.getModuleCode();
-							//First checks if Assesment array is empty
+							//First checks if Assessment array is empty
 							if (assesments.isEmpty()) {
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
-							//Now checks if there is already an assesment object
+							//Now checks if there is already an assessment object
 							//With same assessment number
-							//If not make new assesment object
+							//If not make new assessment object
 							//Then add record
 							} else if (!checkAllAss(temp.getAssessment())) {
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
 							} else {
-							//Since there is existing assesment object
+							//Since there is existing assessment object
 							//Finds it, and adds record
 								for (int i = 0; i < assesments.size(); i++) {
 									if (assesments.get(i).results.get(0).getAssessment().equals(temp.getAssessment())) {
@@ -233,17 +233,17 @@ public class StudentFrame extends JFrame {
 	
 
 	/**
-	 * Checks through all Assesment Objects
-	 * Within Assesment ArrayList
+	 * Checks through all Assessment Objects
+	 * Within Assessment ArrayList
 	 * If finds existing one, that matches string
 	 * returns true
-	 * @param s - assesment code
+	 * @param s - assessment code
 	 * @return
 	 */
 	public boolean checkAllAss(String s) {
 		for (Assessment t : assesments) {
 			if (t.results.get(0).getAssessment().equals(s)) {
-				// If does have assesment already
+				// If does have assessment already
 				return true;
 			}
 		}
@@ -341,7 +341,7 @@ public class StudentFrame extends JFrame {
 
 		System.out.println("Making JTable");
 		//Fetches first assessment and adds to table
-		//for (Assessment t : assesments) {
+		//for (Assessment t : assessments) {
 			for (Result r : ass.results) {
 				model.addRow(new Object[] {
 				r.getModuleCode().replaceAll("\"", ""),
