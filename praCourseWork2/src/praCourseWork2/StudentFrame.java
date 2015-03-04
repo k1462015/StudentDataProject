@@ -98,8 +98,6 @@ public class StudentFrame extends JFrame {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					//Sets file to chosen file
 					File file = choosy.getSelectedFile();
-					String fileName = file.getName();
-					fileName = fileName.substring(0, fileName.lastIndexOf(".")+1);
 					try {
 						BufferedReader bf = new BufferedReader(new FileReader(file));
 						//Finds corresponding column indexes
@@ -223,14 +221,14 @@ public class StudentFrame extends JFrame {
 	
 	public void tabbedPane(){
 		String name = "";
+		int count = 0;
 		//loops through each assesment and creates a tab and a table for that assessment
 		for (Assessment a : assesments) {
-			name = a.getModuleCode(a.getFirst()) +" "+ a.getAssessment(a.getFirst());
-
-			tabbedPane.addTab(name, addJTable());
-			//clears arraylist
-			assesments.clear();
+			name = a.getModuleCode(a.getIndex(count)) +" "+ a.getAssessment(a.getIndex(count));
+			count++;
+			tabbedPane.addTab(name, addJTable(a));
 		}
+		assesments.clear();
 	}
 	
 
@@ -294,7 +292,7 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	public JScrollPane addJTable() {
+	public JScrollPane addJTable(Assessment ass) {
 		JTable table;
 		DefaultTableModel model = new DefaultTableModel() {
 			@Override
@@ -342,15 +340,15 @@ public class StudentFrame extends JFrame {
 
 		System.out.println("Making JTable");
 		//Fetches first assessment and adds to table
-		for (Assessment t : assesments) {
-			for (Result r : t.results) {
+		//for (Assessment t : assesments) {
+			for (Result r : ass.results) {
 				model.addRow(new Object[] {
 				r.getModuleCode().replaceAll("\"", ""),
 				r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
 				r.getMark(), r.getGrade() });
 			}
-			break;
-		}
+		//	break;
+		//}
 		
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
 		table.setFillsViewportHeight(true);

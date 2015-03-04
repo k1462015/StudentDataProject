@@ -21,7 +21,7 @@ public class Assessment {
 		return r.getModuleCode();
 	}
 	
-	public Result getFirst(){
-		return results.get(0);
+	public Result getIndex(int count){
+		return results.get(count);
 	}
 }
