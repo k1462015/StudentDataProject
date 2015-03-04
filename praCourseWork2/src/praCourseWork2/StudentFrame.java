@@ -173,11 +173,7 @@ public class StudentFrame extends JFrame {
 						}
 						//De-annonymises records
 						deAnnonymise();
-						//Creates JTable
-						tabbedPane.addTab(fileName, addJTable());
-						
-						//clears both arraylists
-						assesments.clear();
+						tabbedPane();
 						
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
@@ -239,7 +235,18 @@ public class StudentFrame extends JFrame {
 		setVisible(true);
 
 	}
+	
+	public void tabbedPane(){
+		String name = "";
+		//loops through each assesment and creates a tab and a table for that assessment
+		for (Assessment a : assesments) {
+			name = a.getModuleCode(a.getFirst()) +" "+ a.getAssessment(a.getFirst());
 
+			tabbedPane.addTab(name, addJTable());
+			//clears arraylist
+			assesments.clear();
+		}
+	}
 	
 
 	/**
