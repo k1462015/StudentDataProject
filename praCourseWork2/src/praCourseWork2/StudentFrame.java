@@ -90,8 +90,7 @@ public class StudentFrame extends JFrame {
 				choosy.setCurrentDirectory(f);
 				
 				// Creates filter so user can only select CSV file
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"CSV Files", "csv");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
 				choosy.setFileFilter(filter);
 
 				//Checks if a file has been opened
@@ -102,9 +101,7 @@ public class StudentFrame extends JFrame {
 					String fileName = file.getName();
 					fileName = fileName.substring(0, fileName.lastIndexOf(".")+1);
 					try {
-						BufferedReader bf = new BufferedReader(new FileReader(
-								file));
-
+						BufferedReader bf = new BufferedReader(new FileReader(file));
 						//Finds corresponding column indexes
 						//Reads first line to get column headings
 						String line = bf.readLine();
@@ -117,20 +114,15 @@ public class StudentFrame extends JFrame {
 						int gradeCol = 0;
 						for (int i = 0; i < linesplit.length; i++) {
 							System.out.println(linesplit[i]);
-							if (linesplit[i].equals("\"#Module\"")
-									|| linesplit[i].equals("#Module")) {
+							if (linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")) {
 								moduleCol = i;
-							} else if (linesplit[i].equals("\"#Ass#\"")
-									|| linesplit[i].equals("#Ass#")) {
+							} else if (linesplit[i].equals("\"#Ass#\"") || linesplit[i].equals("#Ass#")) {
 								assCol = i;
-							} else if (linesplit[i].equals("\"#Cand Key\"")
-									|| linesplit[i].equals("#Cand Key")) {
+							} else if (linesplit[i].equals("\"#Cand Key\"") || linesplit[i].equals("#Cand Key")) {
 								candCol = i;
-							} else if (linesplit[i].equals("\"Mark\"")
-									|| linesplit[i].equals("Mark")) {
+							} else if (linesplit[i].equals("\"Mark\"") || linesplit[i].equals("Mark")) {
 								markCol = i;
-							} else if (linesplit[i].equals("\"Grade\"")
-									|| linesplit[i].equals("Grade")) {
+							} else if (linesplit[i].equals("\"Grade\"") || linesplit[i].equals("Grade")) {
 								gradeCol = i;
 							}
 							;
@@ -140,10 +132,7 @@ public class StudentFrame extends JFrame {
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
 							String ass = linesplit[assCol].replaceAll("\"", "");
-							Result temp = new Result(linesplit[moduleCol], ass,
-									linesplit[candCol], Integer
-											.parseInt(linesplit[markCol]),
-									linesplit[gradeCol]);
+							Result temp = new Result(linesplit[moduleCol], ass, linesplit[candCol], Integer.parseInt(linesplit[markCol]),linesplit[gradeCol]);
 							assessment = temp.getModuleCode();
 							//First checks if Assesment array is empty
 							if (assesments.isEmpty()) {
@@ -162,9 +151,7 @@ public class StudentFrame extends JFrame {
 							//Since there is existing assesment object
 							//Finds it, and adds record
 								for (int i = 0; i < assesments.size(); i++) {
-									if (assesments.get(i).results.get(0)
-											.getAssessment()
-											.equals(temp.getAssessment())) {
+									if (assesments.get(i).results.get(0).getAssessment().equals(temp.getAssessment())) {
 										assesments.get(i).addResult(temp);
 									}
 								}
@@ -212,9 +199,7 @@ public class StudentFrame extends JFrame {
 				String buffer = search.getText();
 				// store all matching students in serachStudent arraylist
 				for (Student i : students) {
-					if (i.getName().toLowerCase()
-							.contains(buffer.toLowerCase())
-							|| i.getStudentNumber().contains(buffer)) {
+					if (i.getName().toLowerCase().contains(buffer.toLowerCase()) || i.getStudentNumber().contains(buffer)) {
 						listModel.addElement(i);
 					}
 				}
@@ -335,8 +320,7 @@ public class StudentFrame extends JFrame {
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
 		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		cellSelectionModel
-				.addListSelectionListener(new ListSelectionListener() {
+		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
 						int row = table.getSelectedRow();
 						int column = table.getSelectedColumn();
@@ -360,10 +344,10 @@ public class StudentFrame extends JFrame {
 		//Fetches first assessment and adds to table
 		for (Assessment t : assesments) {
 			for (Result r : t.results) {
-						model.addRow(new Object[] {
-						r.getModuleCode().replaceAll("\"", ""),
-						r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
-						r.getMark(), r.getGrade() });
+				model.addRow(new Object[] {
+				r.getModuleCode().replaceAll("\"", ""),
+				r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
+				r.getMark(), r.getGrade() });
 			}
 			break;
 		}
@@ -397,8 +381,7 @@ public class StudentFrame extends JFrame {
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 //				Student findStudent = null;
-				String selectedItem = (String) list.getSelectedValue()
-						.toString();
+				String selectedItem = (String) list.getSelectedValue().toString();
 				showDisplayPopUp(selectedItem);
 			}
 
@@ -426,8 +409,7 @@ public class StudentFrame extends JFrame {
 
 		for (int i = 0; i < studentArrayList.size(); i++) {
 			// Checks if searching using student Number or toString
-			if (!check.substring(check.length() - 1, check.length())
-					.equals(")")) {
+			if (!check.substring(check.length() - 1, check.length()).equals(")")) {
 				if (studentArrayList.get(i).getStudentNumber().equals(check)) {
 					found = studentArrayList.get(i);
 				}
@@ -452,8 +434,7 @@ public class StudentFrame extends JFrame {
 		"944ff2da7cd193c64ec9459a42f38786");
 
 		if (success == false) {
-			System.out
-					.println("Fatal error: could not open connection to server");
+			System.out.println("Fatal error: could not open connection to server");
 			System.exit(1);
 		}
 
@@ -481,8 +462,7 @@ public class StudentFrame extends JFrame {
 			String[] studentDetails1 = temp.split(",");
 			int studentNumber = Integer.parseInt(studentDetails1[2]);
 
-			Student temp1 = new Student(studentDetails1[0], studentDetails1[1],
-					studentNumber, studentDetails1[3]);
+			Student temp1 = new Student(studentDetails1[0], studentDetails1[1], studentNumber, studentDetails1[3]);
 			students.add(temp1);
 
 		}
