@@ -263,12 +263,13 @@ public class StudentFrame extends JFrame {
 				candKey = candKey.replaceAll("\"", "");
 				
 				//Checks if candKey is actually student number
-				//If it is
-				//Then deal with it like coursework
+				//If it's coursework, it will enter this if statement
 				if (candKey.substring(candKey.length() - 2,candKey.length() - 1).equals("/")) {
 					System.out.println("Coursework");
 					//Removes the end /1 or /2 after student number
 					candKey = candKey.substring(0, candKey.length() - 2);
+					candKey = candKey.replaceAll("#", "");
+					t.candKey = candKey;
 					
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
