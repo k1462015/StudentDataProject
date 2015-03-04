@@ -171,9 +171,8 @@ public class StudentFrame extends JFrame {
 			}
 
 		});
-		tabbedPane.setTabPlacement(JTabbedPane.TOP);
-        tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-        this.add(tabbedPane);
+		//tabbedPane.setTabPlacement(JTabbedPane.TOP);
+        //tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
@@ -214,7 +213,8 @@ public class StudentFrame extends JFrame {
 		// Adds the list as a ScrollPane so there is a scrollBar
 		add(new JScrollPane(list), BorderLayout.WEST);
 		add(panel, BorderLayout.NORTH);
-
+		add(tabbedPane,BorderLayout.CENTER);
+		validate();
 		setVisible(true);
 
 	}
