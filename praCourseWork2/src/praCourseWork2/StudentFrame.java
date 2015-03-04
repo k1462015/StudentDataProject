@@ -224,7 +224,7 @@ public class StudentFrame extends JFrame {
 		int count = 0;
 		//loops through each assesment and creates a tab and a table for that assessment
 		for (Assessment a : assesments) {
-			name = a.getModuleCode(a.getIndex(count)) +" "+ a.getAssessment(a.getIndex(count));
+			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "") +" "+ a.getAssessment(a.getIndex(count));
 			count++;
 			tabbedPane.addTab(name, addJTable(a));
 		}
@@ -275,19 +275,22 @@ public class StudentFrame extends JFrame {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.studentNumber+"")) {
 							//Finds student with matching student numbers
-							System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
-							//Don't know what to do, once found matching student??
+//							System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
+							String modCode = t.getModuleCode().replaceAll("\"", "");
+							s.addMarks(modCode +" "+ t.getAssessment(), t.mark);
 						}
 					}	
-				}
+				}else
 				for (Student s : students) {
 					candKey = candKey.replaceAll("#", "");
 					if (candKey.equals(s.aMC)) {
 						//Finds student with matching anonymous marking code
 						//Replaces it with student number
 						t.candKey = s.getStudentNumber();
+						s.addMarks(t.getModuleCode() +" "+ t.getAssessment(), t.mark);
 					}
 				}
+				
 			}
 		}
 

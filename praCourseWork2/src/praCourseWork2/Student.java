@@ -43,6 +43,7 @@ public class Student {
 	
 	public void addMarks(String modAss, int mark){
 		String temp = modAss + " " + mark;
+		System.out.println(temp);
 		assessMarks.add(temp);
 	}
 }
