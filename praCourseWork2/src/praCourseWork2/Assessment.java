@@ -13,4 +13,15 @@ public class Assessment {
 		results.add(r);
 	}
 	
+	public String getAssessment(Result r){
+		return r.getAssessment();
+	}
+	
+	public String getModuleCode(Result r){
+		return r.getModuleCode();
+	}
+	
+	public Result getFirst(){
+		return results.get(0);
+	}
 }
