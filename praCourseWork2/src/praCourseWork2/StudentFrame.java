@@ -76,12 +76,7 @@ public class StudentFrame extends JFrame {
 		JMenuItem loadExam = new JMenuItem("Load exam results");
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
 		data.add(emailStudent);
-		emailStudent.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFrame email = new Email();
-			}
-		});
+	
 		//Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
 
@@ -214,6 +209,12 @@ public class StudentFrame extends JFrame {
 		list.setFixedCellHeight(30);// cell formatting
 		list.setFixedCellWidth(260);// same thing
 
+		emailStudent.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame email = new Email(students);
+			}
+		});
 		// Sets top panel with search to borderLayout, so search JTextField
 		// Stretches through the top dynamically
 		panel.setLayout(new BorderLayout());
