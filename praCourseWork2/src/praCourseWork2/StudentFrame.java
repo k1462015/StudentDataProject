@@ -69,10 +69,19 @@ public class StudentFrame extends JFrame {
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
 		JMenu file = new JMenu("File");
+		JMenu data = new JMenu("Data");
 		menu.add(file);
+		menu.add(data);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
-		
+		JMenuItem emailStudent = new JMenuItem("Email to Students");
+		data.add(emailStudent);
+		emailStudent.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JFrame email = new Email();
+			}
+		});
 		//Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
 
