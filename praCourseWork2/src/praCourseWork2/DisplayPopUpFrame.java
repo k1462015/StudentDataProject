@@ -33,7 +33,6 @@ public class DisplayPopUpFrame extends JFrame {
 		this.studentNumber = new JLabel("Student No. :   "
 				+ student.studentNumber);
 		this.tutor = new JLabel("Tutor:     " + student.tutor);
-		results = new JLabel("                  "+"Results:");
 		this.marks = student.assessMarks;
 
 		// Initialises required JPanels
@@ -42,7 +41,7 @@ public class DisplayPopUpFrame extends JFrame {
 
 		// Required JFrame
 		setVisible(true);
-		setSize(700, 500);
+		setSize(550, 300);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		getRootPane().setBorder(
 				BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
@@ -51,8 +50,8 @@ public class DisplayPopUpFrame extends JFrame {
 		// Calls Popup method to make required JPanel
 		makePopUp();
 
-		// Packs all panels to make neater
-		pack();
+//		// Packs all panels to make neater
+//		pack();
 
 	}
 
@@ -78,26 +77,29 @@ public class DisplayPopUpFrame extends JFrame {
 		
 		//Adds sNumber and tutor email to bottom JPanel
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.PAGE_AXIS));
-		bottom.add(this.studentNumber);
-		bottom.add(this.tutor);
+		JPanel sNumber = new JPanel(new BorderLayout());
+		sNumber.add(this.studentNumber, BorderLayout.WEST);
+		JPanel tutor = new JPanel(new BorderLayout());
+		tutor.add(this.tutor, BorderLayout.WEST);
+		bottom.add(sNumber);
+		bottom.add(tutor);
 		
 		if (!marks.isEmpty()){
 			//Sets font of results label and adds it to the window
+			results = new JLabel("Results:",SwingConstants.CENTER);
 			results.setFont(this.results.getFont().deriveFont(20.0f));
-//			Font resultFont = results.getFont();
-//			resultFont.deriveFont(20.0f);
-//			Map attributes = resultFont.getAttributes();
-//			attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-//			results.setFont(this.results.getFont().deriveFont(attributes));
-			results.setHorizontalAlignment(SwingConstants.CENTER);
-			bottom.add(results);
+			JPanel tResult = new JPanel(new BorderLayout());
+			tResult.add(results, BorderLayout.CENTER);
+			bottom.add(tResult);
 			
 			//Loops through each of the marks and adds them to the bottom of the panel
 			for(String m : marks){
-				JLabel temp = new JLabel("                     - "  + m);
+				JLabel temp = new JLabel(m);
 				temp.setFont(temp.getFont().deriveFont(18.0f));
 				temp.setHorizontalAlignment(SwingConstants.CENTER);
-				bottom.add(temp);
+				JPanel tempHolder = new JPanel(new BorderLayout());
+				tempHolder.add(temp, BorderLayout.CENTER);
+				bottom.add(tempHolder);
 			}
 		}
 		
