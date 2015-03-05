@@ -3,7 +3,9 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.font.TextAttribute;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -31,7 +33,7 @@ public class DisplayPopUpFrame extends JFrame {
 		this.studentNumber = new JLabel("Student No. :   "
 				+ student.studentNumber);
 		this.tutor = new JLabel("Tutor:     " + student.tutor);
-		results = new JLabel("Results:");
+		results = new JLabel("                  "+"Results:");
 		this.marks = student.assessMarks;
 
 		// Initialises required JPanels
@@ -82,13 +84,19 @@ public class DisplayPopUpFrame extends JFrame {
 		if (!marks.isEmpty()){
 			//Sets font of results label and adds it to the window
 			results.setFont(this.results.getFont().deriveFont(20.0f));
+//			Font resultFont = results.getFont();
+//			resultFont.deriveFont(20.0f);
+//			Map attributes = resultFont.getAttributes();
+//			attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+//			results.setFont(this.results.getFont().deriveFont(attributes));
+			results.setHorizontalAlignment(SwingConstants.CENTER);
 			bottom.add(results);
 			
 			//Loops through each of the marks and adds them to the bottom of the panel
 			for(String m : marks){
-				JLabel temp = new JLabel("             " + m);
+				JLabel temp = new JLabel("                     - "  + m);
 				temp.setFont(temp.getFont().deriveFont(18.0f));
-				
+				temp.setHorizontalAlignment(SwingConstants.CENTER);
 				bottom.add(temp);
 			}
 		}
