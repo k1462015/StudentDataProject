@@ -79,17 +79,18 @@ public class DisplayPopUpFrame extends JFrame {
 		bottom.add(this.studentNumber);
 		bottom.add(this.tutor);
 		
-		
-		//Sets font of results label and adds it to the window
-		results.setFont(this.results.getFont().deriveFont(20.0f));
-		bottom.add(results);
-		
-		//Loops through each of the marks and adds them to the bottom of the panel
-		for(String m : marks){
-			JLabel temp = new JLabel("             " + m);
-			temp.setFont(temp.getFont().deriveFont(18.0f));
+		if (!marks.isEmpty()){
+			//Sets font of results label and adds it to the window
+			results.setFont(this.results.getFont().deriveFont(20.0f));
+			bottom.add(results);
 			
-			bottom.add(temp);
+			//Loops through each of the marks and adds them to the bottom of the panel
+			for(String m : marks){
+				JLabel temp = new JLabel("             " + m);
+				temp.setFont(temp.getFont().deriveFont(18.0f));
+				
+				bottom.add(temp);
+			}
 		}
 		
 		//Adds all labels to the main Panel
