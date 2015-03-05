@@ -3,6 +3,7 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -17,8 +18,10 @@ public class DisplayPopUpFrame extends JFrame {
 	private JLabel emailAddress;
 	private JLabel studentNumber;
 	private JLabel tutor;
+	private JLabel results;
 	private JPanel main;
 	private JPanel bottom;
+	private ArrayList<String> marks;
 
 	public DisplayPopUpFrame(Student student) {
 		super(student.getName()+" - Information Card");
@@ -28,8 +31,10 @@ public class DisplayPopUpFrame extends JFrame {
 		this.studentNumber = new JLabel("Student No. :   "
 				+ student.studentNumber);
 		this.tutor = new JLabel("Tutor:     " + student.tutor);
+		results = new JLabel("Results:");
+		this.marks = student.assessMarks;
 
-		// Initialises requried JPanels
+		// Initialises required JPanels
 		main = new JPanel();
 		bottom = new JPanel();
 
@@ -73,6 +78,19 @@ public class DisplayPopUpFrame extends JFrame {
 		bottom.setLayout(new BoxLayout(bottom,BoxLayout.PAGE_AXIS));
 		bottom.add(this.studentNumber);
 		bottom.add(this.tutor);
+		
+		
+		//Sets font of results label and adds it to the window
+		results.setFont(this.results.getFont().deriveFont(20.0f));
+		bottom.add(results);
+		
+		//Loops through each of the marks and adds them to the bottom of the panel
+		for(String m : marks){
+			JLabel temp = new JLabel("             " + m);
+			temp.setFont(temp.getFont().deriveFont(18.0f));
+			
+			bottom.add(temp);
+		}
 		
 		//Adds all labels to the main Panel
 		main.add(this.name, BorderLayout.NORTH);
