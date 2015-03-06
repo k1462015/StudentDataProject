@@ -53,5 +53,18 @@ public class Student {
 		marks.put(modAss, mark);
 	}
 	
+	public double calcAverage(){
+		
+		int temp = 0;
+		
+		for (String mod : marks.keySet()){
+			temp += marks.get(mod);
+		}
+		
+		average = temp/marks.size();
+		System.out.println(average);
+		return average;
+	}
+	
 	
 }
