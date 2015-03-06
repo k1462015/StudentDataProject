@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -37,7 +36,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -74,8 +75,11 @@ public class StudentFrame extends JFrame {
 		menu.add(data);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
+		JMenuItem compareAverage = new JMenuItem("Compare to Average");
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
 		data.add(emailStudent);
+		data.add(compareAverage);
+		
 	
 		//Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
@@ -318,7 +322,7 @@ public class StudentFrame extends JFrame {
 		table = new JTable(model);
 		
 		
-		//Assings column headings
+		//Assigns column headings
 		model.addColumn("Module Code");
 		model.addColumn("Ass");
 		model.addColumn("Cand Key");
@@ -327,7 +331,7 @@ public class StudentFrame extends JFrame {
 
 		//Sets cell selection to single
 		//So only one cell is selected
-		//Also retreives data when column 2 is clicked
+		//Also retrieves data when column 2 is clicked
 		table.setCellSelectionEnabled(true);
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
 		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -481,6 +485,32 @@ public class StudentFrame extends JFrame {
 		}
 
 	}
+	
+	//Don't delete this please:
+	
+	/*private class AverageListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			XYSeriesCollection series = new XYSeriesCollection();
+			XYSeries data = new XYSeries("Test");
+			
+			JTable currentTable = (JTable) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+			int numOfRecords = currentTable.getRowCount();
+			
+			//Loops through the records, gets the appropriate student object from the arraylist, 
+			//gets the average of the student and plots it with their mark.
+			for (int i = 0; i < numOfRecords; i++){
+				String temp = (String) currentTable.getValueAt(i, 2);
+				Student tempStu = findStudent(temp, students);
+				double stuMark = (double) currentTable.getValueAt(i, 3);
+				
+				data.add(tempStu.average, stuMark);
+				
+			}
+		}
+		
+	}*/
 
 	private class LoadListener implements ActionListener {
 
