@@ -1,8 +1,9 @@
 package praCourseWork2;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class Student {
 	protected String name;
@@ -11,6 +12,8 @@ public class Student {
 	protected String tutor;
 	protected String aMC;
 	protected ArrayList<String> assessMarks;
+	protected HashMap<String,Integer> marks;
+	protected double average;
 
 	
 	public Student(String email,String name,int studentNumber,String tutor){
@@ -18,9 +21,11 @@ public class Student {
 		this.email = email;
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
+		this.average = 0;
 		aMC = "";
 		
 		assessMarks = new ArrayList<String>();
+		marks = new HashMap<String,Integer>();
 
 	}
 	
@@ -45,5 +50,8 @@ public class Student {
 		String temp = modAss + " " + mark;
 		System.out.println(temp);
 		assessMarks.add(temp);
+		marks.put(modAss, mark);
 	}
+	
+	
 }

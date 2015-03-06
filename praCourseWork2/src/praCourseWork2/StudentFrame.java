@@ -414,6 +414,7 @@ public class StudentFrame extends JFrame {
 			}
 		}
 		display = new DisplayPopUpFrame(findStudent);
+		
 	}
 
 	public Student findStudent(String check, ArrayList<Student> studentArrayList) {
