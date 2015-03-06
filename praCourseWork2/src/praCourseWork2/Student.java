@@ -14,7 +14,6 @@ public class Student {
 	protected ArrayList<String> assessMarks;
 	protected HashMap<String,Integer> marks;
 	protected double average;
-
 	
 	public Student(String email,String name,int studentNumber,String tutor){
 		this.name =  name;
@@ -22,6 +21,7 @@ public class Student {
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
 		this.average = 0;
+		
 		aMC = "";
 		
 		assessMarks = new ArrayList<String>();
