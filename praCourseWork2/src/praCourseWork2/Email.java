@@ -1,54 +1,78 @@
 package praCourseWork2;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ListCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Email extends JFrame {
 	private JPanel main;
+	//private JList list;
 	private JTable table;
 	private JPanel west;
 	private JPanel buttons;
 	private JPanel listPanel;
-	private ArrayList<Student> students;
+	private ArrayList<Student> student;
 
-	public Email(ArrayList<Student> s){
+	public Email(ArrayList<Student> students){
 		JButton selectAll = new JButton("select all");
+		selectAll.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listPanel.removeAll();
+				listPanel.add(createTable(true));
+			}
+			
+		});
+		
 		JButton selectNone = new JButton("select none");
-		students =  new ArrayList<Student>(s);
+		selectNone.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				listPanel.removeAll();
+				listPanel.add(createTable(false));
+			}
+			
+		});
+		student = new ArrayList<Student>(students);
 		main = new JPanel(new BorderLayout());
 		buttons = new JPanel();
 		listPanel = new JPanel();
 		west = new JPanel(new BorderLayout());
 
-		setSize(550, 300);
+		setSize(550, 450);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		buttons.add(selectNone);
 		buttons.add(selectAll);
 		
-		listPanel.add(new JScrollPane(list));
+		listPanel.add(createTable(false));
 		
 		west.add(buttons,BorderLayout.NORTH);
 		west.add(listPanel, BorderLayout.CENTER);
 		
 		main.add(west, BorderLayout.WEST);
-		setVisible(true);
-		add(main);
-		}
-	public JScrollPane createTable(boolean b){
-		DefaultTableModel model = new DefaultTableModel();
 		
-		for (Student s : students) {
+		setVisible(true);
+		add(new JScrollPane(main));
+		}
+	
+	public JScrollPane createTable(boolean b){
+		MyTableModel model = new MyTableModel();
+		
+		for (Student s : student) {
 			model.addRow(new Object[] {s.getName().replaceAll("\"", ""), b });
 		}
 		table = new JTable(model);
@@ -62,6 +86,43 @@ public class Email extends JFrame {
 		revalidate();
 		
 		return scrollPane;
+	}
+	
+	public class MyTableModel extends DefaultTableModel {
+
+	    public MyTableModel() {
+	      super(new String[]{"Student Name","Check"}, 0);
+	    }
+
+	    @Override
+	    public Class<?> getColumnClass(int columnIndex) {
+	      Class clazz = String.class;
+	      switch (columnIndex) {
+	        case 0:
+	          clazz = String.class;
+	          break;
+	        case 1:
+	          clazz = Boolean.class;
+	          break;
+	      }
+	      return clazz;
+	    }
+
+	    @Override
+	    public boolean isCellEditable(int row, int column) {
+	      return column == 1;
+	    }
+
+	    @Override
+	    public void setValueAt(Object aValue, int row, int column) {
+	      if (aValue instanceof Boolean && column == 1) {
+	        System.out.println(aValue);
+	        Vector rowData = (Vector)getDataVector().get(row);
+	        rowData.set(1, (boolean)aValue);
+	        fireTableCellUpdated(row, column);
+	      }
+	    }
+
 	}
 
 }
