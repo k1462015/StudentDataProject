@@ -53,16 +53,19 @@ public class Student {
 		marks.put(modAss, mark);
 	}
 	
+	
 	public double calcAverage(){
 		
-		int temp = 0;
+		int temp = 0;//to store total of the marks
 		
+		//Gets all of the keys of the hashmap, loops through each of them and gets 
+		//the value, and finally adds the value to the temp var.
 		for (String mod : marks.keySet()){
 			temp += marks.get(mod);
 		}
 		
 		average = temp/marks.size();
-		System.out.println(average);
+		System.out.println(average);//testing
 		return average;
 	}
 	
