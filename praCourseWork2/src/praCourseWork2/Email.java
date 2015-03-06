@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 public class Email extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private JPanel main;
 	//private JList list;
 	private JTable table;
