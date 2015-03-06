@@ -10,11 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
 
 public class Email extends JFrame {
 	private JPanel main;
-	private JList list;
+	private JTable list;
 	private JPanel west;
 	private JPanel buttons;
 	private JPanel listPanel;
@@ -30,10 +31,6 @@ public class Email extends JFrame {
 
 		setSize(550, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		list = new JList(students.toArray());
-		list.setCellRenderer(new CheckboxListCellRenderer());
-
 		buttons.add(selectNone);
 		buttons.add(selectAll);
 		
@@ -47,20 +44,5 @@ public class Email extends JFrame {
 		add(main);
 		}
 	
-	public class CheckboxListCellRenderer extends JCheckBox implements ListCellRenderer {
-
-	    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-
-	    	// need this in order to actually select the JCheckBox
-	        setSelected(isSelected);
-	        setEnabled(list.isEnabled());
-	        // need this in order to display the student with checkbox
-	        setText(value == null ? "" : value.toString());  
-	        // make the background and Foreground the same as the list
-	        setBackground(list.getBackground());
-	        setForeground(list.getForeground());
-	        return this;
-	    }     
-	}
 }
 

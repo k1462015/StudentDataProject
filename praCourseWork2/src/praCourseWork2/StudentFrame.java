@@ -37,11 +37,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-
 import studentdata.Connector;
 import studentdata.DataTable;
+
+import org.jfree.chart.*;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
@@ -513,28 +514,29 @@ public class StudentFrame extends JFrame {
 
 	// Don't delete this please:
 
-	/*
-	 * private class AverageListener implements ActionListener{
-	 * 
-	 * @Override public void actionPerformed(ActionEvent e) { XYSeriesCollection
-	 * series = new XYSeriesCollection(); XYSeries data = new XYSeries("Test");
-	 * 
-	 * JTable currentTable = (JTable)
-	 * tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); int
-	 * numOfRecords = currentTable.getRowCount();
-	 * 
-	 * //Loops through the records, gets the appropriate student object from the
-	 * arraylist, //gets the average of the student and plots it with their
-	 * mark. for (int i = 0; i < numOfRecords; i++){ String temp = (String)
-	 * currentTable.getValueAt(i, 2); Student tempStu = findStudent(temp,
-	 * students); double stuMark = (double) currentTable.getValueAt(i, 3);
-	 * 
-	 * data.add(tempStu.average, stuMark);
-	 * 
-	 * } }
-	 * 
-	 * }
-	 */
+	
+	  private class AverageListener implements ActionListener{
+	  
+	  @Override public void actionPerformed(ActionEvent e) { XYSeriesCollection
+	  series = new XYSeriesCollection(); XYSeries data = new XYSeries("Test");
+	  
+	  JTable currentTable = (JTable)
+	  tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); int
+	  numOfRecords = currentTable.getRowCount();
+	  
+	  //Loops through the records, gets the appropriate student object from the
+	  //arraylist, //gets the average of the student and plots it with their
+	 // mark. 
+	  for (int i = 0; i < numOfRecords; i++){ String temp = (String)
+	  currentTable.getValueAt(i, 2); Student tempStu = findStudent(temp,
+	  students); double stuMark = (double) currentTable.getValueAt(i, 3);
+	  
+	  data.add(tempStu.average, stuMark);
+	  
+	  } }
+	  
+	  }
+	 
 
 	private class LoadListener implements ActionListener {
 
