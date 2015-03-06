@@ -43,7 +43,6 @@ import org.jfree.data.xy.XYSeriesCollection;
 import studentdata.Connector;
 import studentdata.DataTable;
 
-
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
@@ -79,9 +78,8 @@ public class StudentFrame extends JFrame {
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
 		data.add(emailStudent);
 		data.add(compareAverage);
-		
-	
-		//Initiliases assesment arrayList
+
+		// Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
 
 		LoadListener loadListen = new LoadListener();
@@ -93,23 +91,25 @@ public class StudentFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser choosy = new JFileChooser();
-				String assessment="";
+				String assessment = "";
 				File f = new File("C://Users//Saif//workspace");
 				choosy.setCurrentDirectory(f);
-				
+
 				// Creates filter so user can only select CSV file
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"CSV Files", "csv");
 				choosy.setFileFilter(filter);
 
-				//Checks if a file has been opened
+				// Checks if a file has been opened
 				int returnValue = choosy.showOpenDialog(StudentFrame.this);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					//Sets file to chosen file
+					// Sets file to chosen file
 					File file = choosy.getSelectedFile();
 					try {
-						BufferedReader bf = new BufferedReader(new FileReader(file));
-						//Finds corresponding column indexes
-						//Reads first line to get column headings
+						BufferedReader bf = new BufferedReader(new FileReader(
+								file));
+						// Finds corresponding column indexes
+						// Reads first line to get column headings
 						String line = bf.readLine();
 						String[] linesplit = line.split(",");
 
@@ -120,54 +120,65 @@ public class StudentFrame extends JFrame {
 						int gradeCol = 0;
 						for (int i = 0; i < linesplit.length; i++) {
 							System.out.println(linesplit[i]);
-							if (linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")) {
+							if (linesplit[i].equals("\"#Module\"")
+									|| linesplit[i].equals("#Module")) {
 								moduleCol = i;
-							} else if (linesplit[i].equals("\"#Ass#\"") || linesplit[i].equals("#Ass#")) {
+							} else if (linesplit[i].equals("\"#Ass#\"")
+									|| linesplit[i].equals("#Ass#")) {
 								assCol = i;
-							} else if (linesplit[i].equals("\"#Cand Key\"") || linesplit[i].equals("#Cand Key")) {
+							} else if (linesplit[i].equals("\"#Cand Key\"")
+									|| linesplit[i].equals("#Cand Key")) {
 								candCol = i;
-							} else if (linesplit[i].equals("\"Mark\"") || linesplit[i].equals("Mark")) {
+							} else if (linesplit[i].equals("\"Mark\"")
+									|| linesplit[i].equals("Mark")) {
 								markCol = i;
-							} else if (linesplit[i].equals("\"Grade\"") || linesplit[i].equals("Grade")) {
+							} else if (linesplit[i].equals("\"Grade\"")
+									|| linesplit[i].equals("Grade")) {
 								gradeCol = i;
 							}
 							;
 						}
 
-						//Adds records to assessments
+						// Adds records to assessments
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
 							String ass = linesplit[assCol].replaceAll("\"", "");
-							Result temp = new Result(linesplit[moduleCol], ass, linesplit[candCol], Integer.parseInt(linesplit[markCol]),linesplit[gradeCol]);
+							Result temp = new Result(linesplit[moduleCol], ass,
+									linesplit[candCol], Integer
+											.parseInt(linesplit[markCol]),
+									linesplit[gradeCol]);
 							assessment = temp.getModuleCode();
-							//First checks if Assessment array is empty
+							// First checks if Assessment array is empty
 							if (assesments.isEmpty()) {
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
-							//Now checks if there is already an assessment object
-							//With same assessment number
-							//If not make new assessment object
-							//Then add record
+								// Now checks if there is already an assessment
+								// object
+								// With same assessment number
+								// If not make new assessment object
+								// Then add record
 							} else if (!checkAllAss(temp.getAssessment())) {
 								Assessment t1 = new Assessment();
 								t1.addResult(temp);
 								assesments.add(t1);
 							} else {
-							//Since there is existing assessment object
-							//Finds it, and adds record
+								// Since there is existing assessment object
+								// Finds it, and adds record
 								for (int i = 0; i < assesments.size(); i++) {
-									if (assesments.get(i).results.get(0).getAssessment().equals(temp.getAssessment())) {
+									if (assesments.get(i).results.get(0)
+											.getAssessment()
+											.equals(temp.getAssessment())) {
 										assesments.get(i).addResult(temp);
 									}
 								}
 							}
 
 						}
-						//De-annonymises records
+						// De-annonymises records
 						deAnnonymise();
 						tabbedPane();
-						
+
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
 					} catch (IOException g) {
@@ -179,8 +190,8 @@ public class StudentFrame extends JFrame {
 			}
 
 		});
-		//tabbedPane.setTabPlacement(JTabbedPane.TOP);
-        //tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		// tabbedPane.setTabPlacement(JTabbedPane.TOP);
+		// tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
@@ -204,7 +215,9 @@ public class StudentFrame extends JFrame {
 				String buffer = search.getText();
 				// store all matching students in serachStudent arraylist
 				for (Student i : students) {
-					if (i.getName().toLowerCase().contains(buffer.toLowerCase()) || i.getStudentNumber().contains(buffer)) {
+					if (i.getName().toLowerCase()
+							.contains(buffer.toLowerCase())
+							|| i.getStudentNumber().contains(buffer)) {
 						listModel.addElement(i);
 					}
 				}
@@ -227,31 +240,32 @@ public class StudentFrame extends JFrame {
 		// Adds the list as a ScrollPane so there is a scrollBar
 		add(new JScrollPane(list), BorderLayout.WEST);
 		add(panel, BorderLayout.NORTH);
-		add(tabbedPane,BorderLayout.CENTER);
+		add(tabbedPane, BorderLayout.CENTER);
 		validate();
 		setVisible(true);
 
 	}
-	
-	public void tabbedPane(){
+
+	public void tabbedPane() {
 		String name = "";
 		int count = 0;
-		//loops through each assesment and creates a tab and a table for that assessment
+		// loops through each assesment and creates a tab and a table for that
+		// assessment
 		for (Assessment a : assesments) {
-			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "") +" "+ a.getAssessment(a.getIndex(count));
+			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
+					+ " " + a.getAssessment(a.getIndex(count));
 			count++;
 			tabbedPane.addTab(name, addJTable(a));
 		}
 		assesments.clear();
 	}
-	
 
 	/**
-	 * Checks through all Assessment Objects
-	 * Within Assessment ArrayList
-	 * If finds existing one, that matches string
-	 * returns true
-	 * @param s - assessment code
+	 * Checks through all Assessment Objects Within Assessment ArrayList If
+	 * finds existing one, that matches string returns true
+	 * 
+	 * @param s
+	 *            - assessment code
 	 * @return
 	 */
 	public boolean checkAllAss(String s) {
@@ -263,11 +277,10 @@ public class StudentFrame extends JFrame {
 		}
 		return false;
 	}
+
 	/**
-	 * matches anonymous marking codes
-	 * in records
-	 * with students in arraylist
-	 * If found, replaces with student numbers
+	 * matches anonymous marking codes in records with students in arraylist If
+	 * found, replaces with student numbers
 	 */
 	public void deAnnonymise() {
 		System.out.println("Starting deannonymising...");
@@ -275,36 +288,42 @@ public class StudentFrame extends JFrame {
 			for (Result t : a.results) {
 				String candKey = t.getCandKey();
 				candKey = candKey.replaceAll("\"", "");
-				
-				//Checks if candKey is actually student number
-				//If it's coursework, it will enter this if statement
-				if (candKey.substring(candKey.length() - 2,candKey.length() - 1).equals("/")) {
+
+				// Checks if candKey is actually student number
+				// If it's coursework, it will enter this if statement
+				if (candKey.substring(candKey.length() - 2,
+						candKey.length() - 1).equals("/")) {
 					System.out.println("Coursework");
-					//Removes the end /1 or /2 after student number
+					// Removes the end /1 or /2 after student number
 					candKey = candKey.substring(0, candKey.length() - 2);
 					candKey = candKey.replaceAll("#", "");
 					t.candKey = candKey;
-					
+
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
-						if (candKey.equals(s.studentNumber+"")) {
-							//Finds student with matching student numbers
-//							System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
-							String modCode = t.getModuleCode().replaceAll("\"", "");
-							s.addMarks(modCode +" "+ t.getAssessment(), t.mark);
+						if (candKey.equals(s.studentNumber + "")) {
+							// Finds student with matching student numbers
+							// System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
+							String modCode = t.getModuleCode().replaceAll("\"",
+									"");
+							s.addMarks(modCode + " " + t.getAssessment(),
+									t.mark);
 						}
-					}	
-				}else
-				for (Student s : students) {
-					candKey = candKey.replaceAll("#", "");
-					if (candKey.equals(s.aMC)) {
-						//Finds student with matching anonymous marking code
-						//Replaces it with student number
-						t.candKey = s.getStudentNumber();
-						s.addMarks(t.getModuleCode() +" "+ t.getAssessment(), t.mark);
 					}
-				}
-				
+				} else
+					for (Student s : students) {
+						candKey = candKey.replaceAll("#", "");
+						if (candKey.equals(s.aMC)) {
+							// Finds student with matching anonymous marking
+							// code
+							// Replaces it with student number
+							t.candKey = s.getStudentNumber();
+							s.addMarks(
+									t.getModuleCode() + " " + t.getAssessment(),
+									t.mark);
+						}
+					}
+
 			}
 		}
 
@@ -320,54 +339,57 @@ public class StudentFrame extends JFrame {
 			}
 		};
 		table = new JTable(model);
-		
-		
-		//Assigns column headings
+
+		// Assigns column headings
 		model.addColumn("Module Code");
 		model.addColumn("Ass");
 		model.addColumn("Cand Key");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
 
-		//Sets cell selection to single
-		//So only one cell is selected
-		//Also retrieves data when column 2 is clicked
+		// Sets cell selection to single
+		// So only one cell is selected
+		// Also retrieves data when column 2 is clicked
 		table.setCellSelectionEnabled(true);
 		ListSelectionModel cellSelectionModel = table.getSelectionModel();
-		cellSelectionModel.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		cellSelectionModel
+				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		cellSelectionModel.addListSelectionListener(new ListSelectionListener() {
+		cellSelectionModel
+				.addListSelectionListener(new ListSelectionListener() {
 					public void valueChanged(ListSelectionEvent e) {
 						int row = table.getSelectedRow();
 						int column = table.getSelectedColumn();
-						//Checks if column is candidate key column/student number
+						// Checks if column is candidate key column/student
+						// number
 						if (column == 2) {
 							// Create Display PopUp
-							String selectedItem = (String) table.getValueAt(row,column);
-							if(!selectedItem.substring(0, 1).equals("#")){
+							String selectedItem = (String) table.getValueAt(
+									row, column);
+							if (!selectedItem.substring(0, 1).equals("#")) {
 								System.out.println("Create Display PopUp");
 								showDisplayPopUp(selectedItem);
-							}else{
-								System.out.println("Not valid student Number/Anonymous marking code present");
+							} else {
+								System.out
+										.println("Not valid student Number/Anonymous marking code present");
 							}
-							
+
 						}
 					}
 
 				});
 
 		System.out.println("Making JTable");
-		//Fetches first assessment and adds to table
-		//for (Assessment t : assessments) {
-			for (Result r : ass.results) {
-				model.addRow(new Object[] {
-				r.getModuleCode().replaceAll("\"", ""),
-				r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
-				r.getMark(), r.getGrade() });
-			}
-		//	break;
-		//}
-		
+		// Fetches first assessment and adds to table
+		// for (Assessment t : assessments) {
+		for (Result r : ass.results) {
+			model.addRow(new Object[] { r.getModuleCode().replaceAll("\"", ""),
+					r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
+					r.getMark(), r.getGrade() });
+		}
+		// break;
+		// }
+
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.GRAY);
@@ -396,8 +418,9 @@ public class StudentFrame extends JFrame {
 		JList list = new JList(defListMod);// creates a new JList using the DLM
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
-//				Student findStudent = null;
-				String selectedItem = (String) list.getSelectedValue().toString();
+				// Student findStudent = null;
+				String selectedItem = (String) list.getSelectedValue()
+						.toString();
 				showDisplayPopUp(selectedItem);
 			}
 
@@ -418,7 +441,7 @@ public class StudentFrame extends JFrame {
 			}
 		}
 		display = new DisplayPopUpFrame(findStudent);
-		
+
 	}
 
 	public Student findStudent(String check, ArrayList<Student> studentArrayList) {
@@ -426,7 +449,8 @@ public class StudentFrame extends JFrame {
 
 		for (int i = 0; i < studentArrayList.size(); i++) {
 			// Checks if searching using student Number or toString
-			if (!check.substring(check.length() - 1, check.length()).equals(")")) {
+			if (!check.substring(check.length() - 1, check.length())
+					.equals(")")) {
 				if (studentArrayList.get(i).getStudentNumber().equals(check)) {
 					found = studentArrayList.get(i);
 				}
@@ -442,7 +466,6 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	
 	public void fetchStudentData(ArrayList<Student> students) {
 		// Create a Connector object and open the connection to the server
 		Connector server = new Connector();
@@ -451,7 +474,8 @@ public class StudentFrame extends JFrame {
 		"944ff2da7cd193c64ec9459a42f38786");
 
 		if (success == false) {
-			System.out.println("Fatal error: could not open connection to server");
+			System.out
+					.println("Fatal error: could not open connection to server");
 			System.exit(1);
 		}
 
@@ -479,38 +503,38 @@ public class StudentFrame extends JFrame {
 			String[] studentDetails1 = temp.split(",");
 			int studentNumber = Integer.parseInt(studentDetails1[2]);
 
-			Student temp1 = new Student(studentDetails1[0], studentDetails1[1], studentNumber, studentDetails1[3]);
+			Student temp1 = new Student(studentDetails1[0], studentDetails1[1],
+					studentNumber, studentDetails1[3]);
 			students.add(temp1);
 
 		}
 
 	}
-	
-	//Don't delete this please:
-	
-	/*private class AverageListener implements ActionListener{
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			XYSeriesCollection series = new XYSeriesCollection();
-			XYSeries data = new XYSeries("Test");
-			
-			JTable currentTable = (JTable) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
-			int numOfRecords = currentTable.getRowCount();
-			
-			//Loops through the records, gets the appropriate student object from the arraylist, 
-			//gets the average of the student and plots it with their mark.
-			for (int i = 0; i < numOfRecords; i++){
-				String temp = (String) currentTable.getValueAt(i, 2);
-				Student tempStu = findStudent(temp, students);
-				double stuMark = (double) currentTable.getValueAt(i, 3);
-				
-				data.add(tempStu.average, stuMark);
-				
-			}
-		}
-		
-	}*/
+	// Don't delete this please:
+
+	/*
+	 * private class AverageListener implements ActionListener{
+	 * 
+	 * @Override public void actionPerformed(ActionEvent e) { XYSeriesCollection
+	 * series = new XYSeriesCollection(); XYSeries data = new XYSeries("Test");
+	 * 
+	 * JTable currentTable = (JTable)
+	 * tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); int
+	 * numOfRecords = currentTable.getRowCount();
+	 * 
+	 * //Loops through the records, gets the appropriate student object from the
+	 * arraylist, //gets the average of the student and plots it with their
+	 * mark. for (int i = 0; i < numOfRecords; i++){ String temp = (String)
+	 * currentTable.getValueAt(i, 2); Student tempStu = findStudent(temp,
+	 * students); double stuMark = (double) currentTable.getValueAt(i, 3);
+	 * 
+	 * data.add(tempStu.average, stuMark);
+	 * 
+	 * } }
+	 * 
+	 * }
+	 */
 
 	private class LoadListener implements ActionListener {
 
@@ -573,6 +597,19 @@ public class StudentFrame extends JFrame {
 
 		}
 
+	}
+
+	public Student findUsingAnon(String anon) {
+		anon = anon.replaceAll("\"", "");
+		anon = anon.replaceAll("#", "");
+		Student found = null;
+		for (Student s : students) {
+			if (anon.equals(s.aMC)) {
+				found = s;
+			}
+		}
+
+		return found;
 	}
 
 }
