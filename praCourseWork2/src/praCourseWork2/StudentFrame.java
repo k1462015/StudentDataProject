@@ -519,13 +519,16 @@ public class StudentFrame extends JFrame {
 	
 	  private class AverageListener implements ActionListener{
 	          
-	          @Override public void actionPerformed(ActionEvent e) { 
-	            
-	          JScrollPane currentScrollPane = (JScrollPane)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); 
-	          JViewport viewport = currentScrollPane.getViewport(); 
-	          JTable currentTable = (JTable) viewport.getView(); 
-     
-	          }
+          @Override public void actionPerformed(ActionEvent e) { 
+            
+          JScrollPane currentScrollPane = (JScrollPane)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); 
+          JViewport viewport = currentScrollPane.getViewport(); 
+          JTable currentTable = (JTable) viewport.getView(); 
+ 
+          XYSeries data = new XYSeries("Test");
+          XYSeriesCollection dataset = new XYSeriesCollection();
+          
+          }
 	  }
 	 
 
