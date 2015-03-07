@@ -3,7 +3,9 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -24,33 +26,43 @@ public class Email extends JFrame {
 	private JPanel west;
 	private JPanel center;
 	private JPanel buttons;
+	private JPanel south;
 	private JPanel listPanel;
 	private ArrayList<Student> student;
 	private JTextArea header;
 	private JTextArea footer;
+	private JButton selectAll;
+	private JButton selectNone;
+	private JButton next;
 	
 	public Email(ArrayList<Student> students){
-		JButton selectAll = new JButton("select all");
+		selectAll = new JButton("select all");
 		selectAll.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listPanel.removeAll();
 				listPanel.add(createTable(true));
+				validate();
 			}
 			
 		});
 		
-		JButton selectNone = new JButton("select none");
+		selectNone = new JButton("select none");
 		selectNone.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				listPanel.removeAll();
 				listPanel.add(createTable(false));
+				validate();
 			}
 			
 		});
+		
+		next = new JButton("Next");
+		
+		south = new JPanel((LayoutManager) new FlowLayout(FlowLayout.RIGHT));
 		student = new ArrayList<Student>(students);
 		main = new JPanel(new BorderLayout());
 		buttons = new JPanel();
@@ -58,12 +70,15 @@ public class Email extends JFrame {
 		west = new JPanel(new BorderLayout());
 		center = new JPanel(new GridLayout(2,1,0,10));
 		
-		header = new JTextArea(5,5);
-		footer = new JTextArea(5,5);
+		header = new JTextArea();
+		header.setPreferredSize(new Dimension(50, 50));
+		footer = new JTextArea();
+		footer.setPreferredSize(new Dimension(50, 50));
 		
-		setSize(550, 450);
+		setSize(600, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+		south.add(next);
 		buttons.add(selectNone);
 		buttons.add(selectAll);
 		
@@ -77,6 +92,7 @@ public class Email extends JFrame {
 		
 		main.add(center,BorderLayout.CENTER);
 		main.add(west, BorderLayout.WEST);
+		main.add(south, BorderLayout.SOUTH);
 		
 		setVisible(true);
 		add(new JScrollPane(main));
