@@ -32,8 +32,9 @@ public class Email extends JFrame {
 	private JPanel south;
 	private JPanel listPanel;
 	private ArrayList<Student> student;
-
-
+	private ArrayList<Student> selectedStudent;
+	private ArrayList<String> emails;
+	
 	private JTextArea header;
 	private JTextArea footer;
 	private JButton selectAll;
@@ -44,6 +45,8 @@ public class Email extends JFrame {
 	private JTextArea viewEmail;
 	
 	public Email(ArrayList<Student> students){
+		emails = new ArrayList<String>();
+		selectedStudent = new ArrayList<Student>();
 		selectAll = new JButton("select all");
 		selectAll.addActionListener(new ActionListener() {
 
@@ -79,7 +82,13 @@ public class Email extends JFrame {
 				main.remove(west);
 				main.remove(center);
 				main.add(mainNext,BorderLayout.CENTER);
-				getCheckedStudents(viewEmail);
+				getCheckedStudents();
+				createEmail();
+				String template = "";
+				template = header.getText() +"\r\n";
+				template += "RESULTS WILL APPEAR HERE"+"\r\n";
+				template += footer.getText();
+				viewEmail.setText(template);
 				validate();
 				repaint();
 			}
@@ -115,7 +124,6 @@ public class Email extends JFrame {
 		footer.setPreferredSize(new Dimension(50, 50));
 		
 		setSize(600, 550);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		JPanel SouthWest =  new JPanel();
 		SouthWest.add(send);
@@ -164,31 +172,48 @@ public class Email extends JFrame {
 		return scrollPane;
 	}
 	
-	public void getCheckedStudents(JTextArea ta){
+	public void getCheckedStudents(){
 		ArrayList<String> selectedRows = new ArrayList<String>();
-		ArrayList<String> marks = new ArrayList<String>();
 		for(int i = 0; i < table.getRowCount(); i++) {
 		     if((Boolean) table.getValueAt(i, 1)) {
 		         selectedRows.add((String) table.getValueAt(i, 0));
 		     }
 		}
 		
-		System.out.println(selectedRows);
-		
 		for(Student temp: student){
-			for(String s :selectedRows){
-				if(temp.getName().equals(s)){
-					marks.addAll(temp.getMarks());
+			for(String h :selectedRows){
+				if(temp.getName().equals(h)){
+					selectedStudent.add(temp);
 				}
 			}
 		}
 
-		String temp = "";
+		/*String temp = "";
 		for(String st : marks){
 			
 			temp += st + "\r\n"; 
 		}
-		ta.setText(temp);
+		ta.setText(temp);*/
+	}
+	
+	public void createEmail(){
+		ArrayList<String> marks = new ArrayList<String>();
+		
+		for(Student s :selectedStudent){
+			String email ="";
+			email = header.getText() + "\r\n";
+			marks.addAll(s.getMarks());
+			
+			for(String st : marks){
+				
+				email += st + "\r\n"; 
+			}
+			
+			email+=footer.getText();
+			System.out.println(email);
+			emails.add(email);
+			marks.clear();
+		}
 	}
 	
 	public class MyTableModel extends DefaultTableModel {

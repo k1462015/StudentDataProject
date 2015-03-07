@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="C:/Users/Hassan/Downloads/jfreechart-1.0.19/lib/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hassan/Downloads/jfreechart-1.0.19/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hassan/Downloads/jfreechart-1.0.19/lib/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hassan/Downloads/javamail-1.5.2-src.zip" sourcepath="C:/Users/Hassan/Downloads/javamail-1.5.2-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
