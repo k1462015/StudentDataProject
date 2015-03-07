@@ -535,7 +535,19 @@ public class StudentFrame extends JFrame {
               for (int i = 0; i < numOfRecords; i++){ 
                       String tempCandKey = (String) currentTable.getValueAt(i, 2); 
                       System.out.println(tempCandKey);
-                      Student tempStu = findStudent(tempCandKey,students);
+                      Student tempStu = findStudent(tempCandKey,students);//The student of a specific row
+                      
+                      //if the tempStu is not null, then gets their mark from the table
+                      //and then plots the tempStu's average against their current mark
+                      if (!(tempStu==null)){
+                          System.out.println(tempStu.toString());
+                          int stuMarkInt = (Integer) currentTable.getValueAt(i, 3);
+                          System.out.println(stuMarkInt);
+        
+                      }
+                      else {
+                          System.out.println("Error error error");
+                      }
               }
           
           }
