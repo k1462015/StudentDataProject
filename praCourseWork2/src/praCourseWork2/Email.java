@@ -3,6 +3,7 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,18 +14,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 
 public class Email extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel main;
-	//private JList list;
 	private JTable table;
 	private JPanel west;
+	private JPanel center;
 	private JPanel buttons;
 	private JPanel listPanel;
 	private ArrayList<Student> student;
-
+	private JTextArea header;
+	private JTextArea footer;
+	
 	public Email(ArrayList<Student> students){
 		JButton selectAll = new JButton("select all");
 		selectAll.addActionListener(new ActionListener() {
@@ -52,7 +56,11 @@ public class Email extends JFrame {
 		buttons = new JPanel();
 		listPanel = new JPanel();
 		west = new JPanel(new BorderLayout());
-
+		center = new JPanel(new GridLayout(1,2));
+		
+		header = new JTextArea();
+		footer = new JTextArea();
+		
 		setSize(550, 450);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
