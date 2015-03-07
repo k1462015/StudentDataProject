@@ -525,8 +525,10 @@ public class StudentFrame extends JFrame {
           JViewport viewport = currentScrollPane.getViewport(); 
           JTable currentTable = (JTable) viewport.getView(); 
  
-          XYSeries data = new XYSeries("Test");
-          XYSeriesCollection dataset = new XYSeriesCollection();
+          XYSeries data = new XYSeries("Test");//Will hold our data, or plot points 
+          XYSeriesCollection dataset = new XYSeriesCollection();// Will hold the dataset
+          
+          int numOfRecords = currentTable.getRowCount();
           
           }
 	  }
