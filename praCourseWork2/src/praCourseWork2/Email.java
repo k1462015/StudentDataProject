@@ -3,14 +3,14 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -20,6 +20,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 public class Email extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -109,7 +111,19 @@ public class Email extends JFrame {
 			
 		});
 		send = new JButton("Send");
-		
+		send.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					sendEmail("it works","","");
+				} catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}	
+		});
 		south = new JPanel(new BorderLayout());
 		student = new ArrayList<Student>(students);
 		main = new JPanel(new BorderLayout());
@@ -132,7 +146,7 @@ public class Email extends JFrame {
 		JPanel SouthEast=  new JPanel();
 		SouthEast.add(next);
 		
-		south.add(SouthWest,BorderLayout.WEST);;
+		south.add(SouthWest,BorderLayout.WEST);
 		south.add(SouthEast,BorderLayout.EAST);
 		buttons.add(selectNone);
 		buttons.add(selectAll);
@@ -187,13 +201,6 @@ public class Email extends JFrame {
 				}
 			}
 		}
-
-		/*String temp = "";
-		for(String st : marks){
-			
-			temp += st + "\r\n"; 
-		}
-		ta.setText(temp);*/
 	}
 	
 	public void createEmail(){
@@ -252,6 +259,31 @@ public class Email extends JFrame {
 	    }
 
 	}
-
+	
+	public void sendEmail(String email,String sender,String reciever) throws UnsupportedEncodingException{
+		String to = reciever;//change accordingly  
+	      String from = sender;//change accordingly  
+	      String host = "";//or IP address  
+	  
+	     //Get the session object  
+	      Properties properties = System.getProperties();  
+	      properties.setProperty("mail.smtp.host", host);  
+	      Session session = Session.getDefaultInstance(properties);  
+	  
+	     //compose the message  
+	      try{  
+	         MimeMessage message = new MimeMessage(session);  
+	         message.setFrom(new InternetAddress(from));  
+	         message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
+	         message.setSubject("Ping");  
+	         message.setText(email);  
+	  
+	         // Send message  
+	         Transport.send(message);  
+	         System.out.println("message sent successfully....");  
+	  
+	      }catch (MessagingException mex) {mex.printStackTrace();}  
+	     
+	}  
 }
 
