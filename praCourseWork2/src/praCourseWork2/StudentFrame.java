@@ -530,6 +530,14 @@ public class StudentFrame extends JFrame {
           
           int numOfRecords = currentTable.getRowCount();
           
+        //Loops through the records, gets the appropriate student object from the arraylist,
+          //gets the average of the student and plots it with their mark. 
+              for (int i = 0; i < numOfRecords; i++){ 
+                      String tempCandKey = (String) currentTable.getValueAt(i, 2); 
+                      System.out.println(tempCandKey);
+                      Student tempStu = findStudent(tempCandKey,students);
+              }
+          
           }
 	  }
 	 
