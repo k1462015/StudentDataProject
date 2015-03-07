@@ -526,7 +526,6 @@ public class StudentFrame extends JFrame {
           JTable currentTable = (JTable) viewport.getView(); 
  
           XYSeries data = new XYSeries("Test");//Will hold our data, or plot points 
-          XYSeriesCollection dataset = new XYSeriesCollection();// Will hold the dataset
           
           int numOfRecords = currentTable.getRowCount();
           
@@ -542,8 +541,9 @@ public class StudentFrame extends JFrame {
                       if (!(tempStu==null)){
                           System.out.println(tempStu.toString());
                           int stuMarkInt = (Integer) currentTable.getValueAt(i, 3);
-                          System.out.println(stuMarkInt);
-               
+                         // double stuMark = (double) stuMarkInt;
+                          //System.out.println(stuMark);
+                          tempStu.calcAverage();
                           data.add(tempStu.average, stuMarkInt);
                       }
                       else {
