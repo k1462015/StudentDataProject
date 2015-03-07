@@ -543,14 +543,19 @@ public class StudentFrame extends JFrame {
                           System.out.println(tempStu.toString());
                           int stuMarkInt = (Integer) currentTable.getValueAt(i, 3);
                           System.out.println(stuMarkInt);
-        
+               
+                          data.add(tempStu.average, stuMarkInt);
                       }
                       else {
                           System.out.println("Error error error");
                       }
               }
           
+              System.out.println("Making chart...");
+              ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment",data);
+              
           }
+          
 	  }
 	 
 
