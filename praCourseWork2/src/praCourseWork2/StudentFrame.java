@@ -525,7 +525,7 @@ public class StudentFrame extends JFrame {
           JViewport viewport = currentScrollPane.getViewport(); 
           JTable currentTable = (JTable) viewport.getView(); 
  
-          XYSeries data = new XYSeries("Test");//Will hold our data, or plot points 
+          XYSeries data = new XYSeries("Student");//Will hold our data, or plot points 
           
           int numOfRecords = currentTable.getRowCount();
           
@@ -551,8 +551,9 @@ public class StudentFrame extends JFrame {
                       }
               }
           
+              String modCode = (String) currentTable.getValueAt(0, 0);
               System.out.println("Making chart...");
-              ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment",data);
+              ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment", modCode, data);
               
           }
           

@@ -11,7 +11,7 @@ public class ScatterTest {
 		data.add(69, 65);
 		data.add(80, 70);
 		
-		ScatterPlot plot = new ScatterPlot("Test", "Test",data);
+		ScatterPlot plot = new ScatterPlot("Test", "Test","test",data);
 
 	}
 

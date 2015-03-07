@@ -15,14 +15,14 @@ public class ScatterPlot extends JFrame {
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
 	
-	public ScatterPlot(String appTitle, String chartTitle, XYSeries data){
+	public ScatterPlot(String appTitle, String chartTitle, String module,XYSeries data){
 		
 		super(appTitle);
 		
 		dataset = new XYSeriesCollection();
 		dataset.addSeries(data);
 		
-		chart = ChartFactory.createScatterPlot("Grades", "Average", "Assessment Grade", dataset);
+		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", module + " mark", dataset);
 		chartPanel = new ChartPanel(chart);
 		this.add(chartPanel);
 		
