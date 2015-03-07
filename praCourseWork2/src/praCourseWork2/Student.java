@@ -53,6 +53,9 @@ public class Student {
 		marks.put(modAss, mark);
 	}
 	
+	public ArrayList<String> getMarks(){
+		return assessMarks; 
+	}
 	
 	public double calcAverage(){
 		

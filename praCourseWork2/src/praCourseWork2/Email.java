@@ -9,6 +9,8 @@ import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -90,6 +92,7 @@ public class Email extends JFrame {
 				main.add(center);
 				validate();
 				repaint();
+				getCheckedRows();
 			}
 			
 		});
@@ -156,6 +159,22 @@ public class Email extends JFrame {
 		revalidate();
 		
 		return scrollPane;
+	}
+	
+	public void getCheckedRows(){
+		ArrayList<String> selectedRows = new ArrayList<String>();
+		for(int i = 0; i < table.getRowCount(); i++) {
+		     if((Boolean) table.getValueAt(i, 1)) {
+		         selectedRows.add((String) table.getValueAt(i, 0));
+		     }
+		}
+		System.out.println(selectedRows);
+	}
+	
+	public void getSelectedStudents(ArrayList<String> l){
+		for(String s :l){
+			//if(s.equals(anObject))
+		}
 	}
 	
 	public class MyTableModel extends DefaultTableModel {
