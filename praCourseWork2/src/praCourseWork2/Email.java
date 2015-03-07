@@ -22,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class Email extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel main;
+	private JPanel mainNext;
 	private JTable table;
 	private JPanel west;
 	private JPanel center;
@@ -36,6 +37,7 @@ public class Email extends JFrame {
 	private JButton next;	
 	private JButton previous;
 	private JButton send;
+	private JTextArea viewEmail;
 	
 	public Email(ArrayList<Student> students){
 		selectAll = new JButton("select all");
@@ -61,9 +63,36 @@ public class Email extends JFrame {
 			}
 			
 		});
-		
+		mainNext = new JPanel();
+		viewEmail = new JTextArea();
+		viewEmail.setPreferredSize(new Dimension(450, 410));
+		mainNext.add(viewEmail);
 		next = new JButton("Next");
+		next.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				main.remove(west);
+				main.remove(center);
+				main.add(mainNext,BorderLayout.CENTER);
+				validate();
+				repaint();
+			}
+			
+		});
 		previous = new JButton("Previous");
+		previous.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				main.remove(mainNext);
+				main.add(west);
+				main.add(center);
+				validate();
+				repaint();
+			}
+			
+		});
 		send = new JButton("Send");
 		
 		south = new JPanel(new BorderLayout());
