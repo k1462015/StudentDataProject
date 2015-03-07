@@ -31,18 +31,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
-import studentdata.Connector;
-import studentdata.DataTable;
-
-import org.jfree.chart.*;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+
+import studentdata.Connector;
+import studentdata.DataTable;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
@@ -75,7 +75,11 @@ public class StudentFrame extends JFrame {
 		menu.add(data);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
+		
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
+		AverageListener avgListener = new AverageListener();
+		compareAverage.addActionListener(avgListener);
+		
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
 		data.add(emailStudent);
 		data.add(compareAverage);
@@ -512,29 +516,16 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	// Don't delete this please:
-
 	
 	  private class AverageListener implements ActionListener{
-	  
-	  @Override public void actionPerformed(ActionEvent e) { XYSeriesCollection
-	  series = new XYSeriesCollection(); XYSeries data = new XYSeries("Test");
-	  
-	  JTable currentTable = (JTable)
-	  tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); int
-	  numOfRecords = currentTable.getRowCount();
-	  
-	  //Loops through the records, gets the appropriate student object from the
-	  //arraylist, //gets the average of the student and plots it with their
-	 // mark. 
-	  for (int i = 0; i < numOfRecords; i++){ String temp = (String)
-	  currentTable.getValueAt(i, 2); Student tempStu = findStudent(temp,
-	  students); double stuMark = (double) currentTable.getValueAt(i, 3);
-	  
-	  data.add(tempStu.average, stuMark);
-	  
-	  } }
-	  
+	          
+	          @Override public void actionPerformed(ActionEvent e) { 
+	            
+	          JScrollPane currentScrollPane = (JScrollPane)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); 
+	          JViewport viewport = currentScrollPane.getViewport(); 
+	          JTable currentTable = (JTable) viewport.getView(); 
+     
+	          }
 	  }
 	 
 
@@ -544,7 +535,7 @@ public class StudentFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser choosy = new JFileChooser();
 
-			File f = new File("C://Users//Saif//workspace");
+			File f = new File("C://Users");
 			choosy.setCurrentDirectory(f);
 
 			// Creates filter so user can only select CSV file
