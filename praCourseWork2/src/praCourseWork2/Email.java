@@ -56,10 +56,10 @@ public class Email extends JFrame {
 		buttons = new JPanel();
 		listPanel = new JPanel();
 		west = new JPanel(new BorderLayout());
-		center = new JPanel(new GridLayout(1,2));
+		center = new JPanel(new GridLayout(2,1,0,10));
 		
-		header = new JTextArea();
-		footer = new JTextArea();
+		header = new JTextArea(5,5);
+		footer = new JTextArea(5,5);
 		
 		setSize(550, 450);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,6 +72,10 @@ public class Email extends JFrame {
 		west.add(buttons,BorderLayout.NORTH);
 		west.add(listPanel, BorderLayout.CENTER);
 		
+		center.add(header);
+		center.add(footer);
+		
+		main.add(center,BorderLayout.CENTER);
 		main.add(west, BorderLayout.WEST);
 		
 		setVisible(true);
