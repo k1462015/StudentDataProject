@@ -33,7 +33,9 @@ public class Email extends JFrame {
 	private JTextArea footer;
 	private JButton selectAll;
 	private JButton selectNone;
-	private JButton next;
+	private JButton next;	
+	private JButton previous;
+	private JButton send;
 	
 	public Email(ArrayList<Student> students){
 		selectAll = new JButton("select all");
@@ -61,8 +63,10 @@ public class Email extends JFrame {
 		});
 		
 		next = new JButton("Next");
+		previous = new JButton("Previous");
+		send = new JButton("Send");
 		
-		south = new JPanel((LayoutManager) new FlowLayout(FlowLayout.RIGHT));
+		south = new JPanel(new BorderLayout());
 		student = new ArrayList<Student>(students);
 		main = new JPanel(new BorderLayout());
 		buttons = new JPanel();
@@ -78,7 +82,15 @@ public class Email extends JFrame {
 		setSize(600, 550);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		south.add(next);
+		JPanel SouthWest =  new JPanel();
+		SouthWest.add(send);
+		SouthWest.add(previous);
+		
+		JPanel SouthEast=  new JPanel();
+		SouthEast.add(next);
+		
+		south.add(SouthWest,BorderLayout.WEST);;
+		south.add(SouthEast,BorderLayout.EAST);
 		buttons.add(selectNone);
 		buttons.add(selectAll);
 		
