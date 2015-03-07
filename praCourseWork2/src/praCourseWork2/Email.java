@@ -32,6 +32,8 @@ public class Email extends JFrame {
 	private JPanel south;
 	private JPanel listPanel;
 	private ArrayList<Student> student;
+
+
 	private JTextArea header;
 	private JTextArea footer;
 	private JButton selectAll;
@@ -77,6 +79,7 @@ public class Email extends JFrame {
 				main.remove(west);
 				main.remove(center);
 				main.add(mainNext,BorderLayout.CENTER);
+				getCheckedStudents(viewEmail);
 				validate();
 				repaint();
 			}
@@ -92,7 +95,7 @@ public class Email extends JFrame {
 				main.add(center);
 				validate();
 				repaint();
-				getCheckedRows();
+				
 			}
 			
 		});
@@ -161,20 +164,31 @@ public class Email extends JFrame {
 		return scrollPane;
 	}
 	
-	public void getCheckedRows(){
+	public void getCheckedStudents(JTextArea ta){
 		ArrayList<String> selectedRows = new ArrayList<String>();
+		ArrayList<String> marks = new ArrayList<String>();
 		for(int i = 0; i < table.getRowCount(); i++) {
 		     if((Boolean) table.getValueAt(i, 1)) {
 		         selectedRows.add((String) table.getValueAt(i, 0));
 		     }
 		}
+		
 		System.out.println(selectedRows);
-	}
-	
-	public void getSelectedStudents(ArrayList<String> l){
-		for(String s :l){
-			//if(s.equals(anObject))
+		
+		for(Student temp: student){
+			for(String s :selectedRows){
+				if(temp.getName().equals(s)){
+					marks.addAll(temp.getMarks());
+				}
+			}
 		}
+
+		String temp = "";
+		for(String st : marks){
+			
+			temp += st + "\r\n"; 
+		}
+		ta.setText(temp);
 	}
 	
 	public class MyTableModel extends DefaultTableModel {
