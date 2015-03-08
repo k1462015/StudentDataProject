@@ -49,6 +49,8 @@ public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
 	private JTabbedPane tabbedPane;
+	private boolean fileLoaded;
+	private boolean anonLoaded;
 	/**
 	 * 
 	 */
@@ -58,6 +60,8 @@ public class StudentFrame extends JFrame {
 	public StudentFrame() {
 		// Initialises frame and sets title to team name
 		super("PRA Coursework - TMH");
+		fileLoaded = false;
+		anonLoaded = false;
 		InitUI();
 
 	}
@@ -184,6 +188,7 @@ public class StudentFrame extends JFrame {
 						// De-annonymises records
 						deAnnonymise();
 						tabbedPane();
+						fileLoaded = true;
 
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
@@ -521,41 +526,51 @@ public class StudentFrame extends JFrame {
 	  private class AverageListener implements ActionListener{
 	          
           @Override public void actionPerformed(ActionEvent e) { 
+        	  
+        if (fileLoaded == true && anonLoaded == true){	  
             
-          JScrollPane currentScrollPane = (JScrollPane)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); 
-          JViewport viewport = currentScrollPane.getViewport(); 
-          JTable currentTable = (JTable) viewport.getView(); 
- 
-          XYSeries data = new XYSeries("Student");//Will hold our data, or plot points 
-          
-          int numOfRecords = currentTable.getRowCount();
-          
-        //Loops through the records, gets the appropriate student object from the arraylist,
-          //gets the average of the student and plots it with their mark. 
-              for (int i = 0; i < numOfRecords; i++){ 
-                      String tempCandKey = (String) currentTable.getValueAt(i, 2); 
-                      System.out.println(tempCandKey);
-                      Student tempStu = findStudent(tempCandKey,students);//The student of a specific row
-                      
-                      //if the tempStu is not null, then gets their mark from the table
-                      //and then plots the tempStu's average against their current mark
-                      if (!(tempStu==null)){
-                          System.out.println(tempStu.toString());
-                          int stuMarkInt = (Integer) currentTable.getValueAt(i, 3);
-                         // double stuMark = (double) stuMarkInt;
-                          //System.out.println(stuMark);
-                          tempStu.calcAverage();
-                          data.add(tempStu.average, stuMarkInt);
-                      }
-                      else {
-                          System.out.println("Error error error");
-                      }
-              }
-          
-              String modCode = (String) currentTable.getValueAt(0, 0);
-              System.out.println("Making chart...");
-              ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment", modCode, data);
-              
+	          JScrollPane currentScrollPane = (JScrollPane)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); 
+	          JViewport viewport = currentScrollPane.getViewport(); 
+	          JTable currentTable = (JTable) viewport.getView(); 
+	 
+	          XYSeries data = new XYSeries("Student");//Will hold our data, or plot points 
+	          
+	          int numOfRecords = currentTable.getRowCount();
+	          
+	        //Loops through the records, gets the appropriate student object from the arraylist,
+	          //gets the average of the student and plots it with their mark. 
+	              for (int i = 0; i < numOfRecords; i++){ 
+	                      String tempCandKey = (String) currentTable.getValueAt(i, 2); 
+	                      System.out.println(tempCandKey);
+	                      Student tempStu = findStudent(tempCandKey,students);//The student of a specific row
+	                      
+	                      //if the tempStu is not null, then gets their mark from the table
+	                      //and then plots the tempStu's average against their current mark
+	                      if (!(tempStu==null)){
+	                          System.out.println(tempStu.toString());
+	                          int stuMarkInt = (Integer) currentTable.getValueAt(i, 3);
+	                         // double stuMark = (double) stuMarkInt;
+	                          //System.out.println(stuMark);
+	                          tempStu.calcAverage();
+	                          data.add(tempStu.average, stuMarkInt);
+	                      }
+	                      else {
+	                          System.out.println("Error error error");
+	                      }
+	              }
+	          
+	              String modCode = (String) currentTable.getValueAt(0, 0);
+	              System.out.println("Making chart...");
+	              ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment", modCode, data);
+	              
+	          } else if (anonLoaded == true && fileLoaded == false){
+	        	  JOptionPane.showMessageDialog(rootPane, "You need to load an exam results file, before you can create the chart");
+	          } else if (anonLoaded == false && fileLoaded == false){
+	        	  JOptionPane.showMessageDialog(rootPane, "You need to first load an anonymous marking code file, then an exam results file");
+	          }
+        
+	         
+        	  
           }
           
 	  }
@@ -607,6 +622,8 @@ public class StudentFrame extends JFrame {
 							+ " codes were \nfor known students; "
 							+ failedImports + " were or unknown students";
 					JOptionPane.showMessageDialog(StudentFrame.this, results);
+					
+					anonLoaded = true;
 
 				} catch (FileNotFoundException p) {
 					System.out.println("File not found");
