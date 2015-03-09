@@ -7,26 +7,31 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
-import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
-import javax.mail.*;
-import javax.mail.internet.*;
 
 public class Email extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel main;
 	private JPanel mainNext;
+	private JPanel userDetails;
 	private JTable table;
 	private JPanel west;
 	private JPanel center;
@@ -39,12 +44,17 @@ public class Email extends JFrame {
 	
 	private JTextArea header;
 	private JTextArea footer;
+	private JTextArea userName;
+	private JTextArea pass;
 	private JButton selectAll;
 	private JButton selectNone;
 	private JButton next;	
 	private JButton previous;
 	private JButton send;
 	private JTextArea viewEmail;
+	private JLabel EnterUser;
+	private JLabel EnterPword;
+	
 	
 	public Email(ArrayList<Student> students){
 		emails = new ArrayList<String>();
@@ -72,6 +82,12 @@ public class Email extends JFrame {
 			}
 			
 		});
+		userDetails = new JPanel(new GridLayout(4,1));
+		userName = new JTextArea(5,5);
+		pass = new JTextArea(5,5);
+		EnterUser = new JLabel("Enter Username:");
+		EnterPword = new JLabel("Enter Password:");
+		
 		mainNext = new JPanel();
 		viewEmail = new JTextArea();
 		viewEmail.setPreferredSize(new Dimension(450, 410));
@@ -83,7 +99,14 @@ public class Email extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				main.remove(west);
 				main.remove(center);
-				main.add(mainNext,BorderLayout.CENTER);
+				main.add(mainNext,BorderLayout.WEST);
+				
+				userDetails.add(EnterUser); 
+				userDetails.add(userName);
+				userDetails.add(EnterPword); 
+				userDetails.add(pass);
+				main.add(userDetails, BorderLayout.EAST);
+				
 				getCheckedStudents();
 				createEmail();
 				String template = "";
@@ -261,25 +284,43 @@ public class Email extends JFrame {
 	}
 	
 	public void sendEmail(String email,String sender,String reciever) throws UnsupportedEncodingException{
-		String to = reciever;//change accordingly  
-	      String from = sender;//change accordingly  
-	      String host = "";//or IP address  
+		String to = "mustarohman@gmail.com";//change accordingly  
+	      String from = "mustatester123@gmail.com";//change accordingly  
+	      String pword = "allahuakbar45";
+	      String host = "587";//or IP address  
 	  
 	     //Get the session object  
-	      Properties properties = System.getProperties();  
-	      properties.setProperty("mail.smtp.host", host);  
-	      Session session = Session.getDefaultInstance(properties);  
+	      Properties prop = System.getProperties();  
+	      prop.put("mail.smtp.host", "smtp.gmail.com");
+	      prop.put("mail.smtp.socketFactory.port", "465");
+	      prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	      prop.put("mail.smtp.auth", "true");
+	      prop.put("mail.smtp.port", "465");
+	      
+	      //properties.setProperty("mail.smtp.host", host);  
+	      Session session = Session.getDefaultInstance(prop,
+	    		  new javax.mail.Authenticator(){
+	    	  
+	    	  protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+	    		  return new javax.mail.PasswordAuthentication(from, pword);
+	    	  }
+	      }
+	    		  	  
+	    		  );  
 	  
 	     //compose the message  
 	      try{  
 	         MimeMessage message = new MimeMessage(session);  
 	         message.setFrom(new InternetAddress(from));  
 	         message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));  
-	         message.setSubject("Ping");  
+	         message.setSubject("Results");  
 	         message.setText(email);  
 	  
 	         // Send message  
-	         Transport.send(message);  
+	         Transport transport = session.getTransport("smtp");
+	         transport.connect();
+	         transport.sendMessage(message, message.getAllRecipients());  
+	         transport.close();
 	         System.out.println("message sent successfully....");  
 	  
 	      }catch (MessagingException mex) {mex.printStackTrace();}  
