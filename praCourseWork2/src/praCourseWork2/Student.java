@@ -38,6 +38,11 @@ public class Student {
 		return s;
 	}
 	
+	public String getEmail(){
+		return this.email;
+		
+	}
+	
 	public String toString(){
 		return name + " (" + studentNumber + ")";
 	}

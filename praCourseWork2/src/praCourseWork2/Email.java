@@ -41,7 +41,7 @@ public class Email extends JFrame {
 	private JPanel listPanel;
 	private ArrayList<Student> student;
 	private ArrayList<Student> selectedStudent;
-	private ArrayList<String> emails;
+	//private ArrayList<String> emails;
 	
 	private JTextArea header;
 	private JTextArea footer;
@@ -58,7 +58,7 @@ public class Email extends JFrame {
 	
 	
 	public Email(ArrayList<Student> students){
-		emails = new ArrayList<String>();
+		//emails = new ArrayList<String>();
 		selectedStudent = new ArrayList<Student>();
 		selectAll = new JButton("select all");
 		selectAll.addActionListener(new ActionListener() {
@@ -109,7 +109,6 @@ public class Email extends JFrame {
 				main.add(userDetails, BorderLayout.EAST);
 				
 				getCheckedStudents();
-				createEmail();
 				String template = "";
 				template = header.getText() +"\r\n";
 				template += "RESULTS WILL APPEAR HERE"+"\r\n";
@@ -140,7 +139,9 @@ public class Email extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					sendEmail();
+					for (Student s : selectedStudent){
+						sendEmail(s.getEmail(),createEmail(s));
+					}
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -227,10 +228,10 @@ public class Email extends JFrame {
 		}
 	}
 	
-	public void createEmail(){
+	public String createEmail(Student s){
 		ArrayList<String> marks = new ArrayList<String>();
 		
-		for(Student s :selectedStudent){
+		
 			String email ="";
 			email = header.getText() + "\r\n";
 			marks.addAll(s.getMarks());
@@ -242,9 +243,9 @@ public class Email extends JFrame {
 			
 			email+=footer.getText();
 			System.out.println(email);
-			emails.add(email);
+			//emails.add(email);
 			marks.clear();
-		}
+			return email;
 	}
 	
 	public class MyTableModel extends DefaultTableModel {
@@ -284,9 +285,9 @@ public class Email extends JFrame {
 
 	}
 	
-	public void sendEmail() throws UnsupportedEncodingException{
-		String email = " yeaaaaah";
-		String to = "mustarohman@gmail.com" ;//change accordingly  
+	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
+		String email = body;
+		String to = toAddress ;//change accordingly  
 	      String from = userName.getText();//change accordingly  
 	     // String pword = new String(pass.getPassword());
 	      String host = "587";//or IP address  
