@@ -7,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.UnsupportedEncodingException;
-import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
@@ -22,9 +21,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class Email extends JFrame {
@@ -44,15 +45,15 @@ public class Email extends JFrame {
 	
 	private JTextArea header;
 	private JTextArea footer;
-	private JTextArea userName;
-	private JTextArea pass;
+	private JTextField userName;
+	private JPasswordField pass;
 	private JButton selectAll;
 	private JButton selectNone;
 	private JButton next;	
 	private JButton previous;
 	private JButton send;
 	private JTextArea viewEmail;
-	private JLabel EnterUser;
+	private JLabel EnterEmail;
 	private JLabel EnterPword;
 	
 	
@@ -83,9 +84,9 @@ public class Email extends JFrame {
 			
 		});
 		userDetails = new JPanel(new GridLayout(4,1));
-		userName = new JTextArea(5,5);
-		pass = new JTextArea(5,5);
-		EnterUser = new JLabel("Enter Username:");
+		userName = new JTextField(5);
+		pass = new JPasswordField();
+		EnterEmail = new JLabel("Enter Email:");
 		EnterPword = new JLabel("Enter Password:");
 		
 		mainNext = new JPanel();
@@ -101,7 +102,7 @@ public class Email extends JFrame {
 				main.remove(center);
 				main.add(mainNext,BorderLayout.WEST);
 				
-				userDetails.add(EnterUser); 
+				userDetails.add(EnterEmail); 
 				userDetails.add(userName);
 				userDetails.add(EnterPword); 
 				userDetails.add(pass);
@@ -139,7 +140,7 @@ public class Email extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					sendEmail("it works","","");
+					sendEmail();
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -283,13 +284,14 @@ public class Email extends JFrame {
 
 	}
 	
-	public void sendEmail(String email,String sender,String reciever) throws UnsupportedEncodingException{
-		String to = "mustarohman@gmail.com";//change accordingly  
-	      String from = "mustatester123@gmail.com";//change accordingly  
-	      String pword = "allahuakbar45";
+	public void sendEmail() throws UnsupportedEncodingException{
+		String email = " yeaaaaah";
+		String to = "mustarohman@gmail.com" ;//change accordingly  
+	      String from = userName.getText();//change accordingly  
+	     // String pword = new String(pass.getPassword());
 	      String host = "587";//or IP address  
 	  
-	     //Get the session object  
+	     //Holds the server settings
 	      Properties prop = System.getProperties();  
 	      prop.put("mail.smtp.host", "smtp.gmail.com");
 	      prop.put("mail.smtp.socketFactory.port", "465");
@@ -297,12 +299,12 @@ public class Email extends JFrame {
 	      prop.put("mail.smtp.auth", "true");
 	      prop.put("mail.smtp.port", "465");
 	      
-	      //properties.setProperty("mail.smtp.host", host);  
+	      
 	      Session session = Session.getDefaultInstance(prop,
 	    		  new javax.mail.Authenticator(){
 	    	  
 	    	  protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-	    		  return new javax.mail.PasswordAuthentication(from, pword);
+	    		  return new javax.mail.PasswordAuthentication(from, new String(pass.getPassword()));
 	    	  }
 	      }
 	    		  	  
