@@ -287,18 +287,17 @@ public class Email extends JFrame {
 	
 	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
 		String email = body;
-		String to = toAddress ;//change accordingly  
+		String to = toAddress; ;//change accordingly  
 	      String from = userName.getText();//change accordingly  
 	     // String pword = new String(pass.getPassword());
 	      String host = "587";//or IP address  
 	  
 	     //Holds the server settings
 	      Properties prop = System.getProperties();  
-	      prop.put("mail.smtp.host", "smtp.gmail.com");
-	      prop.put("mail.smtp.socketFactory.port", "465");
-	      prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 	      prop.put("mail.smtp.auth", "true");
-	      prop.put("mail.smtp.port", "465");
+	      prop.put("mail.smtp.starttls.enable", "true");
+	      prop.put("mail.smtp.host", "outlook.office365.com");
+	      prop.put("mail.smtp.port", "587");
 	      
 	      
 	      Session session = Session.getDefaultInstance(prop,
