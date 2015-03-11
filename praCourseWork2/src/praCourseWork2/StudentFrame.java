@@ -682,7 +682,7 @@ public class StudentFrame extends JFrame {
 		File f = new File(filePathStr);
 		
 		if (f.exists() && !f.isDirectory()){
-			System.out.println("true");
+			System.out.println("Settings.ini exists");
 			settingsFile = f;
 		}
 		

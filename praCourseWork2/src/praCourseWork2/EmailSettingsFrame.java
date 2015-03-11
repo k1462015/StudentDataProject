@@ -4,11 +4,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -28,6 +29,11 @@ public class EmailSettingsFrame extends JFrame {
 	
 	File settingsFile;
 	
+	private String serverPreLoaded;
+	private Integer portPreLoaded;
+	private String userPreLoaded;
+	private String authPreLoaded;
+	
 	JTextField serverNameField;
 	JSpinner portSpinner;
 	JComboBox connectionBox;
@@ -39,9 +45,17 @@ public class EmailSettingsFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public EmailSettingsFrame(File settings) {
+		
+		
 		super("SMTP Server");
 		this.settingsFile = settings;
+		
 		initUi();
+		if (!(settingsFile == null)){
+			loadSettings(settingsFile);
+			displaySettings();
+		}
+		
 
 	}
 	
@@ -162,6 +176,15 @@ public class EmailSettingsFrame extends JFrame {
 
 		// Bottom buttons
 		cancel = new JButton("Cancel");
+		cancel.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+				
+			}
+			
+		});
 		ok = new JButton("OK");
 		ok.addActionListener(new ActionListener(){
 
@@ -202,6 +225,7 @@ public class EmailSettingsFrame extends JFrame {
 					writer.println(settingsString());
 					writer.close();
 					System.out.println("File writed.");
+					dispose();
 				
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -209,16 +233,6 @@ public class EmailSettingsFrame extends JFrame {
 				}
 				
 				
-				
-				/*try {
-					PrintWriter writer = new PrintWriter(filename, "UTF-8");
-					writer.println(serverNameField.getText() + portNum);
-					
-					System.out.println("File created and written");
-				} catch (FileNotFoundException | UnsupportedEncodingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}*/
 				
 				
 			}
@@ -249,7 +263,12 @@ public class EmailSettingsFrame extends JFrame {
 
 	}
 	
+	//Returns a String containing the selected settings, separated by a comma
 	public String settingsString(){
+		
+		//The index of the settings info:
+		//ServerName[0], PortNum[1], UserName[2], StartTLS[3]
+		
 		Integer portNum = (Integer) portSpinner.getValue();	
 		String temp = (String) connectionBox.getSelectedItem();
 		String auth = temp.toLowerCase();
@@ -258,9 +277,60 @@ public class EmailSettingsFrame extends JFrame {
 		
 		if (auth.equals("starttls")){
 			s += "," + true;
+		} else{
+			s += "," + false;
 		}
 		
 		return s;
+	}
+	
+	//Gets existing settings file and loads up the data into appropriate variables
+	public String[] loadSettings(File settings){
+		
+		String[] settingsArray = {};
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(settings));
+			String s = br.readLine();
+			System.out.println(s);
+			
+			settingsArray = s.split(",");
+			
+			
+			this.serverPreLoaded = settingsArray[0];
+			this.portPreLoaded =  Integer.parseInt(settingsArray[1]);
+			this.userPreLoaded = settingsArray[2];
+			this.authPreLoaded = settingsArray[3];
+			
+			/*for (String p: settingsArray){
+				System.out.println(p);
+			}*/
+			
+			return settingsArray;
+		
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ArrayIndexOutOfBoundsException e){
+			e.printStackTrace();
+		}
+		return settingsArray;
+	}
+	
+	//After loading up the settings, this method puts the settings within the widgets
+	public void displaySettings(){
+		serverNameField.setText(serverPreLoaded);
+		portSpinner.setValue(portPreLoaded);
+		userField.setText(userPreLoaded);
+		
+		String temp = (String) connectionBox.getSelectedItem();
+		
+		if (temp.equals(authPreLoaded)){
+			connectionBox.setSelectedItem("StartTSL");
+		}
+		
 	}
 
 	/*public static void main(String[] args) {
