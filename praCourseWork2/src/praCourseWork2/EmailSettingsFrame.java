@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 
@@ -173,9 +174,12 @@ public class EmailSettingsFrame extends JFrame {
 			if (!(settingsFile == null)){
 				//Write to settingsFile
 				try {
+					System.out.println("File exists");
 					PrintWriter writer = new PrintWriter(settingsFile);
-					writer.print(serverNameField.getText() + portNum);
-					
+					writer.print("name=test");
+					writer.close();
+					//writer.println(serverNameField.getText() + portNum);
+					System.out.println("File writed.");
 					
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -188,8 +192,27 @@ public class EmailSettingsFrame extends JFrame {
 				//Create new settings file, save it in user's documents directory and write settings to 
 				//that file
 				
-				String filename = "settings.ini";
+				String user = System.getProperty("user.name");
+				File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.txt");
+				newFile.getParentFile().mkdirs();
 				try {
+					newFile.createNewFile();
+					System.out.println("File created");
+					
+					PrintWriter writer = new PrintWriter(newFile);
+					//writer.println(serverNameField.getText() + portNum);
+					writer.println("test");
+					writer.close();
+					System.out.println("File writed.");
+				
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+				
+				/*try {
 					PrintWriter writer = new PrintWriter(filename, "UTF-8");
 					writer.println(serverNameField.getText() + portNum);
 					
@@ -197,7 +220,7 @@ public class EmailSettingsFrame extends JFrame {
 				} catch (FileNotFoundException | UnsupportedEncodingException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
+				}*/
 				
 				
 			}
@@ -222,7 +245,6 @@ public class EmailSettingsFrame extends JFrame {
 		add(buttonBorder, BorderLayout.SOUTH);
 
 		// Default JFrame settings
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		setSize(600, 300);
 		// pack();
