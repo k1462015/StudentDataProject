@@ -50,6 +50,7 @@ public class StudentFrame extends JFrame {
 	private JTabbedPane tabbedPane;
 	private boolean fileLoaded;
 	private boolean anonLoaded;
+	private File settingsFile;
 	/**
 	 * 
 	 */
@@ -61,6 +62,7 @@ public class StudentFrame extends JFrame {
 		super("PRA Coursework - TMH");
 		fileLoaded = false;
 		anonLoaded = false;
+		findSettingsFile();
 		InitUI();
 
 	}
@@ -82,7 +84,7 @@ public class StudentFrame extends JFrame {
 
 			
 			public void actionPerformed(ActionEvent e) {
-				new Settings();
+				new EmailSettingsFrame();
 				
 			}
 			
@@ -669,5 +671,24 @@ public class StudentFrame extends JFrame {
 
 		return found;
 	}
+	
+	public void findSettingsFile(){
+		String user = System.getProperty("user.name");
+		String filePathStr = "C:\\Users\\" + user + "\\Documents";
+		System.out.println(filePathStr);
+		filePathStr += "\\settings.ini";
+		System.out.println(filePathStr);
+		
+		File f = new File(filePathStr);
+		
+		
+		if (f.exists() && !f.isDirectory()){
+			System.out.println("true");
+		}
+		
+	}
+	
+	
+	
 
 }

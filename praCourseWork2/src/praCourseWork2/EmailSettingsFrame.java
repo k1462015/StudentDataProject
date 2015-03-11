@@ -2,6 +2,8 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -43,14 +45,11 @@ public class EmailSettingsFrame extends JFrame {
 	 */
 
 	public void setString() {
-		connecSecu = new String[3];
-		connecSecu[0] = "STARTTLS";
-		connecSecu[1] = "HTTPPROTOCOL";
-		connecSecu[2] = "AlienProtocol";
+		connecSecu = new String[1];
+		connecSecu[0] = "StartTLS";
 
-		authenMeth = new String[2];
-		authenMeth[0] = "MilitartSecure";
-		authenMeth[1] = "Bangladesh";
+		authenMeth = new String[1];
+		authenMeth[0] = "StartTLS";
 
 	}
 
@@ -95,7 +94,7 @@ public class EmailSettingsFrame extends JFrame {
 		portLabel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
 		portLabel.setFont(font);
 		// Spinner Model
-		Integer value = new Integer(50);
+		Integer value = new Integer(0);
 		Integer min = new Integer(0);
 		Integer max = new Integer(100);
 		Integer step = new Integer(1);
@@ -103,7 +102,7 @@ public class EmailSettingsFrame extends JFrame {
 	    portSpinner = new JSpinner(model);
 	    
 	    JLabel defaultPort = new JLabel("Default:  587");
-		defaultPort.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		defaultPort.setBorder(BorderFactory.createEmptyBorder(0, 587, 0, 0));
 	    
 	    portGrid2.add(portSpinner);
 	    portGrid2.add(defaultPort);
@@ -127,8 +126,8 @@ public class EmailSettingsFrame extends JFrame {
 		connectionLabel.setFont(font);
 		connectionBox = new JComboBox(connecSecu);
 
-		connectionGrid.add(connectionLabel);
-		connectionGrid.add(connectionBox);
+		//connectionGrid.add(connectionLabel);
+		//connectionGrid.add(connectionBox);
 		box.add(connectionGrid);
 
 		//////Authentication Method
@@ -156,6 +155,18 @@ public class EmailSettingsFrame extends JFrame {
 		// Bottom buttons
 		cancel = new JButton("Cancel");
 		ok = new JButton("OK");
+		ok.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+			
+		});
+		
 		JPanel buttonHolder = new JPanel();
 		buttonHolder.setAlignmentX(RIGHT_ALIGNMENT);
 		buttonHolder.add(cancel);
