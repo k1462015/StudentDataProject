@@ -84,7 +84,7 @@ public class StudentFrame extends JFrame {
 
 			
 			public void actionPerformed(ActionEvent e) {
-				new EmailSettingsFrame();
+				new EmailSettingsFrame(settingsFile);
 				
 			}
 			
@@ -681,12 +681,14 @@ public class StudentFrame extends JFrame {
 		
 		File f = new File(filePathStr);
 		
-		
 		if (f.exists() && !f.isDirectory()){
 			System.out.println("true");
+			settingsFile = f;
 		}
 		
 	}
+	
+
 	
 	
 	

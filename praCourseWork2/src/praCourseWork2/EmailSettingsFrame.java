@@ -4,6 +4,10 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -21,6 +25,8 @@ public class EmailSettingsFrame extends JFrame {
 	private String[] connecSecu;
 	private String[] authenMeth;
 	
+	File settingsFile;
+	
 	JTextField serverNameField;
 	JSpinner portSpinner;
 	JComboBox connectionBox;
@@ -31,8 +37,9 @@ public class EmailSettingsFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	public EmailSettingsFrame() {
+	public EmailSettingsFrame(File settings) {
 		super("SMTP Server");
+		this.settingsFile = settings;
 		initUi();
 
 	}
@@ -158,8 +165,47 @@ public class EmailSettingsFrame extends JFrame {
 		ok.addActionListener(new ActionListener(){
 
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
+			public void actionPerformed(ActionEvent e) {
+				
+				Integer portNum = (Integer) portSpinner.getValue();	
+				
+				//if settings file exists 
+			if (!(settingsFile == null)){
+				//Write to settingsFile
+				try {
+					PrintWriter writer = new PrintWriter(settingsFile);
+					writer.print(serverNameField.getText() + portNum);
+					
+					
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					System.out.println("File not found");
+				} finally {
+					dispose();
+				}
+			} else {//if it doesn't exist
+				
+				//Create new settings file, save it in user's documents directory and write settings to 
+				//that file
+				
+				String filename = "settings.ini";
+				try {
+					PrintWriter writer = new PrintWriter(filename, "UTF-8");
+					writer.println(serverNameField.getText() + portNum);
+					
+					System.out.println("File created and written");
+				} catch (FileNotFoundException | UnsupportedEncodingException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+				
+				
+				
+				
+				
 				
 			}
 			
@@ -183,8 +229,8 @@ public class EmailSettingsFrame extends JFrame {
 
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EmailSettingsFrame frame = new EmailSettingsFrame();
-	}
+	}*/
 
 }
