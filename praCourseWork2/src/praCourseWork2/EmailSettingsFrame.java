@@ -52,10 +52,15 @@ public class EmailSettingsFrame extends JFrame {
 		this.settingsFile = settings;
 		
 		initUi();
-		if (!(settingsFile == null) && checkSettings(settingsFile) == true){
+		
+		if (!(settingsFile == null) ){
+			
+			System.out.println("Hi");
+			if (checkSettings(settingsFile) == true){
 				
 			loadSettings(settingsFile);
 			displaySettings();
+			}
 		} else {
 			System.out.println("File doesn't follow correct format");
 		}
@@ -219,7 +224,7 @@ public class EmailSettingsFrame extends JFrame {
 				//that file
 				
 				String user = System.getProperty("user.name");
-				File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.txt");
+				File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
 				newFile.getParentFile().mkdirs();
 				try {
 					newFile.createNewFile();

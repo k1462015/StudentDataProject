@@ -6,7 +6,11 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -27,7 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel; 
+
 
 public class Email extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -56,10 +61,21 @@ public class Email extends JFrame {
 	private JTextArea viewEmail;
 	private JLabel EnterEmail;
 	private JLabel EnterPword;
+	private File loadedSettings;
+	private String[] settingsArray;
 	
 	
 	public Email(ArrayList<Student> students, File settings){
 		//emails = new ArrayList<String>();
+		
+		loadedSettings = settings;
+		
+		
+		/*for (int i = 0; i < settingsArray.length; i++){
+			System.out.println(settingsArray[i]);
+		}*/
+		
+		
 		selectedStudent = new ArrayList<Student>();
 		selectAll = new JButton("select all");
 		selectAll.addActionListener(new ActionListener() {
@@ -86,6 +102,16 @@ public class Email extends JFrame {
 		});
 		userDetails = new JPanel(new GridLayout(5,1));
 		userName = new JTextField(5);
+
+		if (!(loadedSettings == null)) {
+			//System.out.println("hello");
+			settingsArray = settingsData(loadedSettings);
+			if (settingsArray.length == 4){
+				userName.setText(settingsArray[2]);
+			}
+		}
+		
+		
 		pass = new JPasswordField();
 		EnterEmail = new JLabel("Enter Email:");
 		EnterPword = new JLabel("Enter Password:");
@@ -329,5 +355,28 @@ public class Email extends JFrame {
 	      }catch (MessagingException mex) {mex.printStackTrace();}  
 	     
 	}  
+	
+	public String[] settingsData(File settings){
+		
+		BufferedReader br;
+		String[] settingsArray = {};
+		try {
+			br = new BufferedReader(new FileReader(settings));
+			String s = br.readLine();
+			br.close();
+			System.out.println(s);
+			settingsArray = s.split(",");
+			return settingsArray;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return settingsArray;
+		
+	}
 }
 
