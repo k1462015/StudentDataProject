@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -40,8 +39,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 
+import extra.ScatterPlot;
 import studentdata.Connector;
 import studentdata.DataTable;
 
@@ -74,8 +73,25 @@ public class StudentFrame extends JFrame {
 		JPanel panel = new JPanel();// panel to contain other components
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
+		
 		JMenu file = new JMenu("File");
 		JMenu data = new JMenu("Data");
+		
+		JMenuItem settings = new JMenuItem("Email Settings");
+		settings.addActionListener(new ActionListener(){
+
+			
+			public void actionPerformed(ActionEvent e) {
+				new Settings();
+				
+			}
+			
+			
+			
+		});
+		
+		data.add(settings);
+		
 		menu.add(file);
 		menu.add(data);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");

@@ -1,4 +1,4 @@
-package praCourseWork2;
+package extra;
 
 import org.jfree.data.xy.XYSeries;
 
