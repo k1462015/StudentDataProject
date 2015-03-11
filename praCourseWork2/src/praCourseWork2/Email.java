@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -57,7 +58,7 @@ public class Email extends JFrame {
 	private JLabel EnterPword;
 	
 	
-	public Email(ArrayList<Student> students){
+	public Email(ArrayList<Student> students, File settings){
 		//emails = new ArrayList<String>();
 		selectedStudent = new ArrayList<Student>();
 		selectAll = new JButton("select all");

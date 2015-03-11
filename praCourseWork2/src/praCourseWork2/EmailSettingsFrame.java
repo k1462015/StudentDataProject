@@ -29,6 +29,7 @@ public class EmailSettingsFrame extends JFrame {
 	
 	File settingsFile;
 	
+	//The values these hold will be from an existing ini file
 	private String serverPreLoaded;
 	private Integer portPreLoaded;
 	private String userPreLoaded;
@@ -51,9 +52,12 @@ public class EmailSettingsFrame extends JFrame {
 		this.settingsFile = settings;
 		
 		initUi();
-		if (!(settingsFile == null)){
+		if (!(settingsFile == null) && checkSettings(settingsFile) == true){
+				
 			loadSettings(settingsFile);
 			displaySettings();
+		} else {
+			System.out.println("File doesn't follow correct format");
 		}
 		
 
@@ -282,6 +286,32 @@ public class EmailSettingsFrame extends JFrame {
 		}
 		
 		return s;
+	}
+	
+	//Checks to see if settings file contains info in the correct format
+	public boolean checkSettings(File settings){
+		
+		BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(settings));
+			String s = br.readLine();
+			br.close();
+			System.out.println(s);
+			String[] settingsArray = s.split(",");
+			
+			if (settingsArray.length == 4){
+				return true;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+		
 	}
 	
 	//Gets existing settings file and loads up the data into appropriate variables

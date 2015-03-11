@@ -50,7 +50,7 @@ public class StudentFrame extends JFrame {
 	private JTabbedPane tabbedPane;
 	private boolean fileLoaded;
 	private boolean anonLoaded;
-	private File settingsFile;
+	private File settingsFile; //Holds directory of settings file. The file itself may or may not exist
 	/**
 	 * 
 	 */
@@ -258,7 +258,7 @@ public class StudentFrame extends JFrame {
 		emailStudent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				JFrame email = new Email(students);
+				JFrame email = new Email(students, settingsFile);
 			}
 		});
 		// Sets top panel with search to borderLayout, so search JTextField
