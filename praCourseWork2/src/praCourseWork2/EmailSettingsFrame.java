@@ -167,8 +167,7 @@ public class EmailSettingsFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				Integer portNum = (Integer) portSpinner.getValue();	
+						
 				
 				//if settings file exists 
 			if (!(settingsFile == null)){
@@ -176,9 +175,9 @@ public class EmailSettingsFrame extends JFrame {
 				try {
 					System.out.println("File exists");
 					PrintWriter writer = new PrintWriter(settingsFile);
-					writer.print("name=test");
+					writer.println(settingsString());
 					writer.close();
-					//writer.println(serverNameField.getText() + portNum);
+					
 					System.out.println("File writed.");
 					
 				} catch (FileNotFoundException e1) {
@@ -200,8 +199,7 @@ public class EmailSettingsFrame extends JFrame {
 					System.out.println("File created");
 					
 					PrintWriter writer = new PrintWriter(newFile);
-					//writer.println(serverNameField.getText() + portNum);
-					writer.println("test");
+					writer.println(settingsString());
 					writer.close();
 					System.out.println("File writed.");
 				
@@ -249,6 +247,20 @@ public class EmailSettingsFrame extends JFrame {
 		setSize(600, 300);
 		// pack();
 
+	}
+	
+	public String settingsString(){
+		Integer portNum = (Integer) portSpinner.getValue();	
+		String temp = (String) connectionBox.getSelectedItem();
+		String auth = temp.toLowerCase();
+		
+		String s = serverNameField.getText() + "," + portNum + "," + userField.getText();
+		
+		if (auth.equals("starttls")){
+			s += "," + true;
+		}
+		
+		return s;
 	}
 
 	/*public static void main(String[] args) {
