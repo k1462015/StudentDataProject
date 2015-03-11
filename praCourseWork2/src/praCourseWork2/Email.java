@@ -105,8 +105,9 @@ public class Email extends JFrame {
 
 		if (!(loadedSettings == null)) {
 			//System.out.println("hello");
-			settingsArray = settingsData(loadedSettings);
-			if (settingsArray.length == 4){
+			String []temp = settingsData(loadedSettings);
+			if (temp.length == 4){
+				settingsArray = temp;
 				userName.setText(settingsArray[2]);
 			}
 		}
@@ -314,17 +315,29 @@ public class Email extends JFrame {
 	
 	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
 		String email = body;
-		String to = toAddress; ;//change accordingly  
+		String to = "toAddress"; ;//change accordingly  
+	       
+		//default settings
+	      String hostAddress = "outlook.office365.com";
+	      String port = "587";//or IP address  
 	      String from = userName.getText();//change accordingly  
-	     // String pword = new String(pass.getPassword());
-	      String host = "587";//or IP address  
+	      String startTls = "true";
+	      
+	      //if the settings were loaded correctly, then the default settings will be changed
+	      if (!(settingsArray == null)){
+	    	  hostAddress = settingsArray[0];
+	    	  port = settingsArray[1];
+	    	  startTls = settingsArray[3];
+	      }
 	  
-	     //Holds the server settings
+	     //Holds the server default settings for outlook
 	      Properties prop = System.getProperties();  
 	      prop.put("mail.smtp.auth", "true");
-	      prop.put("mail.smtp.starttls.enable", "true");
-	      prop.put("mail.smtp.host", "outlook.office365.com");
-	      prop.put("mail.smtp.port", "587");
+	      prop.put("mail.smtp.socketFactory.port", port);
+	      prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	      prop.put("mail.smtp.starttls.enable", startTls);
+	      prop.put("mail.smtp.host", hostAddress);
+	      prop.put("mail.smtp.port", port);
 	      
 	      
 	      Session session = Session.getDefaultInstance(prop,
@@ -356,6 +369,7 @@ public class Email extends JFrame {
 	     
 	}  
 	
+	//Reads the File object and extracts the info from it, puts it into a String array
 	public String[] settingsData(File settings){
 		
 		BufferedReader br;
