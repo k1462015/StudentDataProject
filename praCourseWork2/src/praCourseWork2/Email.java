@@ -83,15 +83,15 @@ public class Email extends JFrame {
 			}
 			
 		});
-		userDetails = new JPanel(new GridLayout(4,1));
+		userDetails = new JPanel(new GridLayout(5,1));
 		userName = new JTextField(5);
 		pass = new JPasswordField();
 		EnterEmail = new JLabel("Enter Email:");
 		EnterPword = new JLabel("Enter Password:");
 		
-		mainNext = new JPanel();
+		mainNext = new JPanel(new BorderLayout());
 		viewEmail = new JTextArea();
-		viewEmail.setPreferredSize(new Dimension(450, 410));
+		viewEmail.setPreferredSize(new Dimension(450, 360));
 		mainNext.add(viewEmail);
 		next = new JButton("Next");
 		next.addActionListener(new ActionListener(){
@@ -100,13 +100,13 @@ public class Email extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				main.remove(west);
 				main.remove(center);
-				main.add(mainNext,BorderLayout.WEST);
+				main.add(mainNext,BorderLayout.CENTER);
 				
 				userDetails.add(EnterEmail); 
 				userDetails.add(userName);
 				userDetails.add(EnterPword); 
 				userDetails.add(pass);
-				main.add(userDetails, BorderLayout.EAST);
+				main.add(userDetails, BorderLayout.NORTH);
 				
 				getCheckedStudents();
 				String template = "";
