@@ -33,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -43,6 +44,7 @@ import org.jfree.data.xy.XYSeries;
 import extra.ScatterPlot;
 import studentdata.Connector;
 import studentdata.DataTable;
+import websiteRelated.SimpleSwingBrowser;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
@@ -50,7 +52,10 @@ public class StudentFrame extends JFrame {
 	private JTabbedPane tabbedPane;
 	private boolean fileLoaded;
 	private boolean anonLoaded;
-	private File settingsFile; //Holds directory of settings file. The file itself may or may not exist
+	private File settingsFile; // Holds directory of settings file. The file
+								// itself may or may not exist
+	ArrayList<String> emails;
+	ArrayList<String> durations;
 	/**
 	 * 
 	 */
@@ -75,35 +80,59 @@ public class StudentFrame extends JFrame {
 		JPanel panel = new JPanel();// panel to contain other components
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
-		
+
 		JMenu file = new JMenu("File");
 		JMenu data = new JMenu("Data");
-		
-		JMenuItem settings = new JMenuItem("Email Settings");
-		settings.addActionListener(new ActionListener(){
 
-			
+		JMenuItem settings = new JMenuItem("Email Settings");
+		settings.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				new EmailSettingsFrame(settingsFile);
-				
+
 			}
-			
+
 		});
-		
+
 		data.add(settings);
-		
+
 		menu.add(file);
 		menu.add(data);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
-		
+
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
 		AverageListener avgListener = new AverageListener();
 		compareAverage.addActionListener(avgListener);
-		
+
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
 		data.add(emailStudent);
 		data.add(compareAverage);
+
+		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
+		fetchPart.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				emails = new ArrayList<String>();
+				durations = new ArrayList<String>();
+				JOptionPane jp = new JOptionPane();
+				jp.setMessage("Enter URL");
+				String url = jp.showInputDialog("Instructions\n1. Please enter a URL\n2. Log into Keats\n3. Click fetch button");
+				if (JOptionPane.OK_OPTION == jp.OK_OPTION) {
+					SwingUtilities.invokeLater(new Runnable() {
+
+						public void run() {
+							SimpleSwingBrowser browser = new SimpleSwingBrowser(emails,durations);
+							browser.setVisible(true);
+							browser.loadURL(url);
+						}
+					});
+				}
+			}
+
+		});
+		data.add(fetchPart);
 
 		// Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
@@ -538,59 +567,72 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	
-	  private class AverageListener implements ActionListener{
-	          
-          @Override public void actionPerformed(ActionEvent e) { 
-        	  
-        if (fileLoaded == true && anonLoaded == true){	  
-            
-	          JScrollPane currentScrollPane = (JScrollPane)tabbedPane.getComponentAt(tabbedPane.getSelectedIndex()); 
-	          JViewport viewport = currentScrollPane.getViewport(); 
-	          JTable currentTable = (JTable) viewport.getView(); 
-	 
-	          XYSeries data = new XYSeries("Student");//Will hold our data, or plot points 
-	          
-	          int numOfRecords = currentTable.getRowCount();
-	          
-	        //Loops through the records, gets the appropriate student object from the arraylist,
-	          //gets the average of the student and plots it with their mark. 
-	              for (int i = 0; i < numOfRecords; i++){ 
-	                      String tempCandKey = (String) currentTable.getValueAt(i, 2); 
-	                      System.out.println(tempCandKey);
-	                      Student tempStu = findStudent(tempCandKey,students);//The student of a specific row
-	                      
-	                      //if the tempStu is not null, then gets their mark from the table
-	                      //and then plots the tempStu's average against their current mark
-	                      if (!(tempStu==null)){
-	                          System.out.println(tempStu.toString());
-	                          int stuMarkInt = (Integer) currentTable.getValueAt(i, 3);
-	                         // double stuMark = (double) stuMarkInt;
-	                          //System.out.println(stuMark);
-	                          tempStu.calcAverage();
-	                          data.add(tempStu.average, stuMarkInt);
-	                      }
-	                      else {
-	                          System.out.println("Error error error");
-	                      }
-	              }
-	          
-	              String modCode = (String) currentTable.getValueAt(0, 0);
-	              System.out.println("Making chart...");
-	              ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment", modCode, data);
-	              
-	          } else if (anonLoaded == true && fileLoaded == false){
-	        	  JOptionPane.showMessageDialog(rootPane, "You need to load an exam results file, before you can create the chart");
-	          } else if (anonLoaded == false && fileLoaded == false){
-	        	  JOptionPane.showMessageDialog(rootPane, "You need to first load an anonymous marking code file, then an exam results file");
-	          }
-        
-	         
-        	  
-          }
-          
-	  }
-	 
+	private class AverageListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+			if (fileLoaded == true && anonLoaded == true) {
+
+				JScrollPane currentScrollPane = (JScrollPane) tabbedPane
+						.getComponentAt(tabbedPane.getSelectedIndex());
+				JViewport viewport = currentScrollPane.getViewport();
+				JTable currentTable = (JTable) viewport.getView();
+
+				XYSeries data = new XYSeries("Student");// Will hold our data,
+														// or plot points
+
+				int numOfRecords = currentTable.getRowCount();
+
+				// Loops through the records, gets the appropriate student
+				// object from the arraylist,
+				// gets the average of the student and plots it with their mark.
+				for (int i = 0; i < numOfRecords; i++) {
+					String tempCandKey = (String) currentTable.getValueAt(i, 2);
+					System.out.println(tempCandKey);
+					Student tempStu = findStudent(tempCandKey, students);// The
+																			// student
+																			// of
+																			// a
+																			// specific
+																			// row
+
+					// if the tempStu is not null, then gets their mark from the
+					// table
+					// and then plots the tempStu's average against their
+					// current mark
+					if (!(tempStu == null)) {
+						System.out.println(tempStu.toString());
+						int stuMarkInt = (Integer) currentTable
+								.getValueAt(i, 3);
+						// double stuMark = (double) stuMarkInt;
+						// System.out.println(stuMark);
+						tempStu.calcAverage();
+						data.add(tempStu.average, stuMarkInt);
+					} else {
+						System.out.println("Error error error");
+					}
+				}
+
+				String modCode = (String) currentTable.getValueAt(0, 0);
+				System.out.println("Making chart...");
+				ScatterPlot scatter = new ScatterPlot("Graph",
+						"Comparison of Average in Assessment", modCode, data);
+
+			} else if (anonLoaded == true && fileLoaded == false) {
+				JOptionPane
+						.showMessageDialog(rootPane,
+								"You need to load an exam results file, before you can create the chart");
+			} else if (anonLoaded == false && fileLoaded == false) {
+				JOptionPane
+						.showMessageDialog(
+								rootPane,
+								"You need to first load an anonymous marking code file, then an exam results file");
+			}
+
+		}
+
+	}
 
 	private class LoadListener implements ActionListener {
 
@@ -638,7 +680,7 @@ public class StudentFrame extends JFrame {
 							+ " codes were \nfor known students; "
 							+ failedImports + " were or unknown students";
 					JOptionPane.showMessageDialog(StudentFrame.this, results);
-					
+
 					anonLoaded = true;
 
 				} catch (FileNotFoundException p) {
@@ -669,26 +711,21 @@ public class StudentFrame extends JFrame {
 
 		return found;
 	}
-	
-	public void findSettingsFile(){
+
+	public void findSettingsFile() {
 		String user = System.getProperty("user.name");
 		String filePathStr = "C:\\Users\\" + user + "\\Documents";
 		System.out.println(filePathStr);
 		filePathStr += "\\settings.ini";
 		System.out.println(filePathStr);
-		
+
 		File f = new File(filePathStr);
-		
-		if (f.exists() && !f.isDirectory()){
+
+		if (f.exists() && !f.isDirectory()) {
 			System.out.println("Settings.ini exists");
 			settingsFile = f;
 		}
-		
-	}
-	
 
-	
-	
-	
+	}
 
 }
