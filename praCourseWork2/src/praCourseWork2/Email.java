@@ -68,8 +68,9 @@ public class Email extends JFrame {
 	public Email(ArrayList<Student> students, File settings){
 		//emails = new ArrayList<String>();
 		
-		loadedSettings = settings;
-		
+		//loadedSettings = settings;
+		findSettingsFile(); //sets the File obj var as the directory for settings
+		//The file may or may not exist
 		
 		/*for (int i = 0; i < settingsArray.length; i++){
 			System.out.println(settingsArray[i]);
@@ -314,8 +315,9 @@ public class Email extends JFrame {
 	}
 	
 	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
+		System.out.println(toAddress);
 		String email = body;
-		String to = "toAddress"; ;//change accordingly  
+		String to = toAddress; ;//change accordingly  
 	       
 		//default settings
 	      String hostAddress = "outlook.office365.com";
@@ -392,5 +394,22 @@ public class Email extends JFrame {
 		return settingsArray;
 		
 	}
+	
+	public void findSettingsFile(){
+		String user = System.getProperty("user.name");
+		String filePathStr = "C:\\Users\\" + user + "\\Documents";
+		System.out.println(filePathStr);
+		filePathStr += "\\settings.ini";
+		System.out.println(filePathStr);
+		
+		File f = new File(filePathStr);
+		
+		if (f.exists() && !f.isDirectory()){
+			System.out.println("Settings.ini exists");
+			loadedSettings = f;
+		}
+		
+	}
+	
 }
 

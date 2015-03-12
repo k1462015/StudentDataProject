@@ -127,7 +127,7 @@ public class EmailSettingsFrame extends JFrame {
 		// Spinner Model
 		Integer value = new Integer(0);
 		Integer min = new Integer(0);
-		Integer max = new Integer(100);
+		Integer max = new Integer(1000);
 		Integer step = new Integer(1);
 		SpinnerModel model = new SpinnerNumberModel(value, min, max, step);
 	    portSpinner = new JSpinner(model);

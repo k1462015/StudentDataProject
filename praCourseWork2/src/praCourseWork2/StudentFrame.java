@@ -88,8 +88,6 @@ public class StudentFrame extends JFrame {
 				
 			}
 			
-			
-			
 		});
 		
 		data.add(settings);
