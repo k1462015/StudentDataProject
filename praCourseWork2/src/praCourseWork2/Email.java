@@ -25,13 +25,14 @@ import javax.mail.internet.MimeMessage;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel; 
+import javax.swing.table.DefaultTableModel;
 
 
 public class Email extends JFrame {
@@ -317,7 +318,7 @@ public class Email extends JFrame {
 	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
 		System.out.println(toAddress);
 		String email = body;
-		String to = toAddress; ;//change accordingly  
+		String to = "toAddress"; ;//change accordingly  
 	       
 		//default settings
 	      String hostAddress = "outlook.office365.com";
@@ -335,8 +336,12 @@ public class Email extends JFrame {
 	     //Holds the server default settings for outlook
 	      Properties prop = System.getProperties();  
 	      prop.put("mail.smtp.auth", "true");
-	      prop.put("mail.smtp.socketFactory.port", port);
-	      prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	      
+	      if (!hostAddress.equals("smtp.mail.yahoo.com")){//if it isn't yahoo, add these properties
+	    	  prop.put("mail.smtp.socketFactory.port", port);
+	    	  prop.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+	      }
+	      
 	      prop.put("mail.smtp.starttls.enable", startTls);
 	      prop.put("mail.smtp.host", hostAddress);
 	      prop.put("mail.smtp.port", port);
@@ -366,8 +371,11 @@ public class Email extends JFrame {
 	         transport.sendMessage(message, message.getAllRecipients());  
 	         transport.close();
 	         System.out.println("message sent successfully....");  
+	         JOptionPane.showMessageDialog(null, "Email has been sent!");
 	  
-	      }catch (MessagingException mex) {mex.printStackTrace();}  
+	      }catch (MessagingException mex) {JOptionPane.showMessageDialog(null, "Email failed");} 
+	      
+	      
 	     
 	}  
 	
@@ -396,7 +404,39 @@ public class Email extends JFrame {
 	}
 	
 	public void findSettingsFile(){
-		String user = System.getProperty("user.name");
+		String OS = System.getProperty("os.name").toLowerCase();
+		
+		if (OS.contains("windows")){
+			String user = System.getProperty("user.name");
+			String filePathStr = "C:\\Users\\" + user + "\\Documents";
+			System.out.println(filePathStr);
+			filePathStr += "\\settings.ini";
+			System.out.println(filePathStr);
+	
+			File f = new File(filePathStr);
+	
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists");
+				loadedSettings = f;
+			}
+
+		} else if (OS.contains("mac")){
+			String user = System.getProperty("user.name");
+			String filePathStr = "/Users/" + user + "/Desktop";
+			System.out.println(filePathStr);
+			filePathStr += "/settings.ini";
+			System.out.println(filePathStr);
+	
+			File f = new File(filePathStr);
+	
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists");
+				loadedSettings = f;
+			}
+		}
+	
+		
+		/*String user = System.getProperty("user.name");
 		String filePathStr = "C:\\Users\\" + user + "\\Documents";
 		System.out.println(filePathStr);
 		filePathStr += "\\settings.ini";
@@ -408,7 +448,7 @@ public class Email extends JFrame {
 			System.out.println("Settings.ini exists");
 			loadedSettings = f;
 		}
-		
+		*/
 	}
 	
 }

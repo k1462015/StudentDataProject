@@ -713,19 +713,37 @@ public class StudentFrame extends JFrame {
 	}
 
 	public void findSettingsFile() {
-		String user = System.getProperty("user.name");
-		String filePathStr = "C:\\Users\\" + user + "\\Documents";
-		System.out.println(filePathStr);
-		filePathStr += "\\settings.ini";
-		System.out.println(filePathStr);
+		
+		String OS = System.getProperty("os.name").toLowerCase();
+		
+		if (OS.contains("windows")){
+			String user = System.getProperty("user.name");
+			String filePathStr = "C:\\Users\\" + user + "\\Documents";
+			System.out.println(filePathStr);
+			filePathStr += "\\settings.ini";
+			System.out.println(filePathStr);
+	
+			File f = new File(filePathStr);
+	
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists");
+				settingsFile = f;
+			} else {System.out.println("Settings.ini doesn't exist yet");}
 
-		File f = new File(filePathStr);
-
-		if (f.exists() && !f.isDirectory()) {
-			System.out.println("Settings.ini exists");
-			settingsFile = f;
+		} else if (OS.contains("mac")){
+			String user = System.getProperty("user.name");
+			String filePathStr = "/Users/" + user + "/Desktop";
+			System.out.println(filePathStr);
+			filePathStr += "/settings.ini";
+			System.out.println(filePathStr);
+	
+			File f = new File(filePathStr);
+	
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists");
+				settingsFile = f;
+			} else {System.out.println("Settings.ini doesn't exist yet");}
 		}
-
 	}
 
 }
