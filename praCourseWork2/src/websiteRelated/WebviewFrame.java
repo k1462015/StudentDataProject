@@ -40,11 +40,11 @@ public class WebviewFrame extends JFrame {
 		
 		Font font = new Font("Century Gothic",Font.PLAIN,20);
 		
-		JLabel instr1 = new JLabel("1.Please log into Keats");
+		JLabel instr1 = new JLabel("1.Log into Keats");
 		instr1.setFont(font);
-		JLabel instr2 = new JLabel("2.Then direct yourself to the required page");
+		JLabel instr2 = new JLabel("2.Go to neccasary page");
 		instr2.setFont(font);
-		JLabel instr3 = new JLabel("3.Then click fetch data");
+		JLabel instr3 = new JLabel("3.Click fetch data once page is 100% loaded");
 		instr3.setFont(font);
 		boxIns.add(title);
 		boxIns.add(instr1);
@@ -55,6 +55,7 @@ public class WebviewFrame extends JFrame {
 		bottomPane.add(boxIns,BorderLayout.WEST);
 		
 		btnFetch = new JButton("Fetch data");
+		btnFetch.setFont(new Font("Century Gothic",Font.BOLD,60));
 		btnFetch.addActionListener(new ActionListener() {
 
 			@Override

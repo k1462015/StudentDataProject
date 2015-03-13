@@ -24,6 +24,7 @@ public class DisplayPopUpFrame extends JFrame {
 	private JPanel main;
 	private JPanel bottom;
 	private ArrayList<String> marks;
+	private ArrayList<String> participation;
 
 	public DisplayPopUpFrame(Student student) {
 		super(student.getName()+" - Information Card");
@@ -34,6 +35,7 @@ public class DisplayPopUpFrame extends JFrame {
 				+ student.studentNumber);
 		this.tutor = new JLabel("Tutor:     " + student.tutor);
 		this.marks = student.assessMarks;
+		participation = student.participation;
 
 		// Initialises required JPanels
 		main = new JPanel();
@@ -84,6 +86,15 @@ public class DisplayPopUpFrame extends JFrame {
 		bottom.add(sNumber);
 		bottom.add(tutor);
 		
+		//Gets participation data
+		for(String s:participation){
+			JLabel temp = new JLabel("Last Access: "+s);
+			temp.setFont(temp.getFont().deriveFont(18.0f));
+			JPanel tempHolder = new JPanel(new BorderLayout());
+			tempHolder.add(temp, BorderLayout.CENTER);
+			bottom.add(tempHolder);
+		}
+		
 		if (!marks.isEmpty()){
 			//Sets font of results label and adds it to the window
 			results = new JLabel("Results:",SwingConstants.CENTER);
@@ -102,6 +113,8 @@ public class DisplayPopUpFrame extends JFrame {
 				bottom.add(tempHolder);
 			}
 		}
+		
+		
 		
 		//Adds all labels to the main Panel
 		main.add(this.name, BorderLayout.NORTH);

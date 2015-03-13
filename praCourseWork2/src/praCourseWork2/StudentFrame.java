@@ -18,9 +18,12 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -40,10 +43,10 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.xy.XYSeries;
 
-import extra.ScatterPlot;
 import studentdata.Connector;
 import studentdata.DataTable;
 import websiteRelated.WebviewFrame;
+import extra.ScatterPlot;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
@@ -115,38 +118,55 @@ public class StudentFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				emails = new ArrayList<String>();
 				durations = new ArrayList<String>();
-				JOptionPane jp = new JOptionPane();
-				jp.setMessage("Enter URL");
-				String url = jp
-						.showInputDialog("Instructions\n1. Please enter a URL\n2. Log into Keats\n3. Click fetch button");
-				if (JOptionPane.OK_OPTION == jp.OK_OPTION) {
-					WebviewFrame wb = new WebviewFrame(url);
-					wb.btnFetch.addActionListener(new ActionListener() {
+				JTextField moduleField = new JTextField(6);
+			      JTextField urlField = new JTextField(20);
 
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							wb.browser.readDocument();
-							emails = wb.getEmails();
-							durations = wb.getDurations();
+			      JPanel messagePanel = new JPanel();
+			      messagePanel.setLayout(new BoxLayout(messagePanel,BoxLayout.PAGE_AXIS));
+			      messagePanel.add(new JLabel("Module:"));
+			      messagePanel.add(moduleField);
+//			      messagePanel.add(Box.createHorizontalStrut(15)); // a spacer
+			      messagePanel.add(new JLabel("URL:"));
+			      messagePanel.add(urlField);
 
-							System.out.println("Emails size is "
-									+ emails.size() + " and duration size is "
-									+ durations.size());
-							for (int i = 0; i < emails.size(); i++) {
-								for (Student s : students) {
-									if (s.email.equals(emails.get(i))) {
-										System.out.println("Found email of "
-												+ emails.get(i)
-												+ " with duration "
-												+ durations.get(i));
-										s.addParticipation(durations.get(i));
+			      int response = JOptionPane.showConfirmDialog(null, messagePanel, 
+			               "Please Enter module Code and the URL", JOptionPane.OK_CANCEL_OPTION);
+			      
+			      if (response == JOptionPane.OK_OPTION) {
+			         System.out.println("Module code is: " + moduleField.getText());
+			         System.out.println("URL is : " + urlField.getText());
+			         while(moduleField.getText().equals("") && urlField.getText().equals("")){
+				    	  response = JOptionPane.showConfirmDialog(null, messagePanel, 
+					               "Please Enter module Code and the URL", JOptionPane.OK_CANCEL_OPTION);
+				      }
+			         	WebviewFrame wb = new WebviewFrame(urlField.getText());
+						wb.btnFetch.addActionListener(new ActionListener() {
+	
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								wb.browser.readDocument();
+								emails = wb.getEmails();
+								durations = wb.getDurations();
+	
+								System.out.println("Emails size is "
+										+ emails.size() + " and duration size is "
+										+ durations.size());
+								for (int i = 0; i < emails.size(); i++) {
+									for (Student s : students) {
+										if (s.email.equals(emails.get(i))) {
+											System.out.println("Found email of "
+													+ emails.get(i)
+													+ " with duration "
+													+ durations.get(i));
+											s.addParticipation(moduleField.getText()+ " "+durations.get(i)+" ago");
+										}
 									}
 								}
+								JOptionPane.showMessageDialog(null, emails.size()+" participation records were succesfully imported");
+								wb.dispose();
 							}
-						}
-					});
-
-				}
+						});
+			      }
 			}
 
 		});
