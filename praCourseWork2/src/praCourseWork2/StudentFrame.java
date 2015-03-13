@@ -33,7 +33,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -44,7 +43,6 @@ import org.jfree.data.xy.XYSeries;
 import extra.ScatterPlot;
 import studentdata.Connector;
 import studentdata.DataTable;
-import websiteRelated.SimpleSwingBrowser;
 import websiteRelated.WebviewFrame;
 
 public class StudentFrame extends JFrame {
