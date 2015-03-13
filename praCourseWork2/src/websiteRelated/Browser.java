@@ -1,18 +1,5 @@
 package websiteRelated;
 
-import static javafx.concurrent.Worker.State.FAILED;
-
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,15 +10,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebEvent;
 import javafx.scene.web.WebView;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -41,10 +20,21 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-public class SimpleSwingBrowser extends JFrame {
+import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import static javafx.concurrent.Worker.State.FAILED;
+
+public class Browser extends JPanel {
 
 	private final JFXPanel jfxPanel = new JFXPanel();
-	protected WebEngine engine;
+	private WebEngine engine;
 
 	private final JPanel panel = new JPanel(new BorderLayout());
 	private final JLabel lblStatus = new JLabel();
@@ -52,14 +42,14 @@ public class SimpleSwingBrowser extends JFrame {
 	private final JButton btnGo = new JButton("Go");
 	private final JTextField txtURL = new JTextField();
 	private final JProgressBar progressBar = new JProgressBar();
+
 	private static ArrayList<String> emails;
 	private static ArrayList<String> durations;
 
-	public SimpleSwingBrowser(ArrayList<String> emails,ArrayList<String> durations) {
+	public Browser() {
 		super();
+		setLayout(new BorderLayout());
 		initComponents();
-		setSortedEmails(emails);
-		setSortedDurations(durations);
 	}
 
 	private void initComponents() {
@@ -92,74 +82,12 @@ public class SimpleSwingBrowser extends JFrame {
 		panel.add(jfxPanel, BorderLayout.CENTER);
 		panel.add(statusBar, BorderLayout.SOUTH);
 
-		JButton button = new JButton("FETCH DATA");
-		button.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				readDocument();
-
-			}
-
-		});
-		add(button, BorderLayout.SOUTH);
-
-		getContentPane().add(panel);
+		this.add(panel);
 
 		setPreferredSize(new Dimension(1024, 600));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		pack();
+		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// pack();
 
-	}
-
-	public static void printDocument(Document doc, OutputStream out)
-			throws IOException, TransformerException {
-		System.out.println("Retreiving document data");
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer = tf.newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		transformer.setOutputProperty(
-				"{http://xml.apache.org/xslt}indent-amount", "4");
-
-		// transformer.transform(new DOMSource(doc),
-		// new StreamResult(new OutputStreamWriter(out, "UTF-8")));
-
-		StringWriter writer = new StringWriter();
-		transformer.transform(new DOMSource(doc), new StreamResult(writer));
-		String[] output = writer.toString().split("\\n");
-		ArrayList<String> emails1 = new ArrayList<String>();
-		ArrayList<String> durations1 = new ArrayList<String>();
-		for (int i = 0; i < output.length; i++) {
-			 if(output[i].contains("@") && (output[i].contains(".com") || output[i].contains(".co.uk"))){
-				 emails1.add(output[i]);
-			 }
-
-			if (output[i].contains("mins")||output[i].contains("secs")||output[i].contains("hours")||output[i].contains("days")) {
-				durations1.add(output[i]);
-			}
-
-		}
-
-		WebsiteSorter ws = new WebsiteSorter(emails1,durations1);
-		websiteSorter(ws);
-
-
-	}
-	
-	public static void websiteSorter(WebsiteSorter ws){
-		emails = ws.getSortedEmails();
-		durations = ws.getSortedDurations();
-	}
-	
-	public void setSortedEmails(ArrayList<String> emails){
-		emails = this.emails;
-	}
-	
-	public void setSortedDurations(ArrayList<String> durations){
-		durations = this.durations;
 	}
 
 	private void createScene() {
@@ -171,21 +99,19 @@ public class SimpleSwingBrowser extends JFrame {
 				WebView view = new WebView();
 				engine = view.getEngine();
 
-				engine.titleProperty().addListener(
-						new ChangeListener<String>() {
-							@Override
-							public void changed(
-									ObservableValue<? extends String> observable,
-									String oldValue, final String newValue) {
-								SwingUtilities.invokeLater(new Runnable() {
-									@Override
-									public void run() {
-										SimpleSwingBrowser.this
-												.setTitle(newValue);
-									}
-								});
-							}
-						});
+				// engine.titleProperty().addListener(new
+				// ChangeListener<String>() {
+				// @Override
+				// public void changed(ObservableValue<? extends String>
+				// observable, String oldValue, final String newValue) {
+				// SwingUtilities.invokeLater(new Runnable() {
+				// @Override
+				// public void run() {
+				// SimpleSwingBrowser.this.setTitle(newValue);
+				// }
+				// });
+				// }
+				// });
 
 				engine.setOnStatusChanged(new EventHandler<WebEvent<String>>() {
 					@Override
@@ -260,7 +186,6 @@ public class SimpleSwingBrowser extends JFrame {
 				jfxPanel.setScene(new Scene(view));
 			}
 		});
-
 	}
 
 	public void loadURL(final String url) {
@@ -286,6 +211,49 @@ public class SimpleSwingBrowser extends JFrame {
 		}
 	}
 
+	public static void printDocument(Document doc, OutputStream out)
+			throws IOException, TransformerException {
+		System.out.println("Retreiving document data");
+		TransformerFactory tf = TransformerFactory.newInstance();
+		Transformer transformer = tf.newTransformer();
+		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+		transformer.setOutputProperty(
+				"{http://xml.apache.org/xslt}indent-amount", "4");
+
+		// transformer.transform(new DOMSource(doc),
+		// new StreamResult(new OutputStreamWriter(out, "UTF-8")));
+
+		StringWriter writer = new StringWriter();
+		transformer.transform(new DOMSource(doc), new StreamResult(writer));
+		String[] output = writer.toString().split("\\n");
+		emails = new ArrayList<String>();
+		durations = new ArrayList<String>();
+		for (int i = 0; i < output.length; i++) {
+			if (output[i].contains("@")
+					&& (output[i].contains(".com") || output[i]
+							.contains(".co.uk"))) {
+				emails.add(output[i].substring(
+						output[i].lastIndexOf("c3\">") + 4,
+						output[i].indexOf("</TD>")));
+			}
+
+			if ((output[i].contains("mins") || output[i].contains("secs")
+					|| output[i].contains("hours")
+					|| output[i].contains("days") || output[i].contains("now")
+					|| output[i].contains("hour") || output[i].contains("day"))
+					&& output[i].contains("participants")) {
+				durations.add(output[i].substring(
+						output[i].lastIndexOf("c6\">") + 4,
+						output[i].indexOf("</TD>")));
+			}
+
+		}
+
+	}
+
 	public void readDocument() {
 		try {
 			printDocument(engine.getDocument(), System.out);
@@ -298,5 +266,27 @@ public class SimpleSwingBrowser extends JFrame {
 		}
 	}
 
+	public ArrayList<String> getEmails() {
+		return emails;
+	}
 
+	public ArrayList<String> getDurations() {
+		return durations;
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			public void run() {
+				JFrame temp = new JFrame();
+				Browser browser = new Browser();
+				temp.add(browser);
+				temp.setVisible(true);
+				temp.pack();
+				temp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				// browser.setVisible(true);
+				browser.loadURL("google.co.uk");
+			}
+		});
+	}
 }
