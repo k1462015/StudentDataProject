@@ -36,6 +36,6 @@ public class Result {
 	}
 	
 	public String toString(){
-		return moduleCode + assessment + candKey + mark + grade;
+		return moduleCode +" "+ assessment +" "+ candKey +" "+ mark +" "+ grade;
 	}
 }

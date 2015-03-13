@@ -24,4 +24,8 @@ public class Assessment {
 	public Result getIndex(int count){
 		return results.get(count);
 	}
+	
+	public String toString(){
+		return results.toString();
+	}
 }
