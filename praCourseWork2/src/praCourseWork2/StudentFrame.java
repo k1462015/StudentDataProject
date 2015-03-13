@@ -45,6 +45,7 @@ import extra.ScatterPlot;
 import studentdata.Connector;
 import studentdata.DataTable;
 import websiteRelated.SimpleSwingBrowser;
+import websiteRelated.WebviewFrame;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
@@ -118,16 +119,35 @@ public class StudentFrame extends JFrame {
 				durations = new ArrayList<String>();
 				JOptionPane jp = new JOptionPane();
 				jp.setMessage("Enter URL");
-				String url = jp.showInputDialog("Instructions\n1. Please enter a URL\n2. Log into Keats\n3. Click fetch button");
+				String url = jp
+						.showInputDialog("Instructions\n1. Please enter a URL\n2. Log into Keats\n3. Click fetch button");
 				if (JOptionPane.OK_OPTION == jp.OK_OPTION) {
-					SwingUtilities.invokeLater(new Runnable() {
+					WebviewFrame wb = new WebviewFrame(url);
+					wb.btnFetch.addActionListener(new ActionListener() {
 
-						public void run() {
-							SimpleSwingBrowser browser = new SimpleSwingBrowser(emails,durations);
-							browser.setVisible(true);
-							browser.loadURL(url);
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							wb.browser.readDocument();
+							emails = wb.getEmails();
+							durations = wb.getDurations();
+
+							System.out.println("Emails size is "
+									+ emails.size() + " and duration size is "
+									+ durations.size());
+							for (int i = 0; i < emails.size(); i++) {
+								for (Student s : students) {
+									if (s.email.equals(emails.get(i))) {
+										System.out.println("Found email of "
+												+ emails.get(i)
+												+ " with duration "
+												+ durations.get(i));
+										s.addParticipation(durations.get(i));
+									}
+								}
+							}
 						}
 					});
+
 				}
 			}
 
@@ -713,36 +733,40 @@ public class StudentFrame extends JFrame {
 	}
 
 	public void findSettingsFile() {
-		
+
 		String OS = System.getProperty("os.name").toLowerCase();
-		
-		if (OS.contains("windows")){
+
+		if (OS.contains("windows")) {
 			String user = System.getProperty("user.name");
 			String filePathStr = "C:\\Users\\" + user + "\\Documents";
 			System.out.println(filePathStr);
 			filePathStr += "\\settings.ini";
 			System.out.println(filePathStr);
-	
+
 			File f = new File(filePathStr);
-	
+
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("Settings.ini exists");
 				settingsFile = f;
-			} else {System.out.println("Settings.ini doesn't exist yet");}
+			} else {
+				System.out.println("Settings.ini doesn't exist yet");
+			}
 
-		} else if (OS.contains("mac")){
+		} else if (OS.contains("mac")) {
 			String user = System.getProperty("user.name");
 			String filePathStr = "/Users/" + user + "/Desktop";
 			System.out.println(filePathStr);
 			filePathStr += "/settings.ini";
 			System.out.println(filePathStr);
-	
+
 			File f = new File(filePathStr);
-	
+
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("Settings.ini exists");
 				settingsFile = f;
-			} else {System.out.println("Settings.ini doesn't exist yet");}
+			} else {
+				System.out.println("Settings.ini doesn't exist yet");
+			}
 		}
 	}
 

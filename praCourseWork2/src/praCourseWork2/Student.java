@@ -14,6 +14,8 @@ public class Student {
 	protected ArrayList<String> assessMarks;
 	protected HashMap<String,Integer> marks;
 	protected double average;
+	protected ArrayList<String> participation;
+
 	
 	public Student(String email,String name,int studentNumber,String tutor){
 		this.name =  name;
@@ -21,6 +23,8 @@ public class Student {
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
 		this.average = 0;
+		participation = new ArrayList<String>();
+
 		
 		aMC = "";
 		
@@ -76,6 +80,11 @@ public class Student {
 		System.out.println(average);//testing
 		return average;
 	}
+	
+	public void addParticipation(String p){
+		participation.add(p);
+	}
+
 	
 	
 }
