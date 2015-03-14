@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -16,7 +14,6 @@ import java.awt.event.MouseListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,18 +42,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.xy.XYSeries;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -97,12 +82,11 @@ public class StudentFrame extends JFrame {
 		JPanel panel = new JPanel();// panel to contain other components
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
-		
+
 		JMenu file = new JMenu("File");
 		JMenu data = new JMenu("Data");
 
 		JMenuItem settings = new JMenuItem("Email Settings");
-		
 		settings.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -111,12 +95,9 @@ public class StudentFrame extends JFrame {
 			}
 
 		});
-		
-		JMenuItem pdf = new JMenuItem("create pdf");
-		
 
 		data.add(settings);
-		data.add(pdf);
+
 		menu.add(file);
 		menu.add(data);
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
@@ -289,6 +270,7 @@ public class StudentFrame extends JFrame {
 						}
 						// De-annonymises records
 						deAnnonymise();
+						tabbedPane();
 						fileLoaded = true;
 
 					} catch (FileNotFoundException p) {
@@ -344,25 +326,6 @@ public class StudentFrame extends JFrame {
 				JFrame email = new Email(students, settingsFile);
 			}
 		});
-		
-		pdf.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//String toString = assesments.toString();
-				try {
-					createPdf("C:/Users/Hassan/Documents/assesments.pdf");
-				} catch (DocumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			
-		});
 		// Sets top panel with search to borderLayout, so search JTextField
 		// Stretches through the top dynamically
 		panel.setLayout(new BorderLayout());
@@ -375,45 +338,6 @@ public class StudentFrame extends JFrame {
 		validate();
 		setVisible(true);
 
-	}
-	
-	public void createPdf(String path) throws DocumentException, IOException {
-		Document document = new Document();
-		
-	    PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
-	    document.open();
-	    
-	    //code to convert Jtable into pdf
-	    /*PdfPTable table = new PdfPTable(2);
-	    
-	    for (int i = 0; i < 5; i++) {
-	            String header = t.getColumnName(i);
-	            PdfPCell cell = new PdfPCell();
-	            cell.setGrayFill(0.9f);
-	            cell.setPhrase(new Phrase(header.toUpperCase()));
-	            table.addCell(cell);
-	        }
-	        table.completeRow();
-
-        for (int i = 0; i < t.getRowCount(); i++) {
-            for (int j = 0; j < t.getColumnCount(); j++) {
-                String datum = String.valueOf(t.getValueAt(i, j));
-                PdfPCell cell = new PdfPCell();
-                cell.setPhrase(new Phrase(datum.toUpperCase()));
-                table.addCell(cell);
-            }
-            table.completeRow();
-        }*/
-	    for(Student s : students){
-	    	PdfPCell cell = new PdfPCell();
-	    	
-	    	String temp = s.getName() +" "+ s.getMarks();
-	    	document.add(new Paragraph(temp));
-	    }
-        document.addTitle("Demo");
-        
-	    document.close();
-	    System.out.println("Made pdf");
 	}
 
 	public void tabbedPane() {
@@ -567,8 +491,6 @@ public class StudentFrame extends JFrame {
 		add(scrollPane, BorderLayout.CENTER);
 		repaint();
 		revalidate();
-		
-		
 		return scrollPane;
 
 	}
