@@ -15,6 +15,7 @@ import javax.swing.JMenuItem;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -41,7 +42,7 @@ public class ScatterPlot extends JFrame {
 		
 		pngItem = new JMenuItem("png");
 		pngItem.addActionListener(exportListen);
-		jpgItem = new JMenuItem("jpg");
+		jpgItem = new JMenuItem("JPEG");
 		jpgItem.addActionListener(exportListen);
 		
 		exportMenu.add(pngItem); exportMenu.add(jpgItem);
@@ -70,17 +71,34 @@ public class ScatterPlot extends JFrame {
 			
 			BufferedImage chartImage = chart.createBufferedImage(600, 400);
 			
+			
 			JFileChooser chooser = new JFileChooser();
 			chooser.showSaveDialog(null);
 			
 			File filePath = chooser.getSelectedFile();
 			
-			try {
+			if (temp.getText().equals("png")){
+				try {
+					ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else{
+				try {
+					ChartUtilities.saveChartAsJPEG(filePath, chart, 600, 400);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			
+			/*try {
 				ImageIO.write(chartImage, temp.getText(), filePath);
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
+			}*/
 			
 		}
 		
