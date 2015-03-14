@@ -52,7 +52,7 @@ public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
 	private JTabbedPane tabbedPane;
-	private boolean fileLoaded;
+	private boolean examLoaded;
 	private boolean anonLoaded;
 	private File settingsFile; // Holds directory of settings file. The file
 								// itself may or may not exist
@@ -67,7 +67,7 @@ public class StudentFrame extends JFrame {
 	public StudentFrame() {
 		// Initialises frame and sets title to team name
 		super("PRA Coursework - TMH");
-		fileLoaded = false;
+		examLoaded = false;
 		anonLoaded = false;
 		findSettingsFile();
 		InitUI();
@@ -90,8 +90,9 @@ public class StudentFrame extends JFrame {
 		settings.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
+				
 				new EmailSettingsFrame(settingsFile);
-
+				
 			}
 
 		});
@@ -108,6 +109,19 @@ public class StudentFrame extends JFrame {
 		compareAverage.addActionListener(avgListener);
 
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
+		emailStudent.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (anonLoaded == true && examLoaded == true){
+					JFrame email = new Email(students, settingsFile);
+				} else {
+					JOptionPane.showMessageDialog(null, "Anonymous Markings Codes file needs to be"
+							+ " uploaded \nExam marks file needs to be uploaded ");
+				}
+
+				
+			}
+		});
 		data.add(emailStudent);
 		data.add(compareAverage);
 
@@ -271,7 +285,7 @@ public class StudentFrame extends JFrame {
 						// De-annonymises records
 						deAnnonymise();
 						tabbedPane();
-						fileLoaded = true;
+						examLoaded = true;
 
 					} catch (FileNotFoundException p) {
 						System.out.println("File not found");
@@ -320,12 +334,6 @@ public class StudentFrame extends JFrame {
 		list.setFixedCellHeight(30);// cell formatting
 		list.setFixedCellWidth(260);// same thing
 
-		emailStudent.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFrame email = new Email(students, settingsFile);
-			}
-		});
 		// Sets top panel with search to borderLayout, so search JTextField
 		// Stretches through the top dynamically
 		panel.setLayout(new BorderLayout());
@@ -610,7 +618,7 @@ public class StudentFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			if (fileLoaded == true && anonLoaded == true) {
+			if (examLoaded == true && anonLoaded == true) {
 
 				JScrollPane currentScrollPane = (JScrollPane) tabbedPane
 						.getComponentAt(tabbedPane.getSelectedIndex());
@@ -657,11 +665,11 @@ public class StudentFrame extends JFrame {
 				ScatterPlot scatter = new ScatterPlot("Graph",
 						"Comparison of Average in Assessment", modCode, data);
 
-			} else if (anonLoaded == true && fileLoaded == false) {
+			} else if (anonLoaded == true && examLoaded == false) {
 				JOptionPane
 						.showMessageDialog(rootPane,
 								"You need to load an exam results file, before you can create the chart");
-			} else if (anonLoaded == false && fileLoaded == false) {
+			} else if (anonLoaded == false && examLoaded == false) {
 				JOptionPane
 						.showMessageDialog(
 								rootPane,
