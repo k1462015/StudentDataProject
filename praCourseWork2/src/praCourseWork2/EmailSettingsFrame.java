@@ -200,7 +200,7 @@ public class EmailSettingsFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 						
-				String OS = System.getProperty("os.name").toLowerCase();	
+					
 				
 				//if settings file exists 
 			if (!(settingsFile == null)){
@@ -221,10 +221,16 @@ public class EmailSettingsFrame extends JFrame {
 				}
 			} else {//if it doesn't exist
 				
+				
 				//Create new settings file, save it in user's documents directory and write settings to 
 				//that file
-				if (OS.contains("windows")){
+				
+				String OS = System.getProperty("os.name").toLowerCase();//Check's user's OS
+				
+				if (OS.contains("windows")){//If the OS is windows
 					String user = System.getProperty("user.name");
+					
+					//Creates a new file path for the settings file within Documents directory
 					File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
 					newFile.getParentFile().mkdirs();
 					try {
@@ -243,10 +249,29 @@ public class EmailSettingsFrame extends JFrame {
 					}
 				
 				
-				} else if (OS.contains("mac")){
+				} else if (OS.contains("mac")){//If the OS is mac
 					String user = System.getProperty("user.name");
 					//String filePathStr = "/Users/" + user + "/Desktop";
 					File newFile = new File("/Users/" + user + "/Desktop/settings.ini");
+					newFile.getParentFile().mkdirs();
+					try {
+						newFile.createNewFile();
+						System.out.println("File created");
+						
+						PrintWriter writer = new PrintWriter(newFile);
+						writer.println(settingsString());
+						writer.close();
+						System.out.println("File writed.");
+						dispose();
+					
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else if (OS.contains("nix")){//If the OS is mac/unix
+					//String user = System.getProperty("user.name");
+					//String filePathStr = "/Users/" + user + "/Desktop";
+					File newFile = new File("~/Desktop/settings.ini");
 					newFile.getParentFile().mkdirs();
 					try {
 						newFile.createNewFile();
