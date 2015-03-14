@@ -118,7 +118,6 @@ public class StudentFrame extends JFrame {
 
 				
 				
-				
 			}
 			
 		});

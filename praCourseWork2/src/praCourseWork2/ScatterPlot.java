@@ -2,7 +2,12 @@ package praCourseWork2;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -31,8 +36,14 @@ public class ScatterPlot extends JFrame {
 		
 		bar = new JMenuBar();
 		exportMenu = new JMenu("Export as...");
+		
+		ExportListener exportListen = new ExportListener();
+		
 		pngItem = new JMenuItem("png");
+		pngItem.addActionListener(exportListen);
 		jpgItem = new JMenuItem("jpg");
+		jpgItem.addActionListener(exportListen);
+		
 		exportMenu.add(pngItem); exportMenu.add(jpgItem);
 		
 		bar.add(exportMenu);
@@ -44,6 +55,7 @@ public class ScatterPlot extends JFrame {
 		chartPanel = new ChartPanel(chart);
 		this.add(chartPanel);
 		
+		setJMenuBar(bar);
 		setVisible(true);
 		setSize(800,400);
 		
@@ -52,8 +64,23 @@ public class ScatterPlot extends JFrame {
 	private class ExportListener implements ActionListener{
 
 		@Override
-		public void actionPerformed(ActionEvent arg0) {
+		public void actionPerformed(ActionEvent e) {
 			
+			JMenuItem temp = (JMenuItem) e.getSource();
+			
+			BufferedImage chartImage = chart.createBufferedImage(600, 400);
+			
+			JFileChooser chooser = new JFileChooser();
+			chooser.showSaveDialog(null);
+			
+			File filePath = chooser.getSelectedFile();
+			
+			try {
+				ImageIO.write(chartImage, temp.getText(), filePath);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			
 		}
 		
