@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 import praCourseWork2.Student;
@@ -71,14 +72,14 @@ public class PDFGenerator {
      * @throws    DocumentException 
      * @throws    IOException 
      */
-    public void createPdf(Student s)
+    public void createPdf(ArrayList<Student> students)
 	throws DocumentException, IOException {
     	//Checks users operating system
     	//Then creates PDF in desktop
-    	String filename = System.getProperty("user.home") + "/Desktop/"+s.getName()+" #"+s.getStudentNumber()+".pdf";
+    	String filename = System.getProperty("user.home") + "/Desktop/"+"studentInfo.pdf";
     	System.getProperty("os.name");
     	if(System.getProperty("os.name").equals("Mac OS X")){
-    		filename = System.getProperty("user.home")+"/Desktop/"+s.getName()+" #"+s.getStudentNumber()+".pdf";
+    		filename = System.getProperty("user.home")+"/Desktop/"+"studentInfo.pdf";
     	}
     	
     	createPDFFile(filename);
@@ -92,28 +93,48 @@ public class PDFGenerator {
         document.open();
         // Adding pdf properties   
         document.addTitle("Student details");
-        document.addTitle("Student" + " #"+s.getStudentNumber() +" Info Card ");
+        document.addTitle("Student Info Card");
         document.addAuthor("TMH");
         document.addSubject("Contains students details and results");
         
-        
-        //Adds title to PDF with student name and #Student
-        Font fontbold = FontFactory.getFont("COURIER_BOLDOBLIQUE", 20, Font.BOLD + Font.UNDERLINE);
-        Paragraph p = new Paragraph(s.getName()+","+"#"+s.getStudentNumber(), fontbold);
-        p.setSpacingAfter(10);
-        p.setAlignment(1); // Center
-        document.add(p);
-        
-        
-        //Creates table with student details
-        document.add(createFirstTable(s));
-        //Adds table that shows results
-        document.add(createResultsTable(s));
-        
-        if(s.getParticipationArray().size() > 0){
-        	//Adds participation records
-        	document.add(createAccessTable(s));
+        for(int i = 0;i < students.size();i++){
+        	Student s = students.get(i);
+        	//Adds title to PDF with student name and #Student
+            Font fontbold = FontFactory.getFont("COURIER_BOLDOBLIQUE", 20, Font.BOLD + Font.UNDERLINE);
+            Paragraph p = new Paragraph(s.getName()+","+"#"+s.getStudentNumber(), fontbold);
+            p.setSpacingAfter(10);
+            p.setAlignment(1); // Center
+            document.add(p);
+            
+            
+            //Creates table with student details
+            document.add(createFirstTable(s));
+            //Adds table that shows results
+            document.add(createResultsTable(s));
+            
+            if(s.getParticipationArray().size() > 0){
+            	//Adds participation records
+            	document.add(createAccessTable(s));
+            }
+            document.newPage();
         }
+//        //Adds title to PDF with student name and #Student
+//        Font fontbold = FontFactory.getFont("COURIER_BOLDOBLIQUE", 20, Font.BOLD + Font.UNDERLINE);
+//        Paragraph p = new Paragraph(s.getName()+","+"#"+s.getStudentNumber(), fontbold);
+//        p.setSpacingAfter(10);
+//        p.setAlignment(1); // Center
+//        document.add(p);
+//        
+//        
+//        //Creates table with student details
+//        document.add(createFirstTable(s));
+//        //Adds table that shows results
+//        document.add(createResultsTable(s));
+//        
+//        if(s.getParticipationArray().size() > 0){
+//        	//Adds participation records
+//        	document.add(createAccessTable(s));
+//        }
         // step 5
         document.close();
     }

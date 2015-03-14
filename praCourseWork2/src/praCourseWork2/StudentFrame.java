@@ -107,20 +107,15 @@ public class StudentFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				list.getSelectedValue();
-				if(list.getSelectedValue() != null){
-					String studentName = (String) list.getSelectedValue().toString();
-					Student s = findStudent(studentName,students);
-					try {
-						new PDFGenerator().createPdf(s);
-					} catch (DocumentException | IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					JOptionPane.showMessageDialog(null, "PDF succesfully generated for "+s.getName()+" and saved to desktop");
-				}else{
-					JOptionPane.showMessageDialog(null, "Please select a student from the list");
+				try {
+					new PDFGenerator().createPdf(students);
+				} catch (DocumentException | IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+
+					JOptionPane.showMessageDialog(null, students.size()+" Student information succesfully succesfully imported to PDF in desktop");
+
 				
 				
 				
