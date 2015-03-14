@@ -33,9 +33,9 @@ public class DisplayPopUpFrame extends JFrame {
 		this.emailAddress = new JLabel(student.email);
 		this.studentNumber = new JLabel("Student No. :   "
 				+ student.studentNumber);
-		this.tutor = new JLabel("Tutor:     " + student.tutor);
-		this.marks = student.assessMarks;
-		participation = student.participation;
+		this.tutor = new JLabel("Tutor:     " + student.getTutor());
+		this.marks = student.getAssessMarks();
+		participation = student.getParticipationArray();
 
 		// Initialises required JPanels
 		main = new JPanel();

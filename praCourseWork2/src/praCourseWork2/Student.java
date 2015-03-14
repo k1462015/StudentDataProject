@@ -9,26 +9,26 @@ public class Student {
 	protected String name;
 	protected String email;
 	protected int studentNumber;
-	protected String tutor;
+	private String tutor;
 	protected String aMC;
-	protected ArrayList<String> assessMarks;
+	private ArrayList<String> assessMarks;
 	protected HashMap<String,Integer> marks;
 	protected double average;
-	protected ArrayList<String> participation;
+	private ArrayList<String> participation;
 
 	
 	public Student(String email,String name,int studentNumber,String tutor){
 		this.name =  name;
 		this.email = email;
 		this.studentNumber = studentNumber;
-		this.tutor = tutor;
+		this.setTutor(tutor);
 		this.average = 0;
-		participation = new ArrayList<String>();
+		setParticipation(new ArrayList<String>());
 
 		
 		aMC = "";
 		
-		assessMarks = new ArrayList<String>();
+		setAssessMarks(new ArrayList<String>());
 		marks = new HashMap<String,Integer>();
 
 	}
@@ -58,12 +58,12 @@ public class Student {
 	public void addMarks(String modAss, int mark){
 		String temp = modAss + " " + mark;
 		System.out.println(temp);
-		assessMarks.add(temp);
+		getAssessMarks().add(temp);
 		marks.put(modAss, mark);
 	}
 	
 	public ArrayList<String> getMarks(){
-		return assessMarks; 
+		return getAssessMarks(); 
 	}
 	
 	public double calcAverage(){
@@ -82,7 +82,31 @@ public class Student {
 	}
 	
 	public void addParticipation(String p){
-		participation.add(p);
+		getParticipationArray().add(p);
+	}
+
+	public ArrayList<String> getParticipationArray() {
+		return participation;
+	}
+
+	public void setParticipation(ArrayList<String> participation) {
+		this.participation = participation;
+	}
+
+	public ArrayList<String> getAssessMarks() {
+		return assessMarks;
+	}
+
+	public void setAssessMarks(ArrayList<String> assessMarks) {
+		this.assessMarks = assessMarks;
+	}
+
+	public String getTutor() {
+		return tutor;
+	}
+
+	public void setTutor(String tutor) {
+		this.tutor = tutor;
 	}
 
 	

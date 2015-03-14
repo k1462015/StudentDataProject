@@ -43,6 +43,9 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.xy.XYSeries;
 
+import com.itextpdf.text.DocumentException;
+
+import extraFeatures.PDFGenerator;
 import studentdata.Connector;
 import studentdata.DataTable;
 import websiteRelated.WebviewFrame;
@@ -50,6 +53,7 @@ import websiteRelated.WebviewFrame;
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
+	private JList list;
 	private JTabbedPane tabbedPane;
 	private boolean examLoaded;
 	private boolean anonLoaded;
@@ -84,6 +88,7 @@ public class StudentFrame extends JFrame {
 
 		JMenu file = new JMenu("File");
 		JMenu data = new JMenu("Data");
+		JMenu extra = new JMenu("Extra");
 
 		JMenuItem settings = new JMenuItem("Email Settings");
 		settings.addActionListener(new ActionListener() {
@@ -95,11 +100,37 @@ public class StudentFrame extends JFrame {
 			}
 
 		});
+		
+		JMenuItem pdf = new JMenuItem("Generate PDF");
+		extra.add(pdf);
+		pdf.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				list.getSelectedValue();
+				if(list.getSelectedValue() != null){
+					String studentName = (String) list.getSelectedValue().toString();
+					Student s = findStudent(studentName,students);
+					try {
+						new PDFGenerator().createPdf(s);
+					} catch (DocumentException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					JOptionPane.showMessageDialog(null, "PDF succesfully generated for "+s.getName()+" and saved to desktop");
+				}else{
+					JOptionPane.showMessageDialog(null, "Please select a student from the list");
+				}
+				
+				
+				
+			}
+			
+		});
 
 		data.add(settings);
 
-		menu.add(file);
-		menu.add(data);
+		
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
 
@@ -337,6 +368,11 @@ public class StudentFrame extends JFrame {
 		// Stretches through the top dynamically
 		panel.setLayout(new BorderLayout());
 		panel.add(search, BorderLayout.WEST);
+		
+		//Adds menu items
+		menu.add(file);
+		menu.add(data);
+		menu.add(extra);
 
 		// Adds the list as a ScrollPane so there is a scrollBar
 		add(new JScrollPane(list), BorderLayout.WEST);
@@ -516,13 +552,15 @@ public class StudentFrame extends JFrame {
 			defListMod.addElement(s.toString());
 		}
 
-		JList list = new JList(defListMod);// creates a new JList using the DLM
+		list = new JList(defListMod);// creates a new JList using the DLM
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				// Student findStudent = null;
+				if(e.getClickCount() == 2){
 				String selectedItem = (String) list.getSelectedValue()
 						.toString();
 				showDisplayPopUp(selectedItem);
+				}
 			}
 
 		};
