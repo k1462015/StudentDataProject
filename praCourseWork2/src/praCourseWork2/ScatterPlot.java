@@ -1,6 +1,12 @@
 package praCourseWork2;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -14,10 +20,22 @@ public class ScatterPlot extends JFrame {
 	private XYSeriesCollection dataset;
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
+	private JMenuBar bar;
+	private JMenu exportMenu;
+	private JMenuItem pngItem;
+	private JMenuItem jpgItem;
 	
 	public ScatterPlot(String appTitle, String chartTitle, String module,XYSeries data){
 		
 		super(appTitle);
+		
+		bar = new JMenuBar();
+		exportMenu = new JMenu("Export as...");
+		pngItem = new JMenuItem("png");
+		jpgItem = new JMenuItem("jpg");
+		exportMenu.add(pngItem); exportMenu.add(jpgItem);
+		
+		bar.add(exportMenu);
 		
 		dataset = new XYSeriesCollection();
 		dataset.addSeries(data);
@@ -28,6 +46,16 @@ public class ScatterPlot extends JFrame {
 		
 		setVisible(true);
 		setSize(800,400);
+		
+	}
+	
+	private class ExportListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			
+		}
 		
 	}
 
