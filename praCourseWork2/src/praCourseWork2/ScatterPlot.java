@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -77,7 +78,15 @@ public class ScatterPlot extends JFrame {
 			
 			File filePath = chooser.getSelectedFile();
 			
+			String pathStr = filePath.getPath();
+			//System.out.println(filePath.getPath());
 			if (temp.getText().equals("png")){
+				
+				if(!pathStr.endsWith(".png")){//if file path doesn't have ".png"...
+					pathStr += ".png"; //...appends ".png" to the end
+					filePath = new File(pathStr);//Updates filePath with new path
+				}
+				
 				try {
 					ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
 				} catch (IOException e1) {
@@ -85,6 +94,12 @@ public class ScatterPlot extends JFrame {
 					e1.printStackTrace();
 				}
 			} else{
+				
+				if(!pathStr.endsWith(".jpg")){//if file path doesn't have ".jpg"...
+					pathStr += ".jpg"; 
+					filePath = new File(pathStr);
+				}
+				
 				try {
 					ChartUtilities.saveChartAsJPEG(filePath, chart, 600, 400);
 				} catch (IOException e1) {
