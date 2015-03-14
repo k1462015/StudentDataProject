@@ -169,14 +169,17 @@ public class Email extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				int emailsSent = 0;
 				try {
 					for (Student s : selectedStudent){
 						sendEmail(s.getEmail(),createEmail(s));
+						emailsSent++;
 					}
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				} 
+				JOptionPane.showMessageDialog(null, emailsSent +" emails have been sent successfully!");
 				
 			}	
 		});
@@ -319,7 +322,7 @@ public class Email extends JFrame {
 	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
 		System.out.println(toAddress);
 		String email = body;
-		String to = "k1461540@kcl.ac.uk"; ;//change accordingly  
+		String to = toAddress; ;//change accordingly  
 	       
 		//default settings
 	      String hostAddress = "outlook.office365.com";
@@ -372,7 +375,6 @@ public class Email extends JFrame {
 	         transport.sendMessage(message, message.getAllRecipients());  
 	         transport.close();
 	         System.out.println("message sent successfully....");  
-	         JOptionPane.showMessageDialog(null, "Email has been sent!");
 	  
 	      }catch (AuthenticationFailedException e){
 	    	  JOptionPane.showMessageDialog(null, "Email failed. Check your login and SMTP settings");
