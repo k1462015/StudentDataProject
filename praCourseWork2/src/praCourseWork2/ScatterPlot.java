@@ -41,7 +41,7 @@ public class ScatterPlot extends JFrame {
 		
 		ExportListener exportListen = new ExportListener();
 		
-		pngItem = new JMenuItem("png");
+		pngItem = new JMenuItem("PNG");
 		pngItem.addActionListener(exportListen);
 		jpgItem = new JMenuItem("JPEG");
 		jpgItem.addActionListener(exportListen);
@@ -80,7 +80,7 @@ public class ScatterPlot extends JFrame {
 			
 			String pathStr = filePath.getPath();
 			//System.out.println(filePath.getPath());
-			if (temp.getText().equals("png")){
+			if (temp.getText().equals("PNG")){
 				
 				if(!pathStr.endsWith(".png")){//if file path doesn't have ".png"...
 					pathStr += ".png"; //...appends ".png" to the end
@@ -89,8 +89,9 @@ public class ScatterPlot extends JFrame {
 				
 				try {
 					ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
+					JOptionPane.showMessageDialog(null, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
 			} else{
@@ -102,8 +103,9 @@ public class ScatterPlot extends JFrame {
 				
 				try {
 					ChartUtilities.saveChartAsJPEG(filePath, chart, 600, 400);
+					JOptionPane.showMessageDialog(null, "Chart saved as JPG file", "Success", JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
 			}
