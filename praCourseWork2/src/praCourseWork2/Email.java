@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
 
+import javax.mail.AuthenticationFailedException;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -318,7 +319,7 @@ public class Email extends JFrame {
 	public void sendEmail(String toAddress, String body) throws UnsupportedEncodingException{
 		System.out.println(toAddress);
 		String email = body;
-		String to = "toAddress"; ;//change accordingly  
+		String to = "k1461540@kcl.ac.uk"; ;//change accordingly  
 	       
 		//default settings
 	      String hostAddress = "outlook.office365.com";
@@ -373,7 +374,15 @@ public class Email extends JFrame {
 	         System.out.println("message sent successfully....");  
 	         JOptionPane.showMessageDialog(null, "Email has been sent!");
 	  
-	      }catch (MessagingException mex) {JOptionPane.showMessageDialog(null, "Email failed");} 
+	      }catch (AuthenticationFailedException e){
+	    	  JOptionPane.showMessageDialog(null, "Email failed. Check your login and SMTP settings");
+	    	  e.printStackTrace();
+	      }
+	      catch (MessagingException mex) {
+	    	  JOptionPane.showMessageDialog(null, "Email failed. Check recipient email address, your login and SMTP settings");
+	    	  mex.printStackTrace();
+	    	  } 
+	      
 	      
 	      
 	     

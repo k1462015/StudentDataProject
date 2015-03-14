@@ -200,6 +200,7 @@ public class EmailSettingsFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 						
+				String OS = System.getProperty("os.name").toLowerCase();	
 				
 				//if settings file exists 
 			if (!(settingsFile == null)){
@@ -222,26 +223,46 @@ public class EmailSettingsFrame extends JFrame {
 				
 				//Create new settings file, save it in user's documents directory and write settings to 
 				//that file
-				
-				String user = System.getProperty("user.name");
-				File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
-				newFile.getParentFile().mkdirs();
-				try {
-					newFile.createNewFile();
-					System.out.println("File created");
+				if (OS.contains("windows")){
+					String user = System.getProperty("user.name");
+					File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
+					newFile.getParentFile().mkdirs();
+					try {
+						newFile.createNewFile();
+						System.out.println("File created");
+						
+						PrintWriter writer = new PrintWriter(newFile);
+						writer.println(settingsString());
+						writer.close();
+						System.out.println("File writed.");
+						dispose();
 					
-					PrintWriter writer = new PrintWriter(newFile);
-					writer.println(settingsString());
-					writer.close();
-					System.out.println("File writed.");
-					dispose();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				
+				} else if (OS.contains("mac")){
+					String user = System.getProperty("user.name");
+					//String filePathStr = "/Users/" + user + "/Desktop";
+					File newFile = new File("/Users/" + user + "/Desktop/settings.ini");
+					newFile.getParentFile().mkdirs();
+					try {
+						newFile.createNewFile();
+						System.out.println("File created");
+						
+						PrintWriter writer = new PrintWriter(newFile);
+						writer.println(settingsString());
+						writer.close();
+						System.out.println("File writed.");
+						dispose();
+					
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-				
-				
 				
 				
 			}
