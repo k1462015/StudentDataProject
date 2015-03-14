@@ -1,4 +1,4 @@
-package extra;
+package praCourseWork2;
 
 import javax.swing.JFrame;
 

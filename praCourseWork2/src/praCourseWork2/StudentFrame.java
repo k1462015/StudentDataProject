@@ -46,7 +46,6 @@ import org.jfree.data.xy.XYSeries;
 import studentdata.Connector;
 import studentdata.DataTable;
 import websiteRelated.WebviewFrame;
-import extra.ScatterPlot;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;

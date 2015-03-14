@@ -2,6 +2,8 @@ package extra;
 
 import org.jfree.data.xy.XYSeries;
 
+import praCourseWork2.ScatterPlot;
+
 public class ScatterTest {
 
 	public static void main(String[] args) {
