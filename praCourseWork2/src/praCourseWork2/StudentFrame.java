@@ -84,7 +84,6 @@ public class StudentFrame extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);// MR:added location
 		tabbedPane = new JTabbedPane();
-		JPanel panel = new JPanel();// panel to contain other components
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
 
@@ -409,17 +408,21 @@ public class StudentFrame extends JFrame {
 
 		// Sets top panel with search to borderLayout, so search JTextField
 		// Stretches through the top dynamically
-		panel.setLayout(new BorderLayout());
-		panel.add(search, BorderLayout.WEST);
+
 
 		// Adds menu items
 		menu.add(file);
 		menu.add(data);
 		menu.add(extra);
 
-		// Adds the list as a ScrollPane so there is a scrollBar
-		add(new JScrollPane(list), BorderLayout.WEST);
-		add(panel, BorderLayout.NORTH);
+		// Adds search and list to LeftPane Panel
+		JPanel leftPane = new JPanel();
+		leftPane.setLayout(new BorderLayout());
+		
+		leftPane.add(search, BorderLayout.NORTH);
+		leftPane.add(new JScrollPane(list), BorderLayout.CENTER);
+		
+		add(leftPane,BorderLayout.WEST);
 		add(tabbedPane, BorderLayout.CENTER);
 		validate();
 		setVisible(true);
