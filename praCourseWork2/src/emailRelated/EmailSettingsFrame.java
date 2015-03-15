@@ -411,11 +411,10 @@ public class EmailSettingsFrame extends JFrame {
 		main.add(buttonHolder, BorderLayout.SOUTH);
 
 		// Default JFrame settings
+		add(main, BorderLayout.CENTER);
 		setVisible(true);
 		setSize(600, 300);
-		add(main, BorderLayout.CENTER);
-		// pack();
-
+		setLocationRelativeTo(null);
 	}
 	
 	//Returns a String containing the selected settings, separated by a comma
