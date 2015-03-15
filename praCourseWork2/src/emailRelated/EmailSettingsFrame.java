@@ -1,5 +1,6 @@
 package emailRelated;
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -19,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -34,6 +36,11 @@ public class EmailSettingsFrame extends JFrame {
 	private Integer portPreLoaded;
 	private String userPreLoaded;
 	private String authPreLoaded;
+	private JPanel helpPanel;
+	private JPanel main;
+	private JTextArea helpArea;
+	private JButton help;
+	private int count =0;
 	
 	JTextField serverNameField;
 	JSpinner portSpinner;
@@ -87,12 +94,12 @@ public class EmailSettingsFrame extends JFrame {
 	public void initUi() {
 		//Sets all required String[]
 		setString();
-		
+		main = new JPanel(new BorderLayout());
 		//Create a box Panel - To store everything
 		JPanel box = new JPanel();
 		box.setLayout(new BoxLayout(box, BoxLayout.PAGE_AXIS));
-		add(box, BorderLayout.NORTH);
-
+		main.add(box, BorderLayout.CENTER);
+		
 		// Create a font for all labels
 		// Try different fonts if you wish
 		//All of them will change if you change this one
@@ -300,17 +307,59 @@ public class EmailSettingsFrame extends JFrame {
 			
 		});
 		
-		JPanel buttonHolder = new JPanel();
-		buttonHolder.setAlignmentX(RIGHT_ALIGNMENT);
-		buttonHolder.add(cancel);
-		buttonHolder.add(ok);
-		JPanel buttonBorder = new JPanel(new BorderLayout());
-		buttonBorder.add(buttonHolder, BorderLayout.EAST);
-		add(buttonBorder, BorderLayout.SOUTH);
+		helpPanel = new JPanel();
+		helpArea = new JTextArea(20,30);
+		helpArea.setEditable(false);
+		helpArea.setLineWrap(true);
+		helpArea.setOpaque(false);
+		helpArea.setBorder(BorderFactory.createEmptyBorder());
+		help = new JButton("Help");
+		helpPanel.add(helpArea);
+		helpArea.setText(" If you are using gmail then use smpt.gmail.com "
+				  + "\r\n with port 465 \r\n"
+				  + "\r\n If you are using live then use smpt.live.com"
+				  + "\r\n with port 465 \r\n"
+				   +"\r\n If you are using yahoo then use smpt.yahoo.com"
+				  + "\r\n with port 465 \r\n"
+				   +"\r\n If you are using any other server then please look online"
+				+"");
+			help.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					if (count == 0 || count%2==0 ) {
+						main.add(helpPanel,BorderLayout.EAST);
+						count++;
+						setSize(940,300);
+					} else if (count%2 == 1 || count == 1){
+						main.remove(helpPanel);
+						count++;
+						setSize(600, 300);
+					}
+					revalidate();
+					repaint();
+					
+				}
+				
+			});
+		
+		JPanel buttonHolder = new JPanel(new BorderLayout());
+		//buttonHolder.setAlignmentX(RIGHT_ALIGNMENT);
+		JPanel buttonEast = new JPanel(new FlowLayout());
+		JPanel buttonWest = new JPanel(new FlowLayout());
+		buttonEast.add(cancel);
+		buttonEast.add(ok);
+		buttonHolder.add(buttonEast,BorderLayout.EAST);
+		buttonWest.add(help);
+		buttonHolder.add(buttonWest,BorderLayout.WEST);
+		//JPanel buttonBorder = new JPanel(new BorderLayout());
+		//buttonBorder.add(buttonHolder, BorderLayout.EAST);
+		main.add(buttonHolder, BorderLayout.SOUTH);
 
 		// Default JFrame settings
 		setVisible(true);
 		setSize(600, 300);
+		add(main, BorderLayout.CENTER);
 		// pack();
 
 	}
