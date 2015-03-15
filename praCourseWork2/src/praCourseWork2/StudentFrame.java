@@ -52,6 +52,7 @@ import com.itextpdf.text.DocumentException;
 import emailRelated.EmailSettingsFrame;
 import emailRelated.SendEmailFrame;
 import extraFeatures.PDFGenerator;
+import graphRelated.ScatterPlot;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
