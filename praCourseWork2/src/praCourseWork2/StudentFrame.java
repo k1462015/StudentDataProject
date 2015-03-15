@@ -581,7 +581,6 @@ public class StudentFrame extends JFrame {
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.GRAY);
 		JScrollPane scrollPane = new JScrollPane(table);
-		add(scrollPane, BorderLayout.CENTER);
 		repaint();
 		revalidate();
 		return scrollPane;
