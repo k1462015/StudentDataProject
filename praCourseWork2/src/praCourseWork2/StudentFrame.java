@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -105,29 +106,11 @@ public class StudentFrame extends JFrame {
 
 		JMenuItem pdf = new JMenuItem("Generate PDF");
 		extra.add(pdf);
-		pdf.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					new PDFGenerator().createPdf(students);
-				} catch (DocumentException | IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
-				JOptionPane.showMessageDialog(
-						null,
-						students.size()
-								+ " Student information succesfully succesfully imported to PDF in desktop");
-
-			}
-
-		});
+		pdf.addActionListener(new pdfListener());
 
 		data.add(settings);
 
-		JMenuItem load = new JMenuItem("Load anonymous marking codes");
+		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
 
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
@@ -135,157 +118,24 @@ public class StudentFrame extends JFrame {
 		compareAverage.addActionListener(avgListener);
 
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
-		emailStudent.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// // New Email Frame
-				if (anonLoaded == true && examLoaded == true) {
-					new SendEmailFrame(students, settingsFile);
-				} else {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"Anonymous Markings Codes file needs to be"
-											+ " uploaded \nExam marks file needs to be uploaded ");
-				}
-
-			}
-		});
+		emailStudent.addActionListener(new emailListener());
+		
 		data.add(emailStudent);
 		data.add(compareAverage);
 
 		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
-		fetchPart.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				emails = new ArrayList<String>();
-				durations = new ArrayList<String>();
-				JTextField moduleField = new JTextField(6);
-				JTextField urlField = new JTextField(20);
-
-				JPanel messagePanel = new JPanel();
-				messagePanel.setLayout(new BoxLayout(messagePanel,
-						BoxLayout.PAGE_AXIS));
-				messagePanel.add(new JLabel("Module:"));
-				messagePanel.add(moduleField);
-				// messagePanel.add(Box.createHorizontalStrut(15)); // a spacer
-				messagePanel.add(new JLabel("URL:"));
-				messagePanel.add(urlField);
-
-				int response = JOptionPane.showConfirmDialog(null,
-						messagePanel, "Please Enter module Code and the URL",
-						JOptionPane.OK_CANCEL_OPTION);
-
-				if (response == JOptionPane.OK_OPTION) {
-					System.out.println("Module code is: "
-							+ moduleField.getText());
-					System.out.println("URL is : " + urlField.getText());
-					while (moduleField.getText().equals("")
-							&& urlField.getText().equals("")) {
-						response = JOptionPane.showConfirmDialog(null,
-								messagePanel,
-								"Please Enter module Code and the URL",
-								JOptionPane.OK_CANCEL_OPTION);
-					}
-					WebviewFrame wb = new WebviewFrame(urlField.getText());
-					wb.btnFetch.addActionListener(new ActionListener() {
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							wb.browser.readDocument();
-							emails = wb.getEmails();
-							durations = wb.getDurations();
-
-							System.out.println("Emails size is "
-									+ emails.size() + " and duration size is "
-									+ durations.size());
-							for (int i = 0; i < emails.size(); i++) {
-								for (Student s : students) {
-									if (s.email.equals(emails.get(i))) {
-										System.out.println("Found email of "
-												+ emails.get(i)
-												+ " with duration "
-												+ durations.get(i));
-										s.addParticipation(moduleField
-												.getText()
-												+ " "
-												+ durations.get(i) + " ago");
-									}
-								}
-							}
-							JOptionPane.showMessageDialog(
-									null,
-									emails.size()
-											+ " participation records were succesfully imported");
-							wb.dispose();
-						}
-					});
-				}
-			}
-
-		});
+		fetchPart.addActionListener(new fetchListener());
 		data.add(fetchPart);
 
 		// Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
 
 		LoadListener loadListen = new LoadListener();
-		// loadExam.addActionListener(loadListen);
-		load.addActionListener(loadListen);
-
-		loadExam.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser choosy = new JFileChooser();
-				String assessment = "";
-				File f = new File("C://Users//Saif//workspace");
-				choosy.setCurrentDirectory(f);
-
-				// Creates filter so user can only select CSV file
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"CSV Files", "csv");
-				choosy.setFileFilter(filter);
-
-				// Checks if a file has been opened
-				int returnValue = choosy.showOpenDialog(StudentFrame.this);
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					boolean validFile = false;
-
-					// Sets file to chosen file
-					File file = choosy.getSelectedFile();
-					// First checks if file first row/column contains numbers
-					// If it does then it is not exam file
-					BufferedReader bf;
-					try {
-						bf = new BufferedReader(new FileReader(file));
-						// Finds corresponding column indexes
-						// Reads first line to get column headings
-						String line = bf.readLine();
-						String[] linesplit = line.split(",");
-						if (!linesplit[0].matches((".*\\d.*"))) {
-							validFile = true;
-						}
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-
-					if (validFile) {
-						loadExams(file, assessment);
-					} else {
-						JOptionPane.showMessageDialog(null,
-								"Please upload a valid exam.csv file");
-					}
-				}
-
-			}
-
-		});
+		loadAnon.addActionListener(loadListen);
+		loadExam.addActionListener(new loadExamListener());
 
 		file.add(loadExam);
-		file.add(load);
+		file.add(loadAnon);
 		menu.add(file);
 		this.setJMenuBar(menu);
 		setJMenuBar(menu);
@@ -293,29 +143,12 @@ public class StudentFrame extends JFrame {
 		students = new ArrayList<Student>();
 		// Fetches all student details from the server and adds to the student
 		// ArrayList
-		fetchStudentData(students);
+		ServerConnect sc = new ServerConnect(students);
 
 		JList list = createJList(students);
 
 		JTextField search = new JTextField(22);
-		search.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// clear the list
-				DefaultListModel listModel = (DefaultListModel) list.getModel();
-				listModel.removeAllElements();
-				// get whatever user types into text field
-				String buffer = search.getText();
-				// store all matching students in serachStudent arraylist
-				for (Student i : students) {
-					if (i.getName().toLowerCase()
-							.contains(buffer.toLowerCase())
-							|| i.getStudentNumber().contains(buffer)) {
-						listModel.addElement(i);
-					}
-				}
-			}
-		});
+		search.addKeyListener(new searchListener());
 		list.setFixedCellHeight(30);// cell formatting
 		list.setFixedCellWidth(260);// same thing
 
@@ -345,6 +178,207 @@ public class StudentFrame extends JFrame {
 		setVisible(true);
 
 	}
+	
+	private class searchListener implements KeyListener{
+
+		@Override
+		public void keyTyped(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			JTextField search = (JTextField) e.getSource();
+			// clear the list
+			DefaultListModel listModel = (DefaultListModel) list.getModel();
+			listModel.removeAllElements();
+			// get whatever user types into text field
+			String buffer = search.getText();
+			// store all matching students in serachStudent arraylist
+			for (Student i : students) {
+				if (i.getName().toLowerCase()
+						.contains(buffer.toLowerCase())
+						|| i.getStudentNumber().contains(buffer)) {
+					listModel.addElement(i);
+				}
+			}
+			
+		}
+
+	
+		
+	}
+	
+	private class emailListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// // New Email Frame
+			if (anonLoaded == true && examLoaded == true) {
+				new SendEmailFrame(students, settingsFile);
+			} else {
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Anonymous Markings Codes file needs to be"
+										+ " uploaded \nExam marks file needs to be uploaded ");
+			}
+			
+		}
+		
+	}
+	
+	private class pdfListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+				new PDFGenerator().createPdf(students);
+			} catch (DocumentException | IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+			JOptionPane.showMessageDialog(
+					null,
+					students.size()
+							+ " Student information succesfully succesfully imported to PDF in desktop");
+			
+		}
+		
+	}
+	
+	private class loadExamListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser choosy = new JFileChooser();
+			String assessment = "";
+			File f = new File("C://Users//Saif//workspace");
+			choosy.setCurrentDirectory(f);
+
+			// Creates filter so user can only select CSV file
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(
+					"CSV Files", "csv");
+			choosy.setFileFilter(filter);
+
+			// Checks if a file has been opened
+			int returnValue = choosy.showOpenDialog(StudentFrame.this);
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				boolean validFile = false;
+
+				// Sets file to chosen file
+				File file = choosy.getSelectedFile();
+				// First checks if file first row/column contains numbers
+				// If it does then it is not exam file
+				BufferedReader bf;
+				try {
+					bf = new BufferedReader(new FileReader(file));
+					// Finds corresponding column indexes
+					// Reads first line to get column headings
+					String line = bf.readLine();
+					String[] linesplit = line.split(",");
+					if (!linesplit[0].matches((".*\\d.*"))) {
+						validFile = true;
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				if (validFile) {
+					loadExams(file, assessment);
+				} else {
+					JOptionPane.showMessageDialog(null,
+							"Please upload a valid exam.csv file");
+				}
+			}
+
+			
+		}
+		
+	}
+	
+	private class fetchListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			emails = new ArrayList<String>();
+			durations = new ArrayList<String>();
+			JTextField moduleField = new JTextField(6);
+			JTextField urlField = new JTextField(20);
+
+			JPanel messagePanel = new JPanel();
+			messagePanel.setLayout(new BoxLayout(messagePanel,
+					BoxLayout.PAGE_AXIS));
+			messagePanel.add(new JLabel("Module:"));
+			messagePanel.add(moduleField);
+			// messagePanel.add(Box.createHorizontalStrut(15)); // a spacer
+			messagePanel.add(new JLabel("URL:"));
+			messagePanel.add(urlField);
+
+			int response = JOptionPane.showConfirmDialog(null,
+					messagePanel, "Please Enter module Code and the URL",
+					JOptionPane.OK_CANCEL_OPTION);
+
+			if (response == JOptionPane.OK_OPTION) {
+				System.out.println("Module code is: "
+						+ moduleField.getText());
+				System.out.println("URL is : " + urlField.getText());
+				while (moduleField.getText().equals("")
+						&& urlField.getText().equals("")) {
+					response = JOptionPane.showConfirmDialog(null,
+							messagePanel,
+							"Please Enter module Code and the URL",
+							JOptionPane.OK_CANCEL_OPTION);
+				}
+				WebviewFrame wb = new WebviewFrame(urlField.getText());
+				wb.btnFetch.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						wb.browser.readDocument();
+						emails = wb.getEmails();
+						durations = wb.getDurations();
+
+						System.out.println("Emails size is "
+								+ emails.size() + " and duration size is "
+								+ durations.size());
+						for (int i = 0; i < emails.size(); i++) {
+							for (Student s : students) {
+								if (s.email.equals(emails.get(i))) {
+									System.out.println("Found email of "
+											+ emails.get(i)
+											+ " with duration "
+											+ durations.get(i));
+									s.addParticipation(moduleField
+											.getText()
+											+ " "
+											+ durations.get(i) + " ago");
+								}
+							}
+						}
+						JOptionPane.showMessageDialog(
+								null,
+								emails.size()
+										+ " participation records were succesfully imported");
+						wb.dispose();
+					}
+				});
+			}
+			
+		}
+		
+	}
+	
+
 
 	public void loadExams(File file, String assessment) {
 		try {
@@ -683,51 +717,6 @@ public class StudentFrame extends JFrame {
 
 		}
 		return found;
-
-	}
-
-	public void fetchStudentData(ArrayList<Student> students) {
-		// Create a Connector object and open the connection to the server
-		Connector server = new Connector();
-		boolean success = server.connect("TMH",
-
-		"944ff2da7cd193c64ec9459a42f38786");
-
-		if (success == false) {
-			System.out
-					.println("Fatal error: could not open connection to server");
-			System.exit(1);
-		}
-
-		DataTable data = server.getData();
-
-		int rowCount = data.getRowCount();
-		ArrayList<String> studentDetails = new ArrayList<String>();
-		String tempWord = "";
-		// Loops through all data from server and puts into a studentDetail
-		// arrayList
-		for (int row = 0; row < rowCount; ++row) {
-			for (int col = 0; col < 4; ++col) {
-				if (col > 0) {
-					tempWord += ",";
-				}
-				tempWord += data.getCell(row, col);
-			}
-			studentDetails.add(tempWord);
-			// Makes tempWord blank again
-			tempWord = "";
-		}
-		for (int i = 0; i < studentDetails.size(); i++) {
-			String temp = studentDetails.get(i);
-			// Splits the student details according to where the comma is
-			String[] studentDetails1 = temp.split(",");
-			int studentNumber = Integer.parseInt(studentDetails1[2]);
-
-			Student temp1 = new Student(studentDetails1[0], studentDetails1[1],
-					studentNumber, studentDetails1[3]);
-			students.add(temp1);
-
-		}
 
 	}
 
