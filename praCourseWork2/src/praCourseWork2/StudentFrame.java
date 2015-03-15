@@ -81,7 +81,7 @@ public class StudentFrame extends JFrame {
 	}
 
 	public void InitUI() {
-		
+
 		tabbedPane = new JTabbedPane();
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
@@ -137,7 +137,7 @@ public class StudentFrame extends JFrame {
 		emailStudent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				// New Email Frame
+				// // New Email Frame
 				if (anonLoaded == true && examLoaded == true) {
 					new SendEmailFrame(students, settingsFile);
 				} else {
@@ -250,17 +250,39 @@ public class StudentFrame extends JFrame {
 				// Checks if a file has been opened
 				int returnValue = choosy.showOpenDialog(StudentFrame.this);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
+					boolean validFile = false;
+
 					// Sets file to chosen file
 					File file = choosy.getSelectedFile();
-					loadExams(file,assessment);
+					// First checks if file first row/column contains numbers
+					// If it does then it is not exam file
+					BufferedReader bf;
+					try {
+						bf = new BufferedReader(new FileReader(file));
+						// Finds corresponding column indexes
+						// Reads first line to get column headings
+						String line = bf.readLine();
+						String[] linesplit = line.split(",");
+						if (!linesplit[0].matches((".*\\d.*"))) {
+							validFile = true;
+						}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 
+					if (validFile) {
+						loadExams(file, assessment);
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Please upload a valid exam.csv file");
+					}
 				}
 
 			}
 
 		});
 
-		
 		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
@@ -299,7 +321,6 @@ public class StudentFrame extends JFrame {
 		// Sets top panel with search to borderLayout, so search JTextField
 		// Stretches through the top dynamically
 
-
 		// Adds menu items
 		menu.add(file);
 		menu.add(data);
@@ -308,14 +329,14 @@ public class StudentFrame extends JFrame {
 		// Adds search and list to LeftPane Panel
 		JPanel leftPane = new JPanel();
 		leftPane.setLayout(new BorderLayout());
-		
+
 		leftPane.add(search, BorderLayout.NORTH);
 		leftPane.add(new JScrollPane(list), BorderLayout.CENTER);
-		
-		add(leftPane,BorderLayout.WEST);
+
+		add(leftPane, BorderLayout.WEST);
 		add(tabbedPane, BorderLayout.CENTER);
-		
-		//Default JFrame settings
+
+		// Default JFrame settings
 		setSize(1200, 650);// MR:added size
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);// MR:added location
@@ -323,11 +344,10 @@ public class StudentFrame extends JFrame {
 		setVisible(true);
 
 	}
-	
-	public void loadExams(File file,String assessment){
+
+	public void loadExams(File file, String assessment) {
 		try {
-			BufferedReader bf = new BufferedReader(new FileReader(
-					file));
+			BufferedReader bf = new BufferedReader(new FileReader(file));
 			// Finds corresponding column indexes
 			// Reads first line to get column headings
 			String line = bf.readLine();
@@ -366,8 +386,7 @@ public class StudentFrame extends JFrame {
 				} else if (linesplit[i].equals("\"Period\"")
 						|| linesplit[i].equals("Period")) {
 					periodCol = i;
-				} 
-				else if (linesplit[i].equals("\"Occ\"")
+				} else if (linesplit[i].equals("\"Occ\"")
 						|| linesplit[i].equals("Occ")) {
 					occCol = i;
 				} else if (linesplit[i].equals("\"Name\"")
@@ -384,10 +403,13 @@ public class StudentFrame extends JFrame {
 			while ((line = bf.readLine()) != null) {
 				linesplit = line.split(",");
 				String ass = linesplit[assCol].replaceAll("\"", "");
-				Result temp = new Result(linesplit[yearCol].replaceAll("\"",""),
-						linesplit[periodCol].replaceAll("\"",""), linesplit[moduleCol].replaceAll("\"",""),
-						linesplit[occCol], linesplit[mapCol].replaceAll("\"",""), ass,
-						linesplit[candCol].replaceAll("\"",""), linesplit[nameCol].replaceAll("\"",""),
+				Result temp = new Result(
+						linesplit[yearCol].replaceAll("\"", ""),
+						linesplit[periodCol].replaceAll("\"", ""),
+						linesplit[moduleCol].replaceAll("\"", ""),
+						linesplit[occCol], linesplit[mapCol].replaceAll("\"",
+								""), ass, linesplit[candCol].replaceAll("\"",
+								""), linesplit[nameCol].replaceAll("\"", ""),
 						Integer.parseInt(linesplit[markCol]),
 						linesplit[gradeCol]);
 				assessment = temp.getModuleCode();
@@ -409,8 +431,7 @@ public class StudentFrame extends JFrame {
 					// Since there is existing assessment object
 					// Finds it, and adds record
 					for (int i = 0; i < assesments.size(); i++) {
-						if (assesments.get(i).results.get(0)
-								.getAssessment()
+						if (assesments.get(i).results.get(0).getAssessment()
 								.equals(temp.getAssessment())) {
 							assesments.get(i).addResult(temp);
 						}
@@ -437,7 +458,7 @@ public class StudentFrame extends JFrame {
 		// loops through each assesment and creates a tab and a table for that
 		// assessment
 		for (Assessment a : assesments) {
-			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"","")
+			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
 					+ " " + a.getAssessment(a.getIndex(count));
 			count++;
 			tabbedPane.addTab(name, addJTable(a));
@@ -472,7 +493,7 @@ public class StudentFrame extends JFrame {
 		for (Assessment a : assesments) {
 			for (Result t : a.results) {
 				String candKey = t.getCandKey();
-				candKey = candKey.replaceAll("\"","");
+				candKey = candKey.replaceAll("\"", "");
 
 				// Checks if candKey is actually student number
 				// If it's coursework, it will enter this if statement
@@ -483,14 +504,15 @@ public class StudentFrame extends JFrame {
 					candKey = candKey.substring(0, candKey.length() - 2);
 					candKey = candKey.replaceAll("#", "");
 					t.candKey = candKey;
-					
+
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.studentNumber + "")) {
 							// Finds student with matching student numbers
 							// System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
-							
-							String modCode = t.getModuleCode().replaceAll("\"","");
+
+							String modCode = t.getModuleCode().replaceAll("\"",
+									"");
 							s.addMarks(modCode + " " + t.getAssessment(),
 									t.mark);
 						}
@@ -504,9 +526,8 @@ public class StudentFrame extends JFrame {
 							// Replaces it with student number
 							t.candKey = s.getStudentNumber();
 							t.setName(s.getName());
-							s.addMarks(
-									t.getModuleCode().replaceAll("\"","") + " " + t.getAssessment(),
-									t.mark);
+							s.addMarks(t.getModuleCode().replaceAll("\"", "")
+									+ " " + t.getAssessment(), t.mark);
 						}
 					}
 
@@ -525,7 +546,7 @@ public class StudentFrame extends JFrame {
 			}
 		};
 		table = new JTable(model);
-		table.setFont(new Font("Calibri",Font.BOLD,14));
+		table.setFont(new Font("Calibri", Font.BOLD, 14));
 
 		// Assigns column headings
 		model.addColumn("Year");
@@ -538,52 +559,51 @@ public class StudentFrame extends JFrame {
 		model.addColumn("Name");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
-		
-		//Sets column header look
+
+		// Sets column header look
 		JTableHeader header = table.getTableHeader();
-		header.setFont(new Font("Calibri",Font.BOLD,16));
-	    header.setBackground(Color.black);
-	    header.setForeground(Color.WHITE);
+		header.setFont(new Font("Calibri", Font.BOLD, 16));
+		header.setBackground(Color.black);
+		header.setForeground(Color.WHITE);
 
 		// Sets cell selection to single
 		// So only one cell is selected
 		// Also retrieves data when name is clicked
 		table.setCellSelectionEnabled(true);
-		table.addMouseListener(new MouseAdapter(){
+		table.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount() == 2){
-				int row = table.getSelectedRow();
-				int column = table.getSelectedColumn();
-				// Checks if column is student name column				
-				if (column == 7) {
-					// Create Display PopUp
-					String selectedItem = (String) table.getValueAt(
-							row, column - 1);
-					if (!selectedItem.substring(0, 1).equals("#")) {
-						System.out.println("Create Display PopUp");
-						showDisplayPopUp(selectedItem);
-					} else {
-						System.out
-								.println("Not valid student Number/Anonymous marking code present");
-					}
+				if (e.getClickCount() == 2) {
+					int row = table.getSelectedRow();
+					int column = table.getSelectedColumn();
+					// Checks if column is student name column
+					if (column == 7) {
+						// Create Display PopUp
+						String selectedItem = (String) table.getValueAt(row,
+								column - 1);
+						if (!selectedItem.substring(0, 1).equals("#")) {
+							System.out.println("Create Display PopUp");
+							showDisplayPopUp(selectedItem);
+						} else {
+							System.out
+									.println("Not valid student Number/Anonymous marking code present");
+						}
 
+					}
 				}
-				}
-				
+
 			}
 
-			
 		});
-
 
 		System.out.println("Making JTable");
 		// Fetches first assessment and adds to table
 		// for (Assessment t : assessments) {
 		for (Result r : ass.results) {
-			model.addRow(new Object[] {r.getYear(),r.getPeriod(),r.getModuleCode(),r.getOcc(),
-					r.getMap(),r.getAssessment(), r.getCandKey(),r.getName(),
+			model.addRow(new Object[] { r.getYear(), r.getPeriod(),
+					r.getModuleCode(), r.getOcc(), r.getMap(),
+					r.getAssessment(), r.getCandKey(), r.getName(),
 					r.getMark(), r.getGrade() });
 		}
 
@@ -612,7 +632,7 @@ public class StudentFrame extends JFrame {
 		}
 
 		list = new JList(defListMod);// creates a new JList using the DLM
-		list.addMouseListener(new MouseAdapter(){
+		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// Student findStudent = null;
@@ -793,47 +813,70 @@ public class StudentFrame extends JFrame {
 
 			int returnValue = choosy.showOpenDialog(StudentFrame.this);
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				boolean validFile = false;
+
 				// Just some code to help with debugging later
 				File file = choosy.getSelectedFile();
 				int succesImport = 0;
 				int totalImports = 0;
+				// First checks if valid file
+				BufferedReader bfCheck;
 				try {
-					BufferedReader bf = new BufferedReader(new FileReader(file));
-					while (bf.ready()) {
-						String[] line = bf.readLine().split(",");
-						for (Student s : students) {
-							int temp = Integer.parseInt(line[0]);
-							if (temp == s.studentNumber) {
-								s.setAMC(line[1]);
-								succesImport++;
-							}
-						}
+					bfCheck = new BufferedReader(new FileReader(file));
 
-						totalImports++;
+					String line = bfCheck.readLine();
+					String[] linesplit = line.split(",");
+					if (linesplit[0].matches((".*\\d.*"))) {
+						validFile = true;
 					}
-					int failedImports = totalImports - succesImport;
-					String results = "Annonymous marking codes imported. "
-							+ succesImport
-							+ " codes were \nfor known students; "
-							+ failedImports + " were or unknown students";
-					JOptionPane.showMessageDialog(StudentFrame.this, results);
-
-					anonLoaded = true;
-
-				} catch (FileNotFoundException p) {
-					System.out.println("File not found");
-				} catch (IOException g) {
-					System.out.println("Error");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
+				if (validFile) {
+					try {
+						BufferedReader bf = new BufferedReader(new FileReader(
+								file));
+						while (bf.ready()) {
+							String[] line = bf.readLine().split(",");
+							for (Student s : students) {
+								int temp = Integer.parseInt(line[0]);
+								if (temp == s.studentNumber) {
+									s.setAMC(line[1]);
+									succesImport++;
+								}
+							}
 
-				System.out.println("You have chosen "
-						+ choosy.getSelectedFile().getName()
-						+ " to be imported");
+							totalImports++;
+						}
+						int failedImports = totalImports - succesImport;
+						String results = "Annonymous marking codes imported. "
+								+ succesImport
+								+ " codes were \nfor known students; "
+								+ failedImports + " were or unknown students";
+						JOptionPane.showMessageDialog(StudentFrame.this,
+								results);
+
+						anonLoaded = true;
+
+					} catch (FileNotFoundException p) {
+						System.out.println("File not found");
+					} catch (IOException g) {
+						System.out.println("Error");
+					}
+
+					System.out.println("You have chosen "
+							+ choosy.getSelectedFile().getName()
+							+ " to be imported");
+				} else {
+					JOptionPane
+							.showMessageDialog(null,
+									"Please upload a valid \nAnonymous marking code csv file");
+				}
 
 			}
 
 		}
-
 	}
 
 	public void findSettingsFile() {
@@ -872,6 +915,7 @@ public class StudentFrame extends JFrame {
 				System.out.println("Settings.ini doesn't exist yet");
 			}
 		}
+
 	}
 
 }
