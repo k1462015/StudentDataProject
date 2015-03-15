@@ -81,9 +81,7 @@ public class StudentFrame extends JFrame {
 	}
 
 	public void InitUI() {
-		setSize(1100, 600);// MR:added size
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);// MR:added location
+		
 		tabbedPane = new JTabbedPane();
 		// addJTable();
 		JMenuBar menu = new JMenuBar();
@@ -316,6 +314,11 @@ public class StudentFrame extends JFrame {
 		
 		add(leftPane,BorderLayout.WEST);
 		add(tabbedPane, BorderLayout.CENTER);
+		
+		//Default JFrame settings
+		setSize(1200, 650);// MR:added size
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);// MR:added location
 		validate();
 		setVisible(true);
 
@@ -382,7 +385,7 @@ public class StudentFrame extends JFrame {
 				linesplit = line.split(",");
 				String ass = linesplit[assCol].replaceAll("\"", "");
 				Result temp = new Result(linesplit[yearCol].replaceAll("\"",""),
-						linesplit[periodCol].replaceAll("\"",""), linesplit[moduleCol],
+						linesplit[periodCol].replaceAll("\"",""), linesplit[moduleCol].replaceAll("\"",""),
 						linesplit[occCol], linesplit[mapCol].replaceAll("\"",""), ass,
 						linesplit[candCol].replaceAll("\"",""), linesplit[nameCol].replaceAll("\"",""),
 						Integer.parseInt(linesplit[markCol]),
@@ -522,7 +525,7 @@ public class StudentFrame extends JFrame {
 			}
 		};
 		table = new JTable(model);
-		table.setFont(new Font("Century Gothic",Font.BOLD,10));
+		table.setFont(new Font("Calibri",Font.BOLD,14));
 
 		// Assigns column headings
 		model.addColumn("Year");
@@ -530,7 +533,7 @@ public class StudentFrame extends JFrame {
 		model.addColumn("Module Code");
 		model.addColumn("Occ");
 		model.addColumn("#Map");
-		model.addColumn("Ass");
+		model.addColumn("#Ass");
 		model.addColumn("Cand Key");
 		model.addColumn("Name");
 		model.addColumn("Mark");
@@ -538,7 +541,7 @@ public class StudentFrame extends JFrame {
 		
 		//Sets column header look
 		JTableHeader header = table.getTableHeader();
-		header.setFont(new Font("Century Gothic",Font.BOLD,12));
+		header.setFont(new Font("Calibri",Font.BOLD,16));
 	    header.setBackground(Color.black);
 	    header.setForeground(Color.WHITE);
 
@@ -622,7 +625,7 @@ public class StudentFrame extends JFrame {
 
 		list.setSelectionBackground(Color.black);
 		list.setSelectionForeground(Color.WHITE);
-		list.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		list.setFont(new Font("Calibri", Font.BOLD, 20));
 		return list;
 	}
 
