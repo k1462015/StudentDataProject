@@ -39,11 +39,9 @@ public class EmailSettingsFrame extends JFrame {
 	private Integer portPreLoaded;
 	private String userPreLoaded;
 	private String authPreLoaded;
-	private JPanel helpPanel;
 	private JPanel main;
-	private JTextArea helpArea;
-	private JButton help;
-	private int count =0;
+	
+	private HelpFrame hf;
 	
 	JTextField serverNameField;
 	JSpinner portSpinner;
@@ -100,15 +98,17 @@ public class EmailSettingsFrame extends JFrame {
 		
 		JMenu profiles = new JMenu("Profiles");
 		JRadioButton outlook = new JRadioButton("Outlook");
+		JRadioButton windowsLive = new JRadioButton("Windows Live");
 		JRadioButton gmail = new JRadioButton("Gmail");
 		JRadioButton yahoo = new JRadioButton("Yahoo");
 		outlook.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				windowsLive.setSelected(false);
 				gmail.setSelected(false);
 				yahoo.setSelected(false);
-				serverNameField.setText("smptp.live.com");
+				serverNameField.setText("outlook.office365.com");
 				portSpinner.setValue(587);
 				
 			}
@@ -118,6 +118,7 @@ public class EmailSettingsFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				windowsLive.setSelected(false);
 				outlook.setSelected(false);
 				gmail.setSelected(false);
 				serverNameField.setText("smptp.yahoo.com");
@@ -130,6 +131,7 @@ public class EmailSettingsFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				windowsLive.setSelected(false);
 				outlook.setSelected(false);
 				yahoo.setSelected(false);
 				serverNameField.setText("smptp.gmail.com");
@@ -138,7 +140,21 @@ public class EmailSettingsFrame extends JFrame {
 			}
 			
 		});
+		windowsLive.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				outlook.setSelected(false);
+				gmail.setSelected(false);
+				yahoo.setSelected(false);
+				serverNameField.setText("smptp.live.com");
+				portSpinner.setValue(587);
+				
+			}
+			
+		});
 		
+		profiles.add(windowsLive);
 		profiles.add(outlook);
 		profiles.add(gmail);
 		profiles.add(yahoo);
@@ -361,42 +377,23 @@ public class EmailSettingsFrame extends JFrame {
 			
 		});
 		
-		helpPanel = new JPanel();
-		helpArea = new JTextArea(20,30);
-		helpArea.setEditable(false);
-		helpArea.setLineWrap(true);
-		helpArea.setOpaque(false);
-		helpArea.setBorder(BorderFactory.createEmptyBorder());
-		help = new JButton("Help");
-		helpPanel.add(helpArea);
-		helpArea.setText(" If you are using gmail then use smpt.gmail.com "
-				  + "\r\n with port 465 \r\n"
-				  + "\r\n If you are using live then use smpt.live.com"
-				  + "\r\n with port 465 \r\n"
-				   +"\r\n If you are using yahoo then use smpt.yahoo.com"
-				  + "\r\n with port 465 \r\n"
-				   +"\r\n If you are using any other server then please look online"
-				+"");
-			help.addActionListener(new ActionListener(){
+		JButton helpBtn = new JButton("Help");
+		hf = new HelpFrame();
+		hf.setLocation(1600, 550);
+		hf.setVisible(false);
+		helpBtn.addActionListener(new ActionListener(){
 
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					if (count == 0 || count%2==0 ) {
-						main.add(helpPanel,BorderLayout.EAST);
-						count++;
-						setSize(940,300);
-					} else if (count%2 == 1 || count == 1){
-						main.remove(helpPanel);
-						count++;
-						setSize(600, 300);
-					}
-					revalidate();
-					repaint();
-					
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(hf.isVisible()){
+					hf.setVisible(false);
+				}else{
+					hf.setVisible(true);
 				}
 				
-			});
-		
+			}
+			
+		});
 		JPanel buttonHolder = new JPanel(new BorderLayout());
 		//buttonHolder.setAlignmentX(RIGHT_ALIGNMENT);
 		JPanel buttonEast = new JPanel(new FlowLayout());
@@ -404,7 +401,7 @@ public class EmailSettingsFrame extends JFrame {
 		buttonEast.add(cancel);
 		buttonEast.add(ok);
 		buttonHolder.add(buttonEast,BorderLayout.EAST);
-		buttonWest.add(help);
+		buttonWest.add(helpBtn);
 		buttonHolder.add(buttonWest,BorderLayout.WEST);
 		//JPanel buttonBorder = new JPanel(new BorderLayout());
 		//buttonBorder.add(buttonHolder, BorderLayout.EAST);
