@@ -225,18 +225,53 @@ public class SendEmailFrame extends JFrame {
 
 
 				int emailsSent = 0;
-				try {
-					for (Student s : selectedStudent) {
-						sendEmail(s.getEmail(), createEmail(s));
-						emailsSent++;
-					}
+                int authFail = 0;
+                int generalFail = 0;
+                String failedRecipients = "";
 
-				} catch (UnsupportedEncodingException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				 JOptionPane.showMessageDialog(null, emailsSent
-				 +" emails have been sent successfully!");
+					for (Student s : selectedStudent) {
+						try {
+                            sendEmail(s.getEmail(), createEmail(s));
+                            if (sendEmail(s.getEmail(), createEmail(s))){
+                                emailsSent++;
+                            } else{
+                                generalFail++;
+                                failedRecipients += s.getEmail() + " ";
+                            }
+                        }  catch (UnsupportedEncodingException e1) {
+                            // TODO Auto-generated catch block
+                            generalFail++;
+                        } catch (AuthenticationFailedException e2) {
+                            //JOptionPane.showMessageDialog(null,"Email failed. Check your login and SMTP settings");
+                            authFail++;
+                            generalFail++;
+                            e2.printStackTrace();
+                        } catch (MessagingException e3) {
+                            //JOptionPane
+                                //    .showMessageDialog(null,
+                                    //        "Email failed. Check recipient email address, your login and SMTP settings");
+                            generalFail++;
+                            e3.printStackTrace();
+                        }
+
+					}
+					
+	                String message  = "";
+	                if(emailsSent > 0){
+	                    message += emailsSent +" emails have been sent successfully.";
+	                } 
+	                
+	                if(generalFail > 0){
+	                    message += generalFail +" emails have failed.";
+	                } 
+	                
+	                    
+	                JOptionPane.showMessageDialog(null, message);
+	            
+
+
+
+				
 			}
 
 		});
@@ -415,15 +450,15 @@ public class SendEmailFrame extends JFrame {
 		}
 	}
 
-	public void sendEmail(String toAddress, String body)
-			throws UnsupportedEncodingException {
+	public boolean sendEmail(String toAddress, String body)
+			throws UnsupportedEncodingException, AuthenticationFailedException, MessagingException {
 		System.out.println(toAddress);
 		String email = body;
 		String to = toAddress;
 		;// change accordingly
 		// default settings
-		String hostAddress = "outlook.office365.com";
-		String port = "587";// or IP address
+		String hostAddress = "outlook.office365.com"; //IP address in the form of DNS name
+		String port = "587";
 		String from = emailField.getText();// change accordingly
 		String startTls = "true";
 
@@ -464,7 +499,7 @@ public class SendEmailFrame extends JFrame {
 		);
 
 		// compose the message
-		try {
+		
 			MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(from));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
@@ -478,17 +513,9 @@ public class SendEmailFrame extends JFrame {
 			transport.sendMessage(message, message.getAllRecipients());
 			transport.close();
 			System.out.println("message sent successfully....");
+			return true;
 
-		} catch (AuthenticationFailedException e) {
-			JOptionPane.showMessageDialog(null,
-					"Email failed. Check your login and SMTP settings");
-			e.printStackTrace();
-		} catch (MessagingException mex) {
-			JOptionPane
-					.showMessageDialog(null,
-							"Email failed. Check recipient email address, your login and SMTP settings");
-			mex.printStackTrace();
-		}
+		
 
 	}
 

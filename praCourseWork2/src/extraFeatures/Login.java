@@ -61,6 +61,8 @@ public class Login extends JFrame{
 	    south.add(btnLogin);
 		main.add(combine, BorderLayout.CENTER);
 		main.add(south,BorderLayout.SOUTH);
+		
+		
 		add(main);
 		setVisible(true);
 		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
