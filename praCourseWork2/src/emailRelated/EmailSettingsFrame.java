@@ -18,7 +18,10 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -92,6 +95,57 @@ public class EmailSettingsFrame extends JFrame {
 	}
 
 	public void initUi() {
+		//Adds profile options //EXTRA FEATURE
+		JMenuBar menubar = new JMenuBar();
+		
+		JMenu profiles = new JMenu("Profiles");
+		JRadioButton outlook = new JRadioButton("Outlook");
+		JRadioButton gmail = new JRadioButton("Gmail");
+		JRadioButton yahoo = new JRadioButton("Yahoo");
+		outlook.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gmail.setSelected(false);
+				yahoo.setSelected(false);
+				serverNameField.setText("smptp.live.com");
+				portSpinner.setValue(587);
+				
+			}
+			
+		});
+		yahoo.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				outlook.setSelected(false);
+				gmail.setSelected(false);
+				serverNameField.setText("smptp.yahoo.com");
+				portSpinner.setValue(587);
+				
+			}
+			
+		});
+		gmail.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				outlook.setSelected(false);
+				yahoo.setSelected(false);
+				serverNameField.setText("smptp.gmail.com");
+				portSpinner.setValue(465);
+				
+			}
+			
+		});
+		
+		profiles.add(outlook);
+		profiles.add(gmail);
+		profiles.add(yahoo);
+		menubar.add(profiles);
+		
+		setJMenuBar(menubar);
+		
 		//Sets all required String[]
 		setString();
 		main = new JPanel(new BorderLayout());
