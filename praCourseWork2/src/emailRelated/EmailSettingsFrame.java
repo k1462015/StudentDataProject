@@ -1,4 +1,4 @@
-package praCourseWork2;
+package emailRelated;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridLayout;

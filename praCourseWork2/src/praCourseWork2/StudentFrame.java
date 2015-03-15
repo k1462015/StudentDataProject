@@ -45,6 +45,8 @@ import org.jfree.data.xy.XYSeries;
 
 import com.itextpdf.text.DocumentException;
 
+import emailRelated.EmailSettingsFrame;
+import emailRelated.SendEmailFrame;
 import extraFeatures.PDFGenerator;
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -94,16 +96,16 @@ public class StudentFrame extends JFrame {
 		settings.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				
+
 				new EmailSettingsFrame(settingsFile);
-				
+
 			}
 
 		});
-		
+
 		JMenuItem pdf = new JMenuItem("Generate PDF");
 		extra.add(pdf);
-		pdf.addActionListener(new ActionListener(){
+		pdf.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -114,17 +116,17 @@ public class StudentFrame extends JFrame {
 					e1.printStackTrace();
 				}
 
-					JOptionPane.showMessageDialog(null, students.size()+" Student information succesfully succesfully imported to PDF in desktop");
+				JOptionPane.showMessageDialog(
+						null,
+						students.size()
+								+ " Student information succesfully succesfully imported to PDF in desktop");
 
-				
-				
 			}
-			
+
 		});
 
 		data.add(settings);
 
-		
 		JMenuItem load = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
 
@@ -136,14 +138,24 @@ public class StudentFrame extends JFrame {
 		emailStudent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (anonLoaded == true && examLoaded == true){
-					JFrame email = new Email(students, settingsFile);
+//				 if (anonLoaded == true && examLoaded == true){
+//				 JFrame email = new Email(students, settingsFile);
+//				 } else {
+//				 JOptionPane.showMessageDialog(null,
+//				 "Anonymous Markings Codes file needs to be"
+//				 + " uploaded \nExam marks file needs to be uploaded ");
+//				 }
+//				New Email Frame
+				if (anonLoaded == true && examLoaded == true) {
+					new SendEmailFrame(students, settingsFile);
 				} else {
-					JOptionPane.showMessageDialog(null, "Anonymous Markings Codes file needs to be"
-							+ " uploaded \nExam marks file needs to be uploaded ");
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Anonymous Markings Codes file needs to be"
+											+ " uploaded \nExam marks file needs to be uploaded ");
 				}
 
-				
 			}
 		});
 		data.add(emailStudent);
@@ -157,54 +169,66 @@ public class StudentFrame extends JFrame {
 				emails = new ArrayList<String>();
 				durations = new ArrayList<String>();
 				JTextField moduleField = new JTextField(6);
-			      JTextField urlField = new JTextField(20);
+				JTextField urlField = new JTextField(20);
 
-			      JPanel messagePanel = new JPanel();
-			      messagePanel.setLayout(new BoxLayout(messagePanel,BoxLayout.PAGE_AXIS));
-			      messagePanel.add(new JLabel("Module:"));
-			      messagePanel.add(moduleField);
-//			      messagePanel.add(Box.createHorizontalStrut(15)); // a spacer
-			      messagePanel.add(new JLabel("URL:"));
-			      messagePanel.add(urlField);
+				JPanel messagePanel = new JPanel();
+				messagePanel.setLayout(new BoxLayout(messagePanel,
+						BoxLayout.PAGE_AXIS));
+				messagePanel.add(new JLabel("Module:"));
+				messagePanel.add(moduleField);
+				// messagePanel.add(Box.createHorizontalStrut(15)); // a spacer
+				messagePanel.add(new JLabel("URL:"));
+				messagePanel.add(urlField);
 
-			      int response = JOptionPane.showConfirmDialog(null, messagePanel, 
-			               "Please Enter module Code and the URL", JOptionPane.OK_CANCEL_OPTION);
-			      
-			      if (response == JOptionPane.OK_OPTION) {
-			         System.out.println("Module code is: " + moduleField.getText());
-			         System.out.println("URL is : " + urlField.getText());
-			         while(moduleField.getText().equals("") && urlField.getText().equals("")){
-				    	  response = JOptionPane.showConfirmDialog(null, messagePanel, 
-					               "Please Enter module Code and the URL", JOptionPane.OK_CANCEL_OPTION);
-				      }
-			         	WebviewFrame wb = new WebviewFrame(urlField.getText());
-						wb.btnFetch.addActionListener(new ActionListener() {
-	
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								wb.browser.readDocument();
-								emails = wb.getEmails();
-								durations = wb.getDurations();
-	
-								System.out.println("Emails size is "
-										+ emails.size() + " and duration size is "
-										+ durations.size());
-								for (int i = 0; i < emails.size(); i++) {
-									for (Student s : students) {
-										if (s.email.equals(emails.get(i))) {
-											System.out.println("Found email of "
-													+ emails.get(i)
-													+ " with duration "
-													+ durations.get(i));
-											s.addParticipation(moduleField.getText()+ " "+durations.get(i)+" ago");
-										}
+				int response = JOptionPane.showConfirmDialog(null,
+						messagePanel, "Please Enter module Code and the URL",
+						JOptionPane.OK_CANCEL_OPTION);
+
+				if (response == JOptionPane.OK_OPTION) {
+					System.out.println("Module code is: "
+							+ moduleField.getText());
+					System.out.println("URL is : " + urlField.getText());
+					while (moduleField.getText().equals("")
+							&& urlField.getText().equals("")) {
+						response = JOptionPane.showConfirmDialog(null,
+								messagePanel,
+								"Please Enter module Code and the URL",
+								JOptionPane.OK_CANCEL_OPTION);
+					}
+					WebviewFrame wb = new WebviewFrame(urlField.getText());
+					wb.btnFetch.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							wb.browser.readDocument();
+							emails = wb.getEmails();
+							durations = wb.getDurations();
+
+							System.out.println("Emails size is "
+									+ emails.size() + " and duration size is "
+									+ durations.size());
+							for (int i = 0; i < emails.size(); i++) {
+								for (Student s : students) {
+									if (s.email.equals(emails.get(i))) {
+										System.out.println("Found email of "
+												+ emails.get(i)
+												+ " with duration "
+												+ durations.get(i));
+										s.addParticipation(moduleField
+												.getText()
+												+ " "
+												+ durations.get(i) + " ago");
 									}
 								}
-								JOptionPane.showMessageDialog(null, emails.size()+" participation records were succesfully imported");
-								wb.dispose();
 							}
-						});
-			      }
+							JOptionPane.showMessageDialog(
+									null,
+									emails.size()
+											+ " participation records were succesfully imported");
+							wb.dispose();
+						}
+					});
+				}
 			}
 
 		});
@@ -362,8 +386,8 @@ public class StudentFrame extends JFrame {
 		// Stretches through the top dynamically
 		panel.setLayout(new BorderLayout());
 		panel.add(search, BorderLayout.WEST);
-		
-		//Adds menu items
+
+		// Adds menu items
 		menu.add(file);
 		menu.add(data);
 		menu.add(extra);
@@ -550,10 +574,10 @@ public class StudentFrame extends JFrame {
 		MouseListener mouseListener = new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				// Student findStudent = null;
-				if(e.getClickCount() == 2){
-				String selectedItem = (String) list.getSelectedValue()
-						.toString();
-				showDisplayPopUp(selectedItem);
+				if (e.getClickCount() == 2) {
+					String selectedItem = (String) list.getSelectedValue()
+							.toString();
+					showDisplayPopUp(selectedItem);
 				}
 			}
 
