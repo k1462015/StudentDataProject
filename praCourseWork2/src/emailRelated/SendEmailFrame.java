@@ -234,15 +234,18 @@ public class SendEmailFrame extends JFrame {
                             sendEmail(s.getEmail(), createEmail(s));
                             if (sendEmail(s.getEmail(), createEmail(s))){
                                 emailsSent++;
+                                
                             } else{
+                            	
                                 generalFail++;
-                                failedRecipients += s.getEmail() + " ";
+                                failedRecipients += "\n" + " - " + s.getName();
                             }
-                        }  catch (UnsupportedEncodingException e1) {
-                            // TODO Auto-generated catch block
+                        } catch (UnsupportedEncodingException e1) {
+                        	failedRecipients += "\n" + " - " + s.getName();
                             generalFail++;
                         } catch (AuthenticationFailedException e2) {
                             //JOptionPane.showMessageDialog(null,"Email failed. Check your login and SMTP settings");
+                        	failedRecipients += "\n" + " - " + s.getName();
                             authFail++;
                             generalFail++;
                             e2.printStackTrace();
@@ -250,6 +253,7 @@ public class SendEmailFrame extends JFrame {
                             //JOptionPane
                                 //    .showMessageDialog(null,
                                     //        "Email failed. Check recipient email address, your login and SMTP settings");
+                        	failedRecipients += s.getEmail() + " ";
                             generalFail++;
                             e3.printStackTrace();
                         }
@@ -263,6 +267,7 @@ public class SendEmailFrame extends JFrame {
 	                
 	                if(generalFail > 0){
 	                    message += generalFail +" emails have failed.";
+	                    message += "\nFailed to send to these recipients: " + failedRecipients;
 	                } 
 	                
 	                    
