@@ -39,6 +39,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import org.jfree.data.xy.XYSeries;
 
@@ -138,23 +139,16 @@ public class StudentFrame extends JFrame {
 		emailStudent.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				 if (anonLoaded == true && examLoaded == true){
-//				 JFrame email = new Email(students, settingsFile);
-//				 } else {
-//				 JOptionPane.showMessageDialog(null,
-//				 "Anonymous Markings Codes file needs to be"
-//				 + " uploaded \nExam marks file needs to be uploaded ");
-//				 }
 //				// New Email Frame
-//				if (anonLoaded == true && examLoaded == true) {
+				if (anonLoaded == true && examLoaded == true) {
 					new SendEmailFrame(students, settingsFile);
-//				} else {
-//					JOptionPane
-//							.showMessageDialog(
-//									null,
-//									"Anonymous Markings Codes file needs to be"
-//											+ " uploaded \nExam marks file needs to be uploaded ");
-//				}
+				} else {
+					JOptionPane
+							.showMessageDialog(
+									null,
+									"Anonymous Markings Codes file needs to be"
+											+ " uploaded \nExam marks file needs to be uploaded ");
+				}
 
 			}
 		});
@@ -260,117 +254,15 @@ public class StudentFrame extends JFrame {
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					// Sets file to chosen file
 					File file = choosy.getSelectedFile();
-					try {
-						BufferedReader bf = new BufferedReader(new FileReader(
-								file));
-						// Finds corresponding column indexes
-						// Reads first line to get column headings
-						String line = bf.readLine();
-						String[] linesplit = line.split(",");
-						int yearCol = 0;
-						int periodCol = 0;
-						int occCol = 0;
-						int nameCol = 0;
-						int mapCol = 0;
-
-						int moduleCol = 0;
-						int assCol = 0;
-						int candCol = 0;
-						int markCol = 0;
-						int gradeCol = 0;
-						for (int i = 0; i < linesplit.length; i++) {
-							System.out.println(linesplit[i]);
-							if (linesplit[i].equals("\"#Module\"")
-									|| linesplit[i].equals("#Module")) {
-								moduleCol = i;
-							} else if (linesplit[i].equals("\"#Ass#\"")
-									|| linesplit[i].equals("#Ass#")) {
-								assCol = i;
-							} else if (linesplit[i].equals("\"#Cand Key\"")
-									|| linesplit[i].equals("#Cand Key")) {
-								candCol = i;
-							} else if (linesplit[i].equals("\"Mark\"")
-									|| linesplit[i].equals("Mark")) {
-								markCol = i;
-							} else if (linesplit[i].equals("\"Grade\"")
-									|| linesplit[i].equals("Grade")) {
-								gradeCol = i;
-							} else if (linesplit[i].equals("\"Year\"")
-									|| linesplit[i].equals("Year")) {
-								yearCol = i;
-							} else if (linesplit[i].equals("\"Period\"")
-									|| linesplit[i].equals("Period")) {
-								periodCol = i;
-							} 
-							else if (linesplit[i].equals("\"Occ\"")
-									|| linesplit[i].equals("Occ")) {
-								occCol = i;
-							} else if (linesplit[i].equals("\"Name\"")
-									|| linesplit[i].equals("Name")) {
-								nameCol = i;
-							} else if (linesplit[i].equals("\"#Map\"")
-									|| linesplit[i].equals("#Map")) {
-								mapCol = i;
-							}
-
-						}
-
-						// Adds records to assessments
-						while ((line = bf.readLine()) != null) {
-							linesplit = line.split(",");
-							String ass = linesplit[assCol].replaceAll("\"", "");
-							Result temp = new Result(linesplit[yearCol].replaceAll("\"",""),
-									linesplit[periodCol].replaceAll("\"",""), linesplit[moduleCol],
-									linesplit[occCol], linesplit[mapCol].replaceAll("\"",""), ass,
-									linesplit[candCol].replaceAll("\"",""), linesplit[nameCol].replaceAll("\"",""),
-									Integer.parseInt(linesplit[markCol]),
-									linesplit[gradeCol]);
-							assessment = temp.getModuleCode();
-							// First checks if Assessment array is empty
-							if (assesments.isEmpty()) {
-								Assessment t1 = new Assessment();
-								t1.addResult(temp);
-								assesments.add(t1);
-								// Now checks if there is already an assessment
-								// object
-								// With same assessment number
-								// If not make new assessment object
-								// Then add record
-							} else if (!checkAllAss(temp.getAssessment())) {
-								Assessment t1 = new Assessment();
-								t1.addResult(temp);
-								assesments.add(t1);
-							} else {
-								// Since there is existing assessment object
-								// Finds it, and adds record
-								for (int i = 0; i < assesments.size(); i++) {
-									if (assesments.get(i).results.get(0)
-											.getAssessment()
-											.equals(temp.getAssessment())) {
-										assesments.get(i).addResult(temp);
-									}
-								}
-							}
-
-						}
-						// De-annonymises records
-						deAnnonymise();
-						tabbedPane();
-						examLoaded = true;
-
-					} catch (FileNotFoundException p) {
-						System.out.println("File not found");
-					} catch (IOException g) {
-						System.out.println("Error");
-					}
+					loadExams(file,assessment);
 
 				}
 
 			}
 
 		});
-		// tabbedPane.setTabPlacement(JTabbedPane.TOP);
-		// tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+		
 		file.add(loadExam);
 		file.add(load);
 		menu.add(file);
@@ -426,6 +318,113 @@ public class StudentFrame extends JFrame {
 		add(tabbedPane, BorderLayout.CENTER);
 		validate();
 		setVisible(true);
+
+	}
+	
+	public void loadExams(File file,String assessment){
+		try {
+			BufferedReader bf = new BufferedReader(new FileReader(
+					file));
+			// Finds corresponding column indexes
+			// Reads first line to get column headings
+			String line = bf.readLine();
+			String[] linesplit = line.split(",");
+			int yearCol = 0;
+			int periodCol = 0;
+			int occCol = 0;
+			int nameCol = 0;
+			int mapCol = 0;
+
+			int moduleCol = 0;
+			int assCol = 0;
+			int candCol = 0;
+			int markCol = 0;
+			int gradeCol = 0;
+			for (int i = 0; i < linesplit.length; i++) {
+				System.out.println(linesplit[i]);
+				if (linesplit[i].equals("\"#Module\"")
+						|| linesplit[i].equals("#Module")) {
+					moduleCol = i;
+				} else if (linesplit[i].equals("\"#Ass#\"")
+						|| linesplit[i].equals("#Ass#")) {
+					assCol = i;
+				} else if (linesplit[i].equals("\"#Cand Key\"")
+						|| linesplit[i].equals("#Cand Key")) {
+					candCol = i;
+				} else if (linesplit[i].equals("\"Mark\"")
+						|| linesplit[i].equals("Mark")) {
+					markCol = i;
+				} else if (linesplit[i].equals("\"Grade\"")
+						|| linesplit[i].equals("Grade")) {
+					gradeCol = i;
+				} else if (linesplit[i].equals("\"Year\"")
+						|| linesplit[i].equals("Year")) {
+					yearCol = i;
+				} else if (linesplit[i].equals("\"Period\"")
+						|| linesplit[i].equals("Period")) {
+					periodCol = i;
+				} 
+				else if (linesplit[i].equals("\"Occ\"")
+						|| linesplit[i].equals("Occ")) {
+					occCol = i;
+				} else if (linesplit[i].equals("\"Name\"")
+						|| linesplit[i].equals("Name")) {
+					nameCol = i;
+				} else if (linesplit[i].equals("\"#Map\"")
+						|| linesplit[i].equals("#Map")) {
+					mapCol = i;
+				}
+
+			}
+
+			// Adds records to assessments
+			while ((line = bf.readLine()) != null) {
+				linesplit = line.split(",");
+				String ass = linesplit[assCol].replaceAll("\"", "");
+				Result temp = new Result(linesplit[yearCol].replaceAll("\"",""),
+						linesplit[periodCol].replaceAll("\"",""), linesplit[moduleCol],
+						linesplit[occCol], linesplit[mapCol].replaceAll("\"",""), ass,
+						linesplit[candCol].replaceAll("\"",""), linesplit[nameCol].replaceAll("\"",""),
+						Integer.parseInt(linesplit[markCol]),
+						linesplit[gradeCol]);
+				assessment = temp.getModuleCode();
+				// First checks if Assessment array is empty
+				if (assesments.isEmpty()) {
+					Assessment t1 = new Assessment();
+					t1.addResult(temp);
+					assesments.add(t1);
+					// Now checks if there is already an assessment
+					// object
+					// With same assessment number
+					// If not make new assessment object
+					// Then add record
+				} else if (!checkAllAss(temp.getAssessment())) {
+					Assessment t1 = new Assessment();
+					t1.addResult(temp);
+					assesments.add(t1);
+				} else {
+					// Since there is existing assessment object
+					// Finds it, and adds record
+					for (int i = 0; i < assesments.size(); i++) {
+						if (assesments.get(i).results.get(0)
+								.getAssessment()
+								.equals(temp.getAssessment())) {
+							assesments.get(i).addResult(temp);
+						}
+					}
+				}
+
+			}
+			// De-annonymises records
+			deAnnonymise();
+			tabbedPane();
+			examLoaded = true;
+
+		} catch (FileNotFoundException p) {
+			System.out.println("File not found");
+		} catch (IOException g) {
+			System.out.println("Error");
+		}
 
 	}
 
@@ -523,6 +522,7 @@ public class StudentFrame extends JFrame {
 			}
 		};
 		table = new JTable(model);
+		table.setFont(new Font("Century Gothic",Font.BOLD,10));
 
 		// Assigns column headings
 		model.addColumn("Year");
@@ -535,6 +535,12 @@ public class StudentFrame extends JFrame {
 		model.addColumn("Name");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
+		
+		//Sets column header look
+		JTableHeader header = table.getTableHeader();
+		header.setFont(new Font("Century Gothic",Font.BOLD,12));
+	    header.setBackground(Color.black);
+	    header.setForeground(Color.WHITE);
 
 		// Sets cell selection to single
 		// So only one cell is selected
@@ -577,12 +583,10 @@ public class StudentFrame extends JFrame {
 					r.getMap(),r.getAssessment(), r.getCandKey(),r.getName(),
 					r.getMark(), r.getGrade() });
 		}
-		// break;
-		// }
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
 		table.setFillsViewportHeight(true);
-		table.setGridColor(Color.GRAY);
+		table.setShowGrid(false);
 		JScrollPane scrollPane = new JScrollPane(table);
 		repaint();
 		revalidate();
@@ -605,20 +609,20 @@ public class StudentFrame extends JFrame {
 		}
 
 		list = new JList(defListMod);// creates a new JList using the DLM
-		MouseListener mouseListener = new MouseAdapter() {
+		list.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// Student findStudent = null;
 				if (e.getClickCount() == 2) {
-					String selectedItem = list.getSelectedValue()
-							.toString();
+					String selectedItem = list.getSelectedValue().toString();
 					showDisplayPopUp(selectedItem);
 				}
 			}
+		});
 
-		};
-		list.addMouseListener(mouseListener);
-		list.setFont(new Font("Arial", Font.PLAIN, 20));
+		list.setSelectionBackground(Color.black);
+		list.setSelectionForeground(Color.WHITE);
+		list.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		return list;
 	}
 
@@ -784,12 +788,6 @@ public class StudentFrame extends JFrame {
 					"CSV Files", "csv");
 			choosy.setFileFilter(filter);
 
-			// choosy.showOpenDialog(StudentFrame.this);//sets position of
-			// dialog box to default(centre) of the screen
-			// //alternatively, we can change parameter to "StudentFrame.this".
-			// This means that dialog box will appear
-			// //wherever the main frame is.
-
 			int returnValue = choosy.showOpenDialog(StudentFrame.this);
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				// Just some code to help with debugging later
@@ -833,19 +831,6 @@ public class StudentFrame extends JFrame {
 
 		}
 
-	}
-
-	public Student findUsingAnon(String anon) {
-		anon = anon.replaceAll("\"", "");
-		anon = anon.replaceAll("#", "");
-		Student found = null;
-		for (Student s : students) {
-			if (anon.equals(s.aMC)) {
-				found = s;
-			}
-		}
-
-		return found;
 	}
 
 	public void findSettingsFile() {
