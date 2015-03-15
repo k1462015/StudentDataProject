@@ -3,16 +3,14 @@ package praCourseWork2;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.font.TextAttribute;
 import java.util.ArrayList;
-import java.util.Map;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 public class DisplayPopUpFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -44,7 +42,7 @@ public class DisplayPopUpFrame extends JFrame {
 		// Required JFrame
 		setVisible(true);
 		setSize(550, 300);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		getRootPane().setBorder(
 				BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
 		setBackground(Color.white);

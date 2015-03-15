@@ -354,7 +354,8 @@ public class Email extends JFrame {
 	      Session session = Session.getDefaultInstance(prop,
 	    		  new javax.mail.Authenticator(){
 	    	  
-	    	  protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+	    	  @Override
+			protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 	    		  return new javax.mail.PasswordAuthentication(from, new String(pass.getPassword()));
 	    	  }
 	      }

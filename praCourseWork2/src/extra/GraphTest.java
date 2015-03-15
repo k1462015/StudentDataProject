@@ -1,7 +1,5 @@
 package extra;
 
-import org.jfree.chart.*;
-
 import praCourseWork2.PieChart;
 
 public class GraphTest {

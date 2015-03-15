@@ -18,7 +18,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
@@ -43,14 +42,15 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jfree.data.xy.XYSeries;
 
+import studentdata.Connector;
+import studentdata.DataTable;
+import websiteRelated.WebviewFrame;
+
 import com.itextpdf.text.DocumentException;
 
 import emailRelated.EmailSettingsFrame;
 import emailRelated.SendEmailFrame;
 import extraFeatures.PDFGenerator;
-import studentdata.Connector;
-import studentdata.DataTable;
-import websiteRelated.WebviewFrame;
 
 public class StudentFrame extends JFrame {
 	private ArrayList<Student> students;
@@ -80,7 +80,7 @@ public class StudentFrame extends JFrame {
 	}
 
 	public void InitUI() {
-		setSize(700, 500);// MR:added size
+		setSize(1100, 600);// MR:added size
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);// MR:added location
 		tabbedPane = new JTabbedPane();
@@ -95,6 +95,7 @@ public class StudentFrame extends JFrame {
 		JMenuItem settings = new JMenuItem("Email Settings");
 		settings.addActionListener(new ActionListener() {
 
+			@Override
 			public void actionPerformed(ActionEvent e) {
 
 				new EmailSettingsFrame(settingsFile);
@@ -145,16 +146,16 @@ public class StudentFrame extends JFrame {
 //				 "Anonymous Markings Codes file needs to be"
 //				 + " uploaded \nExam marks file needs to be uploaded ");
 //				 }
-//				New Email Frame
-				if (anonLoaded == true && examLoaded == true) {
+//				// New Email Frame
+//				if (anonLoaded == true && examLoaded == true) {
 					new SendEmailFrame(students, settingsFile);
-				} else {
-					JOptionPane
-							.showMessageDialog(
-									null,
-									"Anonymous Markings Codes file needs to be"
-											+ " uploaded \nExam marks file needs to be uploaded ");
-				}
+//				} else {
+//					JOptionPane
+//							.showMessageDialog(
+//									null,
+//									"Anonymous Markings Codes file needs to be"
+//											+ " uploaded \nExam marks file needs to be uploaded ");
+//				}
 
 			}
 		});
@@ -267,6 +268,11 @@ public class StudentFrame extends JFrame {
 						// Reads first line to get column headings
 						String line = bf.readLine();
 						String[] linesplit = line.split(",");
+						int yearCol = 0;
+						int periodCol = 0;
+						int occCol = 0;
+						int nameCol = 0;
+						int mapCol = 0;
 
 						int moduleCol = 0;
 						int assCol = 0;
@@ -290,17 +296,35 @@ public class StudentFrame extends JFrame {
 							} else if (linesplit[i].equals("\"Grade\"")
 									|| linesplit[i].equals("Grade")) {
 								gradeCol = i;
+							} else if (linesplit[i].equals("\"Year\"")
+									|| linesplit[i].equals("Year")) {
+								yearCol = i;
+							} else if (linesplit[i].equals("\"Period\"")
+									|| linesplit[i].equals("Period")) {
+								periodCol = i;
+							} 
+							else if (linesplit[i].equals("\"Occ\"")
+									|| linesplit[i].equals("Occ")) {
+								occCol = i;
+							} else if (linesplit[i].equals("\"Name\"")
+									|| linesplit[i].equals("Name")) {
+								nameCol = i;
+							} else if (linesplit[i].equals("\"#Map\"")
+									|| linesplit[i].equals("#Map")) {
+								mapCol = i;
 							}
-							;
+
 						}
 
 						// Adds records to assessments
 						while ((line = bf.readLine()) != null) {
 							linesplit = line.split(",");
 							String ass = linesplit[assCol].replaceAll("\"", "");
-							Result temp = new Result(linesplit[moduleCol], ass,
-									linesplit[candCol], Integer
-											.parseInt(linesplit[markCol]),
+							Result temp = new Result(linesplit[yearCol].replaceAll("\"",""),
+									linesplit[periodCol].replaceAll("\"",""), linesplit[moduleCol],
+									linesplit[occCol], linesplit[mapCol].replaceAll("\"",""), ass,
+									linesplit[candCol].replaceAll("\"",""), linesplit[nameCol].replaceAll("\"",""),
+									Integer.parseInt(linesplit[markCol]),
 									linesplit[gradeCol]);
 							assessment = temp.getModuleCode();
 							// First checks if Assessment array is empty
@@ -363,6 +387,7 @@ public class StudentFrame extends JFrame {
 
 		JTextField search = new JTextField(22);
 		search.addKeyListener(new KeyAdapter() {
+			@Override
 			public void keyReleased(KeyEvent e) {
 				// clear the list
 				DefaultListModel listModel = (DefaultListModel) list.getModel();
@@ -407,7 +432,7 @@ public class StudentFrame extends JFrame {
 		// loops through each assesment and creates a tab and a table for that
 		// assessment
 		for (Assessment a : assesments) {
-			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
+			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"","")
 					+ " " + a.getAssessment(a.getIndex(count));
 			count++;
 			tabbedPane.addTab(name, addJTable(a));
@@ -442,7 +467,7 @@ public class StudentFrame extends JFrame {
 		for (Assessment a : assesments) {
 			for (Result t : a.results) {
 				String candKey = t.getCandKey();
-				candKey = candKey.replaceAll("\"", "");
+				candKey = candKey.replaceAll("\"","");
 
 				// Checks if candKey is actually student number
 				// If it's coursework, it will enter this if statement
@@ -453,14 +478,14 @@ public class StudentFrame extends JFrame {
 					candKey = candKey.substring(0, candKey.length() - 2);
 					candKey = candKey.replaceAll("#", "");
 					t.candKey = candKey;
-
+					
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.studentNumber + "")) {
 							// Finds student with matching student numbers
 							// System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
-							String modCode = t.getModuleCode().replaceAll("\"",
-									"");
+							
+							String modCode = t.getModuleCode().replaceAll("\"","");
 							s.addMarks(modCode + " " + t.getAssessment(),
 									t.mark);
 						}
@@ -473,8 +498,9 @@ public class StudentFrame extends JFrame {
 							// code
 							// Replaces it with student number
 							t.candKey = s.getStudentNumber();
+							t.setName(s.getName());
 							s.addMarks(
-									t.getModuleCode() + " " + t.getAssessment(),
+									t.getModuleCode().replaceAll("\"","") + " " + t.getAssessment(),
 									t.mark);
 						}
 					}
@@ -496,50 +522,56 @@ public class StudentFrame extends JFrame {
 		table = new JTable(model);
 
 		// Assigns column headings
+		model.addColumn("Year");
+		model.addColumn("Period");
 		model.addColumn("Module Code");
+		model.addColumn("Occ");
+		model.addColumn("#Map");
 		model.addColumn("Ass");
 		model.addColumn("Cand Key");
+		model.addColumn("Name");
 		model.addColumn("Mark");
 		model.addColumn("Grade");
 
 		// Sets cell selection to single
 		// So only one cell is selected
-		// Also retrieves data when column 2 is clicked
+		// Also retrieves data when name is clicked
 		table.setCellSelectionEnabled(true);
-		ListSelectionModel cellSelectionModel = table.getSelectionModel();
-		cellSelectionModel
-				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.addMouseListener(new MouseAdapter(){
 
-		cellSelectionModel
-				.addListSelectionListener(new ListSelectionListener() {
-					public void valueChanged(ListSelectionEvent e) {
-						int row = table.getSelectedRow();
-						int column = table.getSelectedColumn();
-						// Checks if column is candidate key column/student
-						// number
-						if (column == 2) {
-							// Create Display PopUp
-							String selectedItem = (String) table.getValueAt(
-									row, column);
-							if (!selectedItem.substring(0, 1).equals("#")) {
-								System.out.println("Create Display PopUp");
-								showDisplayPopUp(selectedItem);
-							} else {
-								System.out
-										.println("Not valid student Number/Anonymous marking code present");
-							}
-
-						}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2){
+				int row = table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				// Checks if column is student name column				
+				if (column == 7) {
+					// Create Display PopUp
+					String selectedItem = (String) table.getValueAt(
+							row, column - 1);
+					if (!selectedItem.substring(0, 1).equals("#")) {
+						System.out.println("Create Display PopUp");
+						showDisplayPopUp(selectedItem);
+					} else {
+						System.out
+								.println("Not valid student Number/Anonymous marking code present");
 					}
 
-				});
+				}
+				}
+				
+			}
+
+			
+		});
+
 
 		System.out.println("Making JTable");
 		// Fetches first assessment and adds to table
 		// for (Assessment t : assessments) {
 		for (Result r : ass.results) {
-			model.addRow(new Object[] { r.getModuleCode().replaceAll("\"", ""),
-					r.getAssessment(), r.getCandKey().replaceAll("\"", ""),
+			model.addRow(new Object[] {r.getYear(),r.getPeriod(),r.getModuleCode(),r.getOcc(),
+					r.getMap(),r.getAssessment(), r.getCandKey(),r.getName(),
 					r.getMark(), r.getGrade() });
 		}
 		// break;
@@ -572,10 +604,11 @@ public class StudentFrame extends JFrame {
 
 		list = new JList(defListMod);// creates a new JList using the DLM
 		MouseListener mouseListener = new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e) {
 				// Student findStudent = null;
 				if (e.getClickCount() == 2) {
-					String selectedItem = (String) list.getSelectedValue()
+					String selectedItem = list.getSelectedValue()
 							.toString();
 					showDisplayPopUp(selectedItem);
 				}
@@ -689,7 +722,7 @@ public class StudentFrame extends JFrame {
 				// object from the arraylist,
 				// gets the average of the student and plots it with their mark.
 				for (int i = 0; i < numOfRecords; i++) {
-					String tempCandKey = (String) currentTable.getValueAt(i, 2);
+					String tempCandKey = (String) currentTable.getValueAt(i, 6);
 					System.out.println(tempCandKey);
 					Student tempStu = findStudent(tempCandKey, students);// The
 																			// student
@@ -705,7 +738,7 @@ public class StudentFrame extends JFrame {
 					if (!(tempStu == null)) {
 						System.out.println(tempStu.toString());
 						int stuMarkInt = (Integer) currentTable
-								.getValueAt(i, 3);
+								.getValueAt(i, 8);
 						// double stuMark = (double) stuMarkInt;
 						// System.out.println(stuMark);
 						tempStu.calcAverage();

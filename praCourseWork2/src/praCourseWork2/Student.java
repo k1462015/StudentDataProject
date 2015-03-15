@@ -1,9 +1,7 @@
 package praCourseWork2;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class Student {
 	protected String name;
@@ -47,6 +45,7 @@ public class Student {
 		
 	}
 	
+	@Override
 	public String toString(){
 		return name + " (" + studentNumber + ")";
 	}

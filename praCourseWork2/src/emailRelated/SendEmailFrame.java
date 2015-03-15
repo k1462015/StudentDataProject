@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -24,7 +23,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,9 +35,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import praCourseWork2.Student;
 
@@ -73,12 +72,12 @@ public class SendEmailFrame extends JFrame {
 							// settings
 		// The file may or may not exist
 		
-		LineBorder firstPageBorder = new LineBorder(Color.RED,1);
-
+		LineBorder firstPageBorder = new LineBorder(Color.BLACK,2);
+		Font btnFont = new Font("Century Gothic",Font.BOLD,15);
 		// First Page
 		// //JList
 		firstPage = new JPanel(new BorderLayout());
-		firstPage.setBorder(firstPageBorder);
+//		firstPage.setBorder(firstPageBorder);
 		// ///////JList of students
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBorder(firstPageBorder);
@@ -93,7 +92,9 @@ public class SendEmailFrame extends JFrame {
 		// Select all/none buttons
 		JPanel selectPanel = new JPanel();
 		JButton selNone = new JButton("Select None");
+		selNone.setFont(btnFont);
 		JButton selAll = new JButton("Select All");
+		selAll.setFont(btnFont);
 		selAll.addActionListener(new ActionListener() {
 
 			@Override
@@ -129,11 +130,13 @@ public class SendEmailFrame extends JFrame {
 		header.setFont(new Font("Century Gothic",Font.BOLD,30));
 		headerField = new JTextArea();
 		headerField.setFont(new Font("Century Gothic",Font.BOLD,20));
+		headerField.setBorder(firstPageBorder);
 		
 		JLabel footer = new JLabel("Footer",SwingConstants.LEFT);
 		footer.setFont(new Font("Century Gothic",Font.BOLD,30));
 		footerField = new JTextArea();
 		footerField.setFont(new Font("Century Gothic",Font.BOLD,20));
+		footerField.setBorder(firstPageBorder);
 
 		rightPane.add(header);
 		rightPane.add(new JScrollPane(headerField));
@@ -145,6 +148,8 @@ public class SendEmailFrame extends JFrame {
 		// ////////Next Button
 		JPanel nextHolder = new JPanel(new BorderLayout());
 		JButton next = new JButton("Next");
+		next.setFont(btnFont);
+	
 		next.addActionListener(new ActionListener() {
 
 			@Override
@@ -166,7 +171,7 @@ public class SendEmailFrame extends JFrame {
 		firstPage.add(nextHolder, BorderLayout.SOUTH);
 
 		// Second Page
-		LineBorder secondPageBorder = new LineBorder(Color.RED,5);
+		LineBorder secondPageBorder = new LineBorder(Color.BLACK,2);
 		secondPage = new JPanel(new BorderLayout());
 		// ////////Preview
 		JPanel preview = new JPanel(new BorderLayout());
@@ -182,6 +187,7 @@ public class SendEmailFrame extends JFrame {
 		secondPage.add(bottomPanel, BorderLayout.SOUTH);
 
 		JPanel infoPanel = new JPanel();
+		infoPanel.setBorder(new LineBorder(Color.BLACK,1));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
 		JPanel emailPanel = new JPanel(new BorderLayout());
 		JPanel passwordPanel = new JPanel(new BorderLayout());
@@ -209,7 +215,9 @@ public class SendEmailFrame extends JFrame {
 		// ////Preview and Send button
 		JPanel buttonPanel = new JPanel();
 		JButton previous = new JButton("Previous");
+		previous.setFont(btnFont);
 		JButton send = new JButton("Send");
+		send.setFont(btnFont);
 		send.addActionListener(new ActionListener() {
 
 			@Override
@@ -261,7 +269,7 @@ public class SendEmailFrame extends JFrame {
 		// Default JFrame Stuff
 		add(firstPage, BorderLayout.CENTER);
 		// add(secondPage,BorderLayout.CENTER);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
@@ -276,11 +284,19 @@ public class SendEmailFrame extends JFrame {
 			model.addRow(new Object[] { s.getName().replaceAll("\"", ""), b });
 		}
 		table = new JTable(model);
+		table.setFont(new Font("Century Gothic",Font.BOLD,12));
 
+		JTableHeader header = table.getTableHeader();
+		header.setFont(new Font("Century Gothic",Font.BOLD,15));
+	    header.setBackground(Color.black);
+	    header.setForeground(Color.WHITE);
+		
 		table.setPreferredScrollableViewportSize(new Dimension(300, 350));
 		table.setFillsViewportHeight(true);
-		table.setGridColor(Color.GRAY);
+		table.setGridColor(Color.BLACK);
 		JScrollPane scrollPane = new JScrollPane(table);
+		
+		table.setGridColor(Color.black);
 
 		repaint();
 		revalidate();
@@ -438,6 +454,7 @@ public class SendEmailFrame extends JFrame {
 		Session session = Session.getDefaultInstance(prop,
 				new javax.mail.Authenticator() {
 
+					@Override
 					protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
 						return new javax.mail.PasswordAuthentication(from,
 								new String(password.getPassword()));

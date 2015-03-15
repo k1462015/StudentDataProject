@@ -159,6 +159,7 @@ public class Browser extends JPanel {
 				engine.getLoadWorker().exceptionProperty()
 						.addListener(new ChangeListener<Throwable>() {
 
+							@Override
 							public void changed(
 									ObservableValue<? extends Throwable> o,
 									Throwable old, final Throwable value) {
@@ -277,13 +278,14 @@ public class Browser extends JPanel {
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {
 
+			@Override
 			public void run() {
 				JFrame temp = new JFrame();
 				Browser browser = new Browser();
 				temp.add(browser);
 				temp.setVisible(true);
 				temp.pack();
-				temp.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				temp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 				// browser.setVisible(true);
 				browser.loadURL("google.co.uk");
 			}

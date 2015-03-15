@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 
 public class WebviewFrame extends JFrame {
@@ -69,7 +70,8 @@ public class WebviewFrame extends JFrame {
 		
         SwingUtilities.invokeLater(new Runnable() {
 
-            public void run() {
+            @Override
+			public void run() {
                 browser = new Browser();
                 add(browser,BorderLayout.CENTER);
                 browser.loadURL(url);
@@ -81,7 +83,7 @@ public class WebviewFrame extends JFrame {
 		
 		
 		//Default stuff
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setVisible(true);
 		setSize(900,700);
 		
