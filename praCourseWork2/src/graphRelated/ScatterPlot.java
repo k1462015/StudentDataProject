@@ -42,10 +42,9 @@ public class ScatterPlot extends JFrame {
 		
 		PNGListener pngListen = new PNGListener();
 		JPGListener jpgListen = new JPGListener();
-		ExportListener exportListen = new ExportListener();
 		
 		pngItem = new JMenuItem("PNG");
-		pngItem.addActionListener(exportListen);
+		pngItem.addActionListener(pngListen);
 		
 		jpgItem = new JMenuItem("JPG");
 		jpgItem.addActionListener(jpgListen);
