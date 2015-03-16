@@ -113,6 +113,7 @@ public class StudentFrame extends JFrame {
 
 		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
+		JMenuItem exit = new JMenuItem("Exit");
 		JMenuItem userEdit= new JMenuItem("User settings");
 		userEdit.addActionListener(new ActionListener() {
 
@@ -124,6 +125,15 @@ public class StudentFrame extends JFrame {
 			}
 
 		});;
+		exit.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				
+			}
+			
+		});
 		
 		
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
@@ -149,6 +159,7 @@ public class StudentFrame extends JFrame {
 
 		file.add(loadExam);
 		file.add(loadAnon);
+		file.add(exit);
 		menu.add(file);
 		this.setJMenuBar(menu);
 		setJMenuBar(menu);
