@@ -522,7 +522,9 @@ public class StudentFrame extends JFrame {
 			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
 					+ " " + a.getAssessment(a.getIndex(count));
 			count++;
-			tabbedPane.addTab(name, addJTable(a));
+			ExamTable jtable = new ExamTable(a);
+			jtable.getTable().addMouseListener(new TableListener());
+			tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
 		}
 		assesments.clear();
 	}
@@ -597,85 +599,46 @@ public class StudentFrame extends JFrame {
 
 	}
 
-	public JScrollPane addJTable(Assessment ass) {
-		JTable table;
-		DefaultTableModel model = new DefaultTableModel() {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				// Disables all cells from being editable
-				return false;
-			}
-		};
-		table = new JTable(model);
-		table.setFont(new Font("Calibri", Font.BOLD, 14));
+	
+	private class TableListener implements MouseListener{
 
-		// Assigns column headings
-		model.addColumn("Year");
-		model.addColumn("Period");
-		model.addColumn("Module Code");
-		model.addColumn("Occ");
-		model.addColumn("#Map");
-		model.addColumn("#Ass");
-		model.addColumn("Cand Key");
-		model.addColumn("Name");
-		model.addColumn("Mark");
-		model.addColumn("Grade");
-
-		// Sets column header look
-		JTableHeader header = table.getTableHeader();
-		header.setFont(new Font("Calibri", Font.BOLD, 16));
-		header.setBackground(Color.black);
-		header.setForeground(Color.WHITE);
-
-		// Sets cell selection to single
-		// So only one cell is selected
-		// Also retrieves data when name is clicked
-		table.setCellSelectionEnabled(true);
-		table.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					int row = table.getSelectedRow();
-					int column = table.getSelectedColumn();
-					// Checks if column is student name column
-					if (column == 7) {
-						// Create Display PopUp
-						String selectedItem = (String) table.getValueAt(row,
-								column - 1);
-						if (!selectedItem.substring(0, 1).equals("#")) {
-							System.out.println("Create Display PopUp");
-							showDisplayPopUp(selectedItem);
-						} else {
-							System.out
-									.println("Not valid student Number/Anonymous marking code present");
-						}
-
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			JTable table = (JTable) e.getSource();
+			if (e.getClickCount() == 2) {
+				int row = table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				// Checks if column is student name column
+				if (column == 7) {
+					// Create Display PopUp
+					String selectedItem = (String) table.getValueAt(row,
+							column - 1);
+					if (!selectedItem.substring(0, 1).equals("#")) {
+						System.out.println("Create Display PopUp");
+						showDisplayPopUp(selectedItem);
+					} else {
+						System.out
+								.println("Not valid student Number/Anonymous marking code present");
 					}
-				}
 
+				}
 			}
 
-		});
-
-		System.out.println("Making JTable");
-		// Fetches first assessment and adds to table
-		// for (Assessment t : assessments) {
-		for (Result r : ass.results) {
-			model.addRow(new Object[] { r.getYear(), r.getPeriod(),
-					r.getModuleCode(), r.getOcc(), r.getMap(),
-					r.getAssessment(), r.getCandKey(), r.getName(),
-					r.getMark(), r.getGrade() });
+			
 		}
 
-		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
-		table.setFillsViewportHeight(true);
-		table.setShowGrid(false);
-		JScrollPane scrollPane = new JScrollPane(table);
-		repaint();
-		revalidate();
-		return scrollPane;
+		@Override
+		public void mousePressed(MouseEvent e) {}
 
+		@Override
+		public void mouseReleased(MouseEvent e) {}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {}
+
+		@Override
+		public void mouseExited(MouseEvent e) {}
+		
 	}
 
 	public JList createJList(ArrayList<Student> students) {
