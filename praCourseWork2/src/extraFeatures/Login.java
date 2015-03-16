@@ -39,8 +39,8 @@ public class Login extends JFrame{
 		JPanel userPanel = new JPanel(); 
 		JPanel passPanel = new JPanel();
 		JPanel south = new JPanel(new FlowLayout());
-		JLabel lblUser = new JLabel("username:");
-		JLabel lblPass = new JLabel("password:");
+		JLabel lblUser = new JLabel("Username:");
+		JLabel lblPass = new JLabel("Password:");
 		JTextField username = new JTextField(15);
 		JPasswordField  password = new JPasswordField(15);
 		JButton btnLogin = new JButton("Login");

@@ -3,11 +3,11 @@ package praCourseWork2;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -18,6 +18,10 @@ public class ExamTable {
 	public ExamTable(Assessment ass,ArrayList<Assessment> assesments,ArrayList<Student> students){
 		deAnnonymise(assesments, students);
 		makeTable(ass);
+	}
+	
+	public ExamTable(){
+		
 	}
 
 	public void makeTable(Assessment ass) {
@@ -73,6 +77,118 @@ public class ExamTable {
 		// repaint();
 		// revalidate();
 
+	}
+	
+	public void readExamData(BufferedReader bf,ArrayList<Assessment> assesments,String assessment) throws IOException{
+		// Finds corresponding column indexes
+					// Reads first line to get column headings
+					String line = bf.readLine();
+					String[] linesplit = line.split(",");
+					int yearCol = 0;
+					int periodCol = 0;
+					int occCol = 0;
+					int nameCol = 0;
+					int mapCol = 0;
+
+					int moduleCol = 0;
+					int assCol = 0;
+					int candCol = 0;
+					int markCol = 0;
+					int gradeCol = 0;
+					for (int i = 0; i < linesplit.length; i++) {
+						System.out.println(linesplit[i]);
+						if (linesplit[i].equals("\"#Module\"")
+								|| linesplit[i].equals("#Module")) {
+							moduleCol = i;
+						} else if (linesplit[i].equals("\"#Ass#\"")
+								|| linesplit[i].equals("#Ass#")) {
+							assCol = i;
+						} else if (linesplit[i].equals("\"#Cand Key\"")
+								|| linesplit[i].equals("#Cand Key")) {
+							candCol = i;
+						} else if (linesplit[i].equals("\"Mark\"")
+								|| linesplit[i].equals("Mark")) {
+							markCol = i;
+						} else if (linesplit[i].equals("\"Grade\"")
+								|| linesplit[i].equals("Grade")) {
+							gradeCol = i;
+						} else if (linesplit[i].equals("\"Year\"")
+								|| linesplit[i].equals("Year")) {
+							yearCol = i;
+						} else if (linesplit[i].equals("\"Period\"")
+								|| linesplit[i].equals("Period")) {
+							periodCol = i;
+						} else if (linesplit[i].equals("\"Occ\"")
+								|| linesplit[i].equals("Occ")) {
+							occCol = i;
+						} else if (linesplit[i].equals("\"Name\"")
+								|| linesplit[i].equals("Name")) {
+							nameCol = i;
+						} else if (linesplit[i].equals("\"#Map\"")
+								|| linesplit[i].equals("#Map")) {
+							mapCol = i;
+						}
+
+					}
+
+					// Adds records to assessments
+					while ((line = bf.readLine()) != null) {
+						linesplit = line.split(",");
+						String ass = linesplit[assCol].replaceAll("\"", "");
+						Result temp = new Result(
+								linesplit[yearCol].replaceAll("\"", ""),
+								linesplit[periodCol].replaceAll("\"", ""),
+								linesplit[moduleCol].replaceAll("\"", ""),
+								linesplit[occCol], linesplit[mapCol].replaceAll("\"",
+										""), ass, linesplit[candCol].replaceAll("\"",
+										""), linesplit[nameCol].replaceAll("\"", ""),
+								Integer.parseInt(linesplit[markCol]),
+								linesplit[gradeCol]);
+						assessment = temp.getModuleCode();
+						// First checks if Assessment array is empty
+						if (assesments.isEmpty()) {
+							Assessment t1 = new Assessment();
+							t1.addResult(temp);
+							assesments.add(t1);
+							// Now checks if there is already an assessment
+							// object
+							// With same assessment number
+							// If not make new assessment object
+							// Then add record
+						} else if (!checkAllAss(temp.getAssessment(),assesments)) {
+							Assessment t1 = new Assessment();
+							t1.addResult(temp);
+							assesments.add(t1);
+						} else {
+							// Since there is existing assessment object
+							// Finds it, and adds record
+							for (int i = 0; i < assesments.size(); i++) {
+								if (assesments.get(i).results.get(0).getAssessment()
+										.equals(temp.getAssessment())) {
+									assesments.get(i).addResult(temp);
+								}
+							}
+						}
+
+					}
+	}
+	
+	/**
+	 * Checks through all Assessment Objects Within Assessment ArrayList If
+	 * finds existing one, that matches string returns true
+	 * 
+	 * @param s
+	 *            - assessment code
+	 * @return
+	 */
+	public boolean checkAllAss(String s,ArrayList<Assessment> assesments) {
+		for (Assessment t : assesments) {
+			if (t.results.get(0).getAssessment().equals(s)) {
+				// If does have assessment already
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**

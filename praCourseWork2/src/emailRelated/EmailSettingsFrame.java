@@ -238,6 +238,7 @@ public class EmailSettingsFrame extends JFrame {
 		add(main, BorderLayout.CENTER);
 		
 		// Default JFrame settings
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setSize(600, 300);
 		setLocationRelativeTo(null);
 		setVisible(true);
