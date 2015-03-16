@@ -311,9 +311,17 @@ public class StudentFrame extends JFrame {
 					// Reads first line to get column headings
 					String line = bf.readLine();
 					String[] linesplit = line.split(",");
-					if (!linesplit[0].matches((".*\\d.*"))) {
+					if (!linesplit[0].matches(".*\\d.*") && (linesplit[0].matches("Year") || linesplit[0].matches("\"Year\""))) {
+						System.out.println("First line is "+linesplit[0]);
 						validFile = true;
-					}
+					}else{
+					System.out.println("Not a exam.csv file");
+				}
+//					if (!linesplit[0].matches(("Year"))) {
+//						validFile = true;
+//					}else{
+//						System.out.println("Not a exam.csv file");
+//					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
