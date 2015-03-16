@@ -42,6 +42,7 @@ public class ScatterPlot extends JFrame {
 		
 		pngItem = new JMenuItem("PNG");
 		pngItem.addActionListener(exportListen);
+		
 		jpgItem = new JMenuItem("JPEG");
 		jpgItem.addActionListener(exportListen);
 		
@@ -76,6 +77,7 @@ public class ScatterPlot extends JFrame {
 			chooser.showSaveDialog(null);
 			
 			File filePath = chooser.getSelectedFile();
+			
 			
 			String pathStr = filePath.getPath();
 			//System.out.println(filePath.getPath());

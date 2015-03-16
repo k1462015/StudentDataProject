@@ -222,7 +222,20 @@ public class StudentFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			// // New Email Frame
 			if (anonLoaded == true && examLoaded == true) {
-				new SendEmailFrame(students, settingsFile);
+				if (!(settingsFile == null)){//If settings file has been loaded 
+					new SendEmailFrame(students, settingsFile);
+					
+				} else {
+					
+					int confirm = JOptionPane.showConfirmDialog(StudentFrame.this, "Email Settings have not been configured."
+							+ "\nDefault Outlook Office 365 settings will be used."
+							+ "\nDo you wish to continue?", "Email to Students", JOptionPane.YES_NO_CANCEL_OPTION);
+					if (confirm == JOptionPane.YES_OPTION){
+						new SendEmailFrame(students, settingsFile);
+					}
+					
+					
+				}
 			} else {
 				JOptionPane
 						.showMessageDialog(
@@ -885,8 +898,10 @@ public class StudentFrame extends JFrame {
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("Settings.ini exists");
 				settingsFile = f;
+				
 			} else {
 				System.out.println("Settings.ini doesn't exist yet");
+				
 			}
 
 		} else if (OS.contains("mac")) {
@@ -901,10 +916,29 @@ public class StudentFrame extends JFrame {
 			if (f.exists() && !f.isDirectory()) {
 				System.out.println("Settings.ini exists");
 				settingsFile = f;
+				
 			} else {
 				System.out.println("Settings.ini doesn't exist yet");
+				
+			}
+		} else if (OS.contains("nix")) {
+			String filePathStr = "~/Desktop";
+			System.out.println(filePathStr);
+			filePathStr += "/settings.ini";
+			System.out.println(filePathStr);
+
+			File f = new File(filePathStr);
+
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists");
+				settingsFile = f;
+				
+			} else {
+				System.out.println("Settings.ini doesn't exist yet");
+				
 			}
 		}
+		
 
 	}
 

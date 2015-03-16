@@ -248,14 +248,15 @@ public class SendEmailFrame extends JFrame {
                         	failedRecipients += "\n" + " - " + s.getName();
                             authFail++;
                             generalFail++;
-                            e2.printStackTrace();
+                            
+                            
                         } catch (MessagingException e3) {
                             //JOptionPane
                                 //    .showMessageDialog(null,
                                     //        "Email failed. Check recipient email address, your login and SMTP settings");
                         	failedRecipients += s.getEmail() + " ";
                             generalFail++;
-                            e3.printStackTrace();
+                          
                         }
 
 					}

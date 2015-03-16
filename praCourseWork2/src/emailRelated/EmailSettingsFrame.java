@@ -121,7 +121,7 @@ public class EmailSettingsFrame extends JFrame {
 				windowsLive.setSelected(false);
 				outlook.setSelected(false);
 				gmail.setSelected(false);
-				serverNameField.setText("smptp.yahoo.com");
+				serverNameField.setText("smtp.yahoo.com");
 				portSpinner.setValue(587);
 				
 			}
@@ -134,7 +134,7 @@ public class EmailSettingsFrame extends JFrame {
 				windowsLive.setSelected(false);
 				outlook.setSelected(false);
 				yahoo.setSelected(false);
-				serverNameField.setText("smptp.gmail.com");
+				serverNameField.setText("smtp.gmail.com");
 				portSpinner.setValue(465);
 				
 			}
@@ -147,7 +147,7 @@ public class EmailSettingsFrame extends JFrame {
 				outlook.setSelected(false);
 				gmail.setSelected(false);
 				yahoo.setSelected(false);
-				serverNameField.setText("smptp.live.com");
+				serverNameField.setText("smtp.live.com");
 				portSpinner.setValue(587);
 				
 			}
@@ -276,9 +276,7 @@ public class EmailSettingsFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-						
-					
-				
+							
 				//if settings file exists 
 			if (!(settingsFile == null)){
 				//Write to settingsFile
@@ -309,7 +307,7 @@ public class EmailSettingsFrame extends JFrame {
 					
 					//Creates a new file path for the settings file within Documents directory
 					File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
-					newFile.getParentFile().mkdirs();
+					newFile.getParentFile().mkdirs(); //Creates the necessary directories
 					try {
 						newFile.createNewFile();
 						System.out.println("File created");
