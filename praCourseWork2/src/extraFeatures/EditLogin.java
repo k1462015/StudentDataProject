@@ -96,8 +96,9 @@ public class EditLogin extends JFrame {
 		main.add(center,BorderLayout.CENTER);
 		add(main);
 		
-		setVisible(true);
 		setSize(500,300);
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
 	public void edit(JTextField Cname, JPasswordField  Cpass, JTextField Nname, JPasswordField Npass,JPasswordField Rpass ){

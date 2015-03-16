@@ -46,7 +46,7 @@ public class DisplayPopUpFrame extends JFrame {
 		// Initialises required JPanels
 		main = new JPanel();
 		bottom = new JPanel();
-		
+
 		// Sets JPanel to BoxLayout
 		// setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		main.setLayout(new BorderLayout());
@@ -81,6 +81,7 @@ public class DisplayPopUpFrame extends JFrame {
 		// Gets participation data
 		for (String s : participation) {
 			JLabel temp = new JLabel("Last Access: " + s);
+			temp.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 			temp.setFont(temp.getFont().deriveFont(18.0f));
 			JPanel tempHolder = new JPanel(new BorderLayout());
 			tempHolder.add(temp, BorderLayout.CENTER);
@@ -116,12 +117,12 @@ public class DisplayPopUpFrame extends JFrame {
 		add(main);
 
 		// Required JFrame
-		getRootPane().setBorder(new LineBorder(Color.BLACK,5));
+		getRootPane().setBorder(new LineBorder(Color.BLACK, 5));
 		setBackground(Color.white);
-		setVisible(true);
 		setSize(550, 300);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
+		setVisible(true);
 
 	}
 

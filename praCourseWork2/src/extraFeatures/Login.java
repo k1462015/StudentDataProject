@@ -115,9 +115,10 @@ public class Login extends JFrame{
 		main.add(combine, BorderLayout.CENTER);
 		main.add(south,BorderLayout.SOUTH);
 		add(main);
-		setVisible(true);
-		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-		setSize(300,160);
 		
+		setSize(300,160);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		setVisible(true);
 	}
 }

@@ -313,9 +313,9 @@ public class SendEmailFrame extends JFrame {
 		add(firstPage, BorderLayout.CENTER);
 		// add(secondPage,BorderLayout.CENTER);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setVisible(true);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
 

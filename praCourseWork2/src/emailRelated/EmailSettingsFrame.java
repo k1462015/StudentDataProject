@@ -54,8 +54,6 @@ public class EmailSettingsFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public EmailSettingsFrame(File settings) {
-		
-		
 		super("SMTP Server");
 		this.settingsFile = settings;
 		
@@ -73,8 +71,6 @@ public class EmailSettingsFrame extends JFrame {
 		} else {
 			System.out.println("File doesn't exist");
 		}
-		
-
 	}
 	
 	/**
@@ -406,11 +402,13 @@ public class EmailSettingsFrame extends JFrame {
 		//buttonBorder.add(buttonHolder, BorderLayout.EAST);
 		main.add(buttonHolder, BorderLayout.SOUTH);
 
-		// Default JFrame settings
 		add(main, BorderLayout.CENTER);
-		setVisible(true);
+		
+		// Default JFrame settings
 		setSize(600, 300);
 		setLocationRelativeTo(null);
+		setVisible(true);
+
 	}
 	
 	//Returns a String containing the selected settings, separated by a comma

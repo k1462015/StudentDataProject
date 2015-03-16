@@ -84,8 +84,9 @@ public class WebviewFrame extends JFrame {
 		
 		//Default stuff
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setVisible(true);
 		setSize(900,700);
+		setLocationRelativeTo(null);
+		setVisible(true);
 		
 	}
 	
