@@ -243,7 +243,7 @@ public class SendEmailFrame extends JFrame {
                         } catch (UnsupportedEncodingException e1) {
                         	failedRecipients += "\n" + " - " + s.getName();
                             generalFail++;
-                            break;
+                            
                         } catch (AuthenticationFailedException e2) {
                             //JOptionPane.showMessageDialog(null,"Email failed. Check your login and SMTP settings");
                         	failedRecipients += "\n" + " - " + s.getName();
@@ -257,7 +257,7 @@ public class SendEmailFrame extends JFrame {
                                     //        "Email failed. Check recipient email address, your login and SMTP settings");
                         	failedRecipients += s.getEmail() + " ";
                             generalFail++;
-                            break;
+                            
                           
                         }
 
