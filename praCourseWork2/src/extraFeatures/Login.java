@@ -2,6 +2,8 @@ package extraFeatures;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -10,10 +12,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,14 +38,19 @@ public class Login extends JFrame{
 	}
 	
 	public void initUi(){
+		Font font = new Font("Calibri",Font.BOLD,20);
+		
 		JPanel main = new JPanel(new BorderLayout());
 		JPanel combine = new JPanel();
 		JPanel userPanel = new JPanel(); 
 		JPanel passPanel = new JPanel();
 		JPanel south = new JPanel(new FlowLayout());
 		JLabel lblUser = new JLabel("Username:");
+		lblUser.setFont(font);
 		JLabel lblPass = new JLabel("Password:");
+		lblPass.setFont(font);
 		JTextField username = new JTextField(15);
+		
 		JPasswordField  password = new JPasswordField(15);
 		JButton btnLogin = new JButton("Login");
 		username.setText("admin");
@@ -116,9 +125,40 @@ public class Login extends JFrame{
 		main.add(south,BorderLayout.SOUTH);
 		add(main);
 		
-		setSize(300,160);
+		//Allows enter to press login button
+		username.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnLogin.doClick();
+				
+			}
+			
+		});
+		password.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnLogin.doClick();
+				
+			}
+			
+		});
+		
+		//Adds lock image
+		try {
+			URL imgURL = getClass().getResource("/Lock-Icon.png");
+		    ImageIcon ii = new ImageIcon(imgURL);
+		    Image newimg = ii.getImage().getScaledInstance(90, 90,
+					java.awt.Image.SCALE_SMOOTH);
+			add(new JLabel(new ImageIcon(newimg)),BorderLayout.NORTH);
+		} catch (Exception e) {
+			System.out.println("Error reading file");
+		}
+		
+		setSize(300,250);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 	}
 }
