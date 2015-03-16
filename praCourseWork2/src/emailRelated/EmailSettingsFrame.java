@@ -90,74 +90,8 @@ public class EmailSettingsFrame extends JFrame {
 	}
 
 	public void initUi() {
-		//Adds profile options //EXTRA FEATURE
-		JMenuBar menubar = new JMenuBar();
-		
-		JMenu profiles = new JMenu("Profiles");
-		JRadioButton outlook = new JRadioButton("Outlook");
-		JRadioButton windowsLive = new JRadioButton("Windows Live");
-		JRadioButton gmail = new JRadioButton("Gmail");
-		JRadioButton yahoo = new JRadioButton("Yahoo");
-		outlook.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				windowsLive.setSelected(false);
-				gmail.setSelected(false);
-				yahoo.setSelected(false);
-				serverNameField.setText("outlook.office365.com");
-				portSpinner.setValue(587);
-				
-			}
-			
-		});
-		yahoo.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				windowsLive.setSelected(false);
-				outlook.setSelected(false);
-				gmail.setSelected(false);
-				serverNameField.setText("smtp.yahoo.com");
-				portSpinner.setValue(587);
-				
-			}
-			
-		});
-		gmail.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				windowsLive.setSelected(false);
-				outlook.setSelected(false);
-				yahoo.setSelected(false);
-				serverNameField.setText("smtp.gmail.com");
-				portSpinner.setValue(465);
-				
-			}
-			
-		});
-		windowsLive.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				outlook.setSelected(false);
-				gmail.setSelected(false);
-				yahoo.setSelected(false);
-				serverNameField.setText("smtp.live.com");
-				portSpinner.setValue(587);
-				
-			}
-			
-		});
-		
-		profiles.add(windowsLive);
-		profiles.add(outlook);
-		profiles.add(gmail);
-		profiles.add(yahoo);
-		menubar.add(profiles);
-		
-		setJMenuBar(menubar);
+		//Adds profile menu
+		addProfileMenu();
 		
 		//Sets all required String[]
 		setString();
@@ -269,108 +203,7 @@ public class EmailSettingsFrame extends JFrame {
 			
 		});
 		ok = new JButton("OK");
-		ok.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-							
-				//if settings file exists 
-			if (!(settingsFile == null)){
-				//Write to settingsFile
-				try {
-					System.out.println("File exists");
-					PrintWriter writer = new PrintWriter(settingsFile);
-					writer.println(settingsString());
-					writer.close();
-					
-					System.out.println("File writed.");
-					
-				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
-					System.out.println("File not found");
-				} finally {
-					dispose();
-				}
-			} else {//if it doesn't exist
-				
-				
-				//Create new settings file, save it in user's documents directory and write settings to 
-				//that file
-				
-				String OS = System.getProperty("os.name").toLowerCase();//Check's user's OS
-				
-				if (OS.contains("windows")){//If the OS is windows
-					String user = System.getProperty("user.name");
-					
-					//Creates a new file path for the settings file within Documents directory
-					File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
-					newFile.getParentFile().mkdirs(); //Creates the necessary directories
-					try {
-						newFile.createNewFile();
-						System.out.println("File created");
-						
-						PrintWriter writer = new PrintWriter(newFile);
-						writer.println(settingsString());
-						writer.close();
-						System.out.println("File writed.");
-						dispose();
-					
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						
-					}
-				
-				
-				} else if (OS.contains("mac")){//If the OS is mac
-					String user = System.getProperty("user.name");
-					//String filePathStr = "/Users/" + user + "/Desktop";
-					File newFile = new File("/Users/" + user + "/Desktop/settings.ini");
-					newFile.getParentFile().mkdirs();
-					try {
-						newFile.createNewFile();
-						System.out.println("File created");
-						
-						PrintWriter writer = new PrintWriter(newFile);
-						writer.println(settingsString());
-						writer.close();
-						System.out.println("File writed.");
-						dispose();
-					
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				} else if (OS.contains("nix")){//If the OS is mac/unix
-					//String user = System.getProperty("user.name");
-					//String filePathStr = "/Users/" + user + "/Desktop";
-					File newFile = new File("~/Desktop/settings.ini");
-					newFile.getParentFile().mkdirs();
-					try {
-						newFile.createNewFile();
-						System.out.println("File created");
-						
-						PrintWriter writer = new PrintWriter(newFile);
-						writer.println(settingsString());
-						writer.close();
-						System.out.println("File writed.");
-						dispose();
-					
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						
-					}
-				}
-				
-				
-			}
-				
-				
-				
-			}
-			
-			
-			
-		});
+		ok.addActionListener(new okListener());
 		
 		JButton helpBtn = new JButton("Help");
 		hf = new HelpFrame();
@@ -409,6 +242,176 @@ public class EmailSettingsFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
+	}
+	
+	public void addProfileMenu(){
+		//Adds profile options //EXTRA FEATURE
+				JMenuBar menubar = new JMenuBar();
+				
+				JMenu profiles = new JMenu("Profiles");
+				JRadioButton outlook = new JRadioButton("Outlook");
+				JRadioButton windowsLive = new JRadioButton("Windows Live");
+				JRadioButton gmail = new JRadioButton("Gmail");
+				JRadioButton yahoo = new JRadioButton("Yahoo");
+				outlook.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						windowsLive.setSelected(false);
+						gmail.setSelected(false);
+						yahoo.setSelected(false);
+						serverNameField.setText("outlook.office365.com");
+						portSpinner.setValue(587);
+						
+					}
+					
+				});
+				yahoo.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						windowsLive.setSelected(false);
+						outlook.setSelected(false);
+						gmail.setSelected(false);
+						serverNameField.setText("smtp.yahoo.com");
+						portSpinner.setValue(587);
+						
+					}
+					
+				});
+				gmail.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						windowsLive.setSelected(false);
+						outlook.setSelected(false);
+						yahoo.setSelected(false);
+						serverNameField.setText("smtp.gmail.com");
+						portSpinner.setValue(465);
+						
+					}
+					
+				});
+				windowsLive.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						outlook.setSelected(false);
+						gmail.setSelected(false);
+						yahoo.setSelected(false);
+						serverNameField.setText("smtp.live.com");
+						portSpinner.setValue(587);
+						
+					}
+					
+				});
+				
+				profiles.add(windowsLive);
+				profiles.add(outlook);
+				profiles.add(gmail);
+				profiles.add(yahoo);
+				menubar.add(profiles);
+				
+				setJMenuBar(menubar);
+	}
+	
+	private class okListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+		//if settings file exists 
+	if (!(settingsFile == null)){
+		//Write to settingsFile
+		try {
+			System.out.println("File exists");
+			PrintWriter writer = new PrintWriter(settingsFile);
+			writer.println(settingsString());
+			writer.close();
+			
+			System.out.println("File writed.");
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("File not found");
+		} finally {
+			dispose();
+		}
+	} else {//if it doesn't exist
+		
+		
+		//Create new settings file, save it in user's documents directory and write settings to 
+		//that file
+		
+		String OS = System.getProperty("os.name").toLowerCase();//Check's user's OS
+		
+		if (OS.contains("windows")){//If the OS is windows
+			String user = System.getProperty("user.name");
+			
+			//Creates a new file path for the settings file within Documents directory
+			File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
+			newFile.getParentFile().mkdirs(); //Creates the necessary directories
+			try {
+				newFile.createNewFile();
+				System.out.println("File created");
+				
+				PrintWriter writer = new PrintWriter(newFile);
+				writer.println(settingsString());
+				writer.close();
+				System.out.println("File writed.");
+				dispose();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				
+			}
+		
+		
+		} else if (OS.contains("mac")){//If the OS is mac
+			String user = System.getProperty("user.name");
+			//String filePathStr = "/Users/" + user + "/Desktop";
+			File newFile = new File("/Users/" + user + "/Desktop/settings.ini");
+			newFile.getParentFile().mkdirs();
+			try {
+				newFile.createNewFile();
+				System.out.println("File created");
+				
+				PrintWriter writer = new PrintWriter(newFile);
+				writer.println(settingsString());
+				writer.close();
+				System.out.println("File writed.");
+				dispose();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		} else if (OS.contains("nix")){//If the OS is mac/unix
+			//String user = System.getProperty("user.name");
+			//String filePathStr = "/Users/" + user + "/Desktop";
+			File newFile = new File("~/Desktop/settings.ini");
+			newFile.getParentFile().mkdirs();
+			try {
+				newFile.createNewFile();
+				System.out.println("File created");
+				
+				PrintWriter writer = new PrintWriter(newFile);
+				writer.println(settingsString());
+				writer.close();
+				System.out.println("File writed.");
+				dispose();
+			
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				
+			}
+		}
+		
+		
+	}
+			
+		}
+		
 	}
 	
 	//Returns a String containing the selected settings, separated by a comma
