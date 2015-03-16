@@ -39,7 +39,6 @@ public class EditLogin extends JFrame {
 	public void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
 		
-		JPanel centerHolder = new JPanel(new BorderLayout());
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center,BoxLayout.PAGE_AXIS));
 		center.add(Box.createVerticalGlue());
@@ -59,8 +58,8 @@ public class EditLogin extends JFrame {
 		lblCUser.setFont(font);
 		JLabel lblCPass = new JLabel("Current password:", SwingConstants.LEFT);
 		lblCPass.setFont(font);
-		JTextField Cusername = new JTextField(15);
-		JPasswordField  Cpassword = new JPasswordField(15);
+		JTextField Cusername = new JTextField(20);
+		JPasswordField  Cpassword = new JPasswordField(20);
 		
 		JLabel lblNUser = new JLabel("New Username:", SwingConstants.LEFT);
 		lblNUser.setFont(font);
@@ -68,9 +67,9 @@ public class EditLogin extends JFrame {
 		lblNPass.setFont(font);
 		JLabel lblRPass = new JLabel("Retype New password:");
 		lblRPass.setFont(font);
-		JTextField Nusername = new JTextField(15);
-		JPasswordField Npassword = new JPasswordField(15);
-		JPasswordField Rpassword = new JPasswordField(15);
+		JTextField Nusername = new JTextField(20);
+		JPasswordField Npassword = new JPasswordField(20);
+		JPasswordField Rpassword = new JPasswordField(20);
 		
 		save.addActionListener(new ActionListener(){
 
@@ -105,11 +104,10 @@ public class EditLogin extends JFrame {
 		buttons.add(save);
 		
 		south.add(buttons, BorderLayout.EAST);
-		centerHolder.add(center, BorderLayout.NORTH);
-		add(centerHolder,BorderLayout.WEST);
+
+		add(center,BorderLayout.CENTER);
 		add(south,BorderLayout.SOUTH);
 		
-//		setSize(500,300);
 		pack();
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
