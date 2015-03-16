@@ -30,11 +30,12 @@ public class ScatterPlot extends JFrame {
 	private JMenu exportMenu;
 	private JMenuItem pngItem;
 	private JMenuItem jpgItem;
+	private String moduleCode;
 	
 	public ScatterPlot(String appTitle, String chartTitle, String module,XYSeries data){
 		
 		super(appTitle);
-		
+		moduleCode = module;
 		bar = new JMenuBar();
 		exportMenu = new JMenu("Export as...");
 		
@@ -43,7 +44,7 @@ public class ScatterPlot extends JFrame {
 		pngItem = new JMenuItem("PNG");
 		pngItem.addActionListener(exportListen);
 		
-		jpgItem = new JMenuItem("JPEG");
+		jpgItem = new JMenuItem("JPG");
 		jpgItem.addActionListener(exportListen);
 		
 		exportMenu.add(pngItem); exportMenu.add(jpgItem);
@@ -53,7 +54,7 @@ public class ScatterPlot extends JFrame {
 		dataset = new XYSeriesCollection();
 		dataset.addSeries(data);
 		
-		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", module + " mark", dataset);
+		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", moduleCode + " mark", dataset);
 		chartPanel = new ChartPanel(chart);
 		this.add(chartPanel);
 		
@@ -74,6 +75,9 @@ public class ScatterPlot extends JFrame {
 			
 			
 			JFileChooser chooser = new JFileChooser();
+			
+			
+			chooser.setSelectedFile(new File(moduleCode+"." + temp.getText().toLowerCase()));
 			chooser.showSaveDialog(null);
 			
 			File filePath = chooser.getSelectedFile();
@@ -92,8 +96,8 @@ public class ScatterPlot extends JFrame {
 					ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
 					JOptionPane.showMessageDialog(null, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
-					e1.printStackTrace();
+					//JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
+					//e1.printStackTrace();
 				}
 			} else{
 				

@@ -61,16 +61,17 @@ public class EmailSettingsFrame extends JFrame {
 		
 		initUi();
 		
-		if (!(settingsFile == null) ){
+		if (!(settingsFile == null) ){//Checks if file path is legitimate
 			
-			System.out.println("Hi");
-			if (checkSettings(settingsFile) == true){
+			if (checkSettings(settingsFile) == true){//Checks if file is in correct format
 				
-			loadSettings(settingsFile);
-			displaySettings();
+				loadSettings(settingsFile);
+				displaySettings();
+			} else{
+				System.out.println("File doesn't follow correct format");
 			}
 		} else {
-			System.out.println("File doesn't follow correct format");
+			System.out.println("File doesn't exist");
 		}
 		
 
