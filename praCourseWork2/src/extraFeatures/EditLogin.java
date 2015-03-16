@@ -1,6 +1,7 @@
 package extraFeatures;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -12,6 +13,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -19,6 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import praCourseWork2.StudentFrame;
 
@@ -33,28 +37,37 @@ public class EditLogin extends JFrame {
 	}
 	
 	public void initUi(){
-		JPanel main = new JPanel(new BorderLayout());
+		Font font = new Font("Calibri",Font.BOLD,20);
+		
+		JPanel centerHolder = new JPanel(new BorderLayout());
 		JPanel center = new JPanel();
+		center.setLayout(new BoxLayout(center,BoxLayout.PAGE_AXIS));
+		center.add(Box.createVerticalGlue());
 		JPanel south = new JPanel(new BorderLayout());
 		JPanel buttons = new JPanel();
-		JPanel row1 = new JPanel();
-		JPanel row2 = new JPanel();
-		JPanel row3 = new JPanel();
-		JPanel row4 = new JPanel();
-		JPanel row5 = new JPanel();
+		JPanel row1 = new JPanel(new BorderLayout());
+		JPanel row2 = new JPanel(new BorderLayout());
+		JPanel row3 = new JPanel(new BorderLayout());
+		JPanel row4 = new JPanel(new BorderLayout());
+		JPanel row5 = new JPanel(new BorderLayout());
 		
 		JButton save = new JButton("Save");
-		
+		save.setFont(font);
 		JButton cancel = new JButton("Cancel");
-		
-		JLabel lblCUser = new JLabel("current username:");
-		JLabel lblCPass = new JLabel("current password:");
+		cancel.setFont(font);
+		JLabel lblCUser = new JLabel("Current Username:", SwingConstants.LEFT);
+		lblCUser.setFont(font);
+		JLabel lblCPass = new JLabel("Current password:", SwingConstants.LEFT);
+		lblCPass.setFont(font);
 		JTextField Cusername = new JTextField(15);
 		JPasswordField  Cpassword = new JPasswordField(15);
 		
-		JLabel lblNUser = new JLabel("new username:");
-		JLabel lblNPass = new JLabel("new password:");
-		JLabel lblRPass = new JLabel("retype new password:");
+		JLabel lblNUser = new JLabel("New Username:", SwingConstants.LEFT);
+		lblNUser.setFont(font);
+		JLabel lblNPass = new JLabel("New Password:", SwingConstants.LEFT);
+		lblNPass.setFont(font);
+		JLabel lblRPass = new JLabel("Retype New password:");
+		lblRPass.setFont(font);
 		JTextField Nusername = new JTextField(15);
 		JPasswordField Npassword = new JPasswordField(15);
 		JPasswordField Rpassword = new JPasswordField(15);
@@ -67,20 +80,20 @@ public class EditLogin extends JFrame {
 			}
 			
 		});
-		row1.add(lblCUser);
-		row1.add(Cusername);
+		row1.add(lblCUser,BorderLayout.WEST);
+		row1.add(Cusername,BorderLayout.EAST);
 		
-		row2.add(lblCPass);
-		row2.add(Cpassword);
+		row2.add(lblCPass,BorderLayout.WEST);
+		row2.add(Cpassword,BorderLayout.EAST);
 		
-		row3.add(lblNUser);
-		row3.add(Nusername);
+		row3.add(lblNUser,BorderLayout.WEST);
+		row3.add(Nusername,BorderLayout.EAST);
 		
-		row4.add(lblNPass);
-		row4.add(Npassword);
+		row4.add(lblNPass,BorderLayout.WEST);
+		row4.add(Npassword,BorderLayout.EAST);
 		
-		row5.add(lblRPass);
-		row5.add(Rpassword);
+		row5.add(lblRPass,BorderLayout.WEST);
+		row5.add(Rpassword,BorderLayout.EAST);
 		
 		center.add(row1);
 		center.add(row2);
@@ -92,11 +105,13 @@ public class EditLogin extends JFrame {
 		buttons.add(save);
 		
 		south.add(buttons, BorderLayout.EAST);
-		main.add(south,BorderLayout.SOUTH);
-		main.add(center,BorderLayout.CENTER);
-		add(main);
+		centerHolder.add(center, BorderLayout.NORTH);
+		add(centerHolder,BorderLayout.WEST);
+		add(south,BorderLayout.SOUTH);
 		
-		setSize(500,300);
+//		setSize(500,300);
+		pack();
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}

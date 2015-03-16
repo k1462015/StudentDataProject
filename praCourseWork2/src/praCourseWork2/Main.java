@@ -7,8 +7,8 @@ import extraFeatures.Login;
 public class Main {
 
 	public static void main(String[] args) {
-		JFrame frame = new Login();
-		//new StudentFrame();
+//		JFrame frame = new Login();
+		new StudentFrame();
 	}
 
 }
