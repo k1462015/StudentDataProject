@@ -52,6 +52,7 @@ import com.itextpdf.text.DocumentException;
 
 import emailRelated.EmailSettingsFrame;
 import emailRelated.SendEmailFrame;
+import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
 import graphRelated.ScatterPlot;
 
@@ -112,7 +113,19 @@ public class StudentFrame extends JFrame {
 
 		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
 		JMenuItem loadExam = new JMenuItem("Load exam results");
+		JMenuItem userEdit= new JMenuItem("User settings");
+		userEdit.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				JFrame userSet = new EditLogin();
+
+			}
+
+		});;
+		
+		
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
 		AverageListener avgListener = new AverageListener();
 		compareAverage.addActionListener(avgListener);
@@ -151,7 +164,7 @@ public class StudentFrame extends JFrame {
 		search.addKeyListener(new searchListener());
 		list.setFixedCellHeight(30);// cell formatting
 		list.setFixedCellWidth(260);// same thing
-
+		extra.add(userEdit);
 		// Sets top panel with search to borderLayout, so search JTextField
 		// Stretches through the top dynamically
 
