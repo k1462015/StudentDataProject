@@ -500,8 +500,7 @@ public class StudentFrame extends JFrame {
 				}
 
 			}
-			// De-annonymises records
-			deAnnonymise();
+			//Creates table and adds to Tabbed Pane
 			tabbedPane();
 			examLoaded = true;
 
@@ -522,7 +521,7 @@ public class StudentFrame extends JFrame {
 			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
 					+ " " + a.getAssessment(a.getIndex(count));
 			count++;
-			ExamTable jtable = new ExamTable(a);
+			ExamTable jtable = new ExamTable(a,assesments,students);
 			jtable.getTable().addMouseListener(new TableListener());
 			tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
 		}
@@ -545,58 +544,6 @@ public class StudentFrame extends JFrame {
 			}
 		}
 		return false;
-	}
-
-	/**
-	 * matches anonymous marking codes in records with students in arraylist If
-	 * found, replaces with student numbers
-	 */
-	public void deAnnonymise() {
-		System.out.println("Starting deannonymising...");
-		for (Assessment a : assesments) {
-			for (Result t : a.results) {
-				String candKey = t.getCandKey();
-				candKey = candKey.replaceAll("\"", "");
-
-				// Checks if candKey is actually student number
-				// If it's coursework, it will enter this if statement
-				if (candKey.substring(candKey.length() - 2,
-						candKey.length() - 1).equals("/")) {
-					System.out.println("Coursework");
-					// Removes the end /1 or /2 after student number
-					candKey = candKey.substring(0, candKey.length() - 2);
-					candKey = candKey.replaceAll("#", "");
-					t.candKey = candKey;
-
-					for (Student s : students) {
-						candKey = candKey.replaceAll("#", "");
-						if (candKey.equals(s.studentNumber + "")) {
-							// Finds student with matching student numbers
-							// System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
-
-							String modCode = t.getModuleCode().replaceAll("\"",
-									"");
-							s.addMarks(modCode + " " + t.getAssessment(),
-									t.mark);
-						}
-					}
-				} else
-					for (Student s : students) {
-						candKey = candKey.replaceAll("#", "");
-						if (candKey.equals(s.aMC)) {
-							// Finds student with matching anonymous marking
-							// code
-							// Replaces it with student number
-							t.candKey = s.getStudentNumber();
-							t.setName(s.getName());
-							s.addMarks(t.getModuleCode().replaceAll("\"", "")
-									+ " " + t.getAssessment(), t.mark);
-						}
-					}
-
-			}
-		}
-
 	}
 
 	
