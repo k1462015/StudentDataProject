@@ -10,14 +10,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-
+/**
+ * JFrame containing help for email settings
+ * @author TMH
+ *
+ */
 public class HelpFrame extends JFrame {
 
 	public HelpFrame() {
 		super("Help");
 		initUi();
 	}
-
+	
+	/**
+	 * Adds all required components
+	 */
 	public void initUi() {
 		JPanel main = new JPanel();
 		main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));

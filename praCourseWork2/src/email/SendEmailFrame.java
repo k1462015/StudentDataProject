@@ -41,7 +41,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import student.Student;
-
+/**
+ * JFrame to send email
+ * @author TMH
+ *
+ */
 public class SendEmailFrame extends JFrame {
 	private ArrayList<Student> student;
 	private JTable table;
@@ -53,40 +57,38 @@ public class SendEmailFrame extends JFrame {
 
 	private JTextField emailField;
 	private JPasswordField password;
-	private ArrayList<Student> selectedStudent;
+	private ArrayList<Student> selectedStudents;
 	private JTextArea headerField;
 	private JTextArea footerField;
-	JTextArea prevField;
+	private JTextArea prevField;
 
 	public SendEmailFrame(ArrayList<Student> student, File settings) {
 		super("Email Frame");
 		this.student = student;
 		initUi();
 	}
-
+	
+	/**
+	 * Adds all required components
+	 */
 	public void initUi() {
 		createTable(false);
-		selectedStudent = new ArrayList<Student>();
-		// loadedSettings = settings;
-		findSettingsFile(); // sets the File obj var as the directory for
-							// settings
-		// The file may or may not exist
+		selectedStudents = new ArrayList<Student>();
+		
+		findSettingsFile();
 		
 		LineBorder firstPageBorder = new LineBorder(Color.BLACK,2);
 		Font btnFont = new Font("Century Gothic",Font.BOLD,15);
 		// First Page
-		// //JList
+		////JList
 		firstPage = new JPanel(new BorderLayout());
-//		firstPage.setBorder(firstPageBorder);
-		// ///////JList of students
+		/////////JList of students
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBorder(firstPageBorder);
 		listPanel = new JPanel(new BorderLayout());
 
 		listPanel.add(createTable(false), BorderLayout.CENTER);
 
-		// JList studentList = new JList();
-		// listPanel.add(studentList,BorderLayout.CENTER);
 		leftPanel.add(listPanel, BorderLayout.CENTER);
 
 		// Select all/none buttons
@@ -229,18 +231,8 @@ public class SendEmailFrame extends JFrame {
                 int generalFail = 0;
                 String failedRecipients = "";
 
-					for (Student s : selectedStudent) {
+					for (Student s : selectedStudents) {
 						try {
-//							JFrame frame = new JFrame();
-//							JProgressBar pb = new JProgressBar(0,100);
-//							pb.setValue(0);
-//							pb.setStringPainted(true);
-	//
-//							frame.add(pb);
-//							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//							frame.setVisible(true);
-//							frame.setSize(500, 500);
-							System.out.println("Current percentage is "+((selectedStudent.indexOf(s) / selectedStudent.size())*100));
                             sendEmail(s.getEmail(), createEmail(s));
                             if (sendEmail(s.getEmail(), createEmail(s))){
                                 emailsSent++;
@@ -255,16 +247,13 @@ public class SendEmailFrame extends JFrame {
                             generalFail++;
                             
                         } catch (AuthenticationFailedException e2) {
-                            //JOptionPane.showMessageDialog(null,"Email failed. Check your login and SMTP settings");
                         	failedRecipients += "\n" + " - " + s.getName();
                             authFail++;
                             generalFail++;
                             break;
                             
                         } catch (MessagingException e3) {
-                            //JOptionPane
-                                //    .showMessageDialog(null,
-                                    //        "Email failed. Check recipient email address, your login and SMTP settings");
+                            //JOptionPane.showMessageDialog(null,"Email failed. Check recipient email address, your login and SMTP settings");
                         	failedRecipients += s.getEmail() + " ";
                             generalFail++;
                             
@@ -329,7 +318,11 @@ public class SendEmailFrame extends JFrame {
 	}
 	
 
-
+	/**
+	 * 
+	 * @param b - If student is clicked, boolean set to true
+	 * @return JScrollPane of list of students
+	 */
 	public JScrollPane createTable(boolean b) {
 		MyTableModel model = new MyTableModel();
 
@@ -357,7 +350,7 @@ public class SendEmailFrame extends JFrame {
 		return scrollPane;
 	}
 
-	public class MyTableModel extends DefaultTableModel {
+	private class MyTableModel extends DefaultTableModel {
 
 		public MyTableModel() {
 			super(new String[] { "Student Name", "Check" }, 0);
@@ -394,6 +387,11 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
+	/**
+	 * Reads data from settings file
+	 * @param settings - current email settings file
+	 * @return Array containing settings data
+	 */
 	public String[] settingsData(File settings) {
 
 		BufferedReader br;
@@ -417,6 +415,9 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
+	/**
+	 * Retrieves selected student objects using student names in table and puts into Arraylist of selectedStudents
+	 */
 	public void getCheckedStudents() {
 		ArrayList<String> selectedRows = new ArrayList<String>();
 		for (int i = 0; i < table.getRowCount(); i++) {
@@ -429,12 +430,15 @@ public class SendEmailFrame extends JFrame {
 			for (String h : selectedRows) {
 				if (temp.getName().equals(h)) {
 					System.out.println(temp.getName() + "checked students");
-					selectedStudent.add(temp);
+					selectedStudents.add(temp);
 				}
 			}
 		}
 	}
 
+	/**
+	 * Retrieves settings file if it exists, else creates it
+	 */
 	public void findSettingsFile() {
 		String OS = System.getProperty("os.name").toLowerCase();
 
@@ -467,7 +471,16 @@ public class SendEmailFrame extends JFrame {
 			}
 		}
 	}
-
+	
+	/**
+	 * 
+	 * @param toAddress - recipient email address 
+	 * @param body - Message body
+	 * @return true - if message sent
+	 * @throws UnsupportedEncodingException
+	 * @throws AuthenticationFailedException
+	 * @throws MessagingException
+	 */
 	public boolean sendEmail(String toAddress, String body)
 			throws UnsupportedEncodingException, AuthenticationFailedException, MessagingException {
 		System.out.println(toAddress);
@@ -536,13 +549,18 @@ public class SendEmailFrame extends JFrame {
 		
 
 	}
-
+	
+	/**
+	 * Creates message body using header,footer and student results
+	 * @param s - student object
+	 * @return
+	 */
 	public String createEmail(Student s) {
 		ArrayList<String> marks = new ArrayList<String>();
 
 		String email = "";
 		email = headerField.getText() + "\r\n";
-		marks.addAll(s.getMarks());
+		marks.addAll(s.getAssessMarks());
 
 		for (String st : marks) {
 

@@ -24,7 +24,11 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import main.MainFrame;
-
+/**
+ * Login frame - prevents unauthorized access to system
+ * @author TMH
+ *
+ */
 public class Login extends JFrame{
 	private static String currentDirectory = new File("").getAbsolutePath();
 	private final long serialVersionUID = 1L;
@@ -34,6 +38,9 @@ public class Login extends JFrame{
 		initUi();
 	}
 	
+	/**
+	 * Adds all required components to frame
+	 */
 	public void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
 		
@@ -57,7 +64,6 @@ public class Login extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				BufferedReader br;
 				try {
-					//br = new BufferedReader(new FileReader("praCourseWork2/login.txt"));
 					br = new BufferedReader(new FileReader(currentDirectory + "/login.txt"));
 
 					StringBuilder sb = new StringBuilder();
@@ -78,20 +84,6 @@ public class Login extends JFrame{
 
 			      ArrayList<String> details = null;
 			      details = new ArrayList(Arrays.asList(str.trim().split("\\s*,\\s*")));
-
-				/*try {
-		            String str = "admin,soap";
-		            String filePath = new File("login.txt").getAbsolutePath();
-		            File newTextFile = new File(filePath);
-
-		            FileWriter fw = new FileWriter(newTextFile);
-		            fw.write(str);
-		            fw.close();
-
-		        } catch (IOException iox) {
-		            //do stuff with exception
-		            iox.printStackTrace();
-		        }*/
 				
 				if (username.getText().equals("") || password.getPassword().length == 0){
 					JOptionPane.showMessageDialog(null,"please enter a useranme or password");

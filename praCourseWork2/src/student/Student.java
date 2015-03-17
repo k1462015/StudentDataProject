@@ -2,7 +2,11 @@ package student;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
+/**
+ * Contains all information on student
+ * @author TMH
+ *
+ */
 public class Student {
 	protected String name;
 	protected String email;
@@ -19,7 +23,7 @@ public class Student {
 		this.name =  name;
 		this.email = email;
 		this.studentNumber = studentNumber;
-		this.setTutor(tutor);
+		this.tutor = tutor;
 		this.average = 0;
 		setParticipation(new ArrayList<String>());
 
@@ -60,15 +64,15 @@ public class Student {
 	public void addMarks(String modAss, int mark){
 		String temp = modAss + " " + mark;
 		System.out.println(temp);
-		getAssessMarks().add(temp);
+		assessMarks.add(temp);
 		marks.put(modAss, mark);
 	}
 	
 	
-	public ArrayList<String> getMarks(){
-		return getAssessMarks(); 
-	}
-	
+	/**
+	 * Calculates average of marks
+	 * @return average mark
+	 */
 	public double calcAverage(){
 		
 		int temp = 0;//to store total of the marks
@@ -84,34 +88,64 @@ public class Student {
 		return average;
 	}
 	
-	public void addParticipation(String p){
-		getParticipationArray().add(p);
+	/**
+	 * Adds participation data
+	 * @param participation
+	 */
+	public void addParticipation(String participation){
+		getParticipationArray().add(participation);
 	}
-
+	
+	/**
+	 * 
+	 * @return Arraylist of participation data
+	 */
 	public ArrayList<String> getParticipationArray() {
 		return participation;
 	}
-
+	
+	/**
+	 * 
+	 * @param participation
+	 */
 	public void setParticipation(ArrayList<String> participation) {
 		this.participation = participation;
 	}
-
+	
+	/**
+	 * 
+	 * @return Assessment marks
+	 */
 	public ArrayList<String> getAssessMarks() {
 		return assessMarks;
 	}
-
+	
+	/**
+	 * 
+	 * @param assessMarks
+	 */
 	public void setAssessMarks(ArrayList<String> assessMarks) {
 		this.assessMarks = assessMarks;
 	}
-
+	/**
+	 * 
+	 * @return tutor
+	 */
 	public String getTutor() {
 		return tutor;
 	}
-
+	
+	/**
+	 * 
+	 * @param tutor
+	 */
 	public void setTutor(String tutor) {
 		this.tutor = tutor;
 	}
-	
+	/**
+	 * 
+	 * @return average mark
+	 */
 	public double getAverage(){
 		return average;
 	}

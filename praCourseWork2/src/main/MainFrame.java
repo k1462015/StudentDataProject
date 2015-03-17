@@ -51,22 +51,25 @@ import email.SendEmailFrame;
 import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
 import graph.ScatterPlot;
-
+/**
+ * Main frame containing all components to display student data
+ * @author TMH
+ *
+ */
 public class MainFrame extends JFrame {
+	private static final long serialVersionUID = 1L;
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
 	private JList list;
 	private JTabbedPane tabbedPane;
 	private boolean examLoaded;
 	private boolean anonLoaded;
-	private File settingsFile; // Holds directory of settings file. The file
-								// itself may or may not exist
+	private File settingsFile;
+	
+	// Holds directory of settings file. The file
+	// itself may or may not exist
 	ArrayList<String> emails;
 	ArrayList<String> durations;
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private DisplayPopUpFrame display = null;
 
 	public MainFrame() {
@@ -78,7 +81,9 @@ public class MainFrame extends JFrame {
 		InitUI();
 
 	}
-
+	/**
+	 * Adds all required components to frame
+	 */
 	public void InitUI() {
 
 		tabbedPane = new JTabbedPane();
@@ -149,7 +154,7 @@ public class MainFrame extends JFrame {
 		// Initiliases assesment arrayList
 		assesments = new ArrayList<Assessment>();
 
-		LoadListener loadListen = new LoadListener();
+		LoadAnonListener loadListen = new LoadAnonListener();
 		loadAnon.addActionListener(loadListen);
 		loadExam.addActionListener(new loadExamListener());
 
@@ -293,7 +298,6 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser choosy = new JFileChooser();
-			String assessment = "";
 			File f = new File("C://Users//Saif//workspace");
 			choosy.setCurrentDirectory(f);
 
@@ -301,7 +305,7 @@ public class MainFrame extends JFrame {
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(
 					"CSV Files", "csv");
 			choosy.setFileFilter(filter);
-
+			
 			// Checks if a file has been opened
 			int returnValue = choosy.showOpenDialog(MainFrame.this);
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -324,18 +328,13 @@ public class MainFrame extends JFrame {
 					}else{
 					System.out.println("Not a exam.csv file");
 				}
-//					if (!linesplit[0].matches(("Year"))) {
-//						validFile = true;
-//					}else{
-//						System.out.println("Not a exam.csv file");
-//					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
 				if (validFile) {
-					loadExams(file, assessment);
+					loadExams(file);
 				} else {
 					JOptionPane.showMessageDialog(null,
 							"Please upload a valid exam.csv file");
@@ -361,7 +360,6 @@ public class MainFrame extends JFrame {
 					BoxLayout.PAGE_AXIS));
 			messagePanel.add(new JLabel("Module:"));
 			messagePanel.add(moduleField);
-			// messagePanel.add(Box.createHorizontalStrut(15)); // a spacer
 			messagePanel.add(new JLabel("URL:"));
 			messagePanel.add(urlField);
 
@@ -420,11 +418,14 @@ public class MainFrame extends JFrame {
 	}
 	
 
-
-	public void loadExams(File file, String assessment) {
+	/**
+	 * Loads exam data into tabbedpane
+	 * @param file - contains exam data
+	 */
+	public void loadExams(File file) {
 		try {
 			BufferedReader bf = new BufferedReader(new FileReader(file));
-			new ExamTable().readExamData(bf, assesments, assessment);
+			new ExamTable().readExamData(bf, assesments);
 			
 			//Creates table and adds to Tabbed Pane
 			tabbedPane();
@@ -437,7 +438,10 @@ public class MainFrame extends JFrame {
 		}
 
 	}
-
+	/**
+	 * Loops through assessments
+	 * Generates a tabbed pane for each assessment
+	 */
 	public void tabbedPane() {
 		String name = "";
 		int count = 0;
@@ -496,7 +500,12 @@ public class MainFrame extends JFrame {
 		public void mouseExited(MouseEvent e) {}
 		
 	}
-
+	
+	/**
+	 * Compiles a JList of students
+	 * @param students - Arraylist of students
+	 * @return
+	 */
 	public JList createJList(ArrayList<Student> students) {
 
 		DefaultListModel defListMod = new DefaultListModel();// create a list of
@@ -528,10 +537,14 @@ public class MainFrame extends JFrame {
 		list.setFont(new Font("Calibri", Font.BOLD, 20));
 		return list;
 	}
-
-	public void showDisplayPopUp(String data) {
+	
+	/**
+	 * Locates student from ArrayList and then displays Popup with student info
+	 * @param studentName
+	 */
+	public void showDisplayPopUp(String studentName) {
 		Student findStudent = null;
-		findStudent = findStudent(data, students);
+		findStudent = findStudent(studentName, students);
 		if (display != null) {
 			if (display.getName().equals(findStudent.getName())) {
 				// Debugging purposes
@@ -542,19 +555,24 @@ public class MainFrame extends JFrame {
 		display = new DisplayPopUpFrame(findStudent);
 
 	}
-
-	public Student findStudent(String check, ArrayList<Student> studentArrayList) {
+	/**
+	 * 
+	 * @param studentIdentity - Used to identify student
+	 * @param studentArrayList - ArrayList of students to search through
+	 * @return
+	 */
+	public Student findStudent(String studentIdentity, ArrayList<Student> studentArrayList) {
 		Student found = null;
 
 		for (int i = 0; i < studentArrayList.size(); i++) {
 			// Checks if searching using student Number or toString
-			if (!check.substring(check.length() - 1, check.length())
+			if (!studentIdentity.substring(studentIdentity.length() - 1, studentIdentity.length())
 					.equals(")")) {
-				if ((studentArrayList.get(i).getName().equals(check))) {
+				if ((studentArrayList.get(i).getName().equals(studentIdentity))) {
 					found = studentArrayList.get(i);
 				}
 			} else {
-				if (studentArrayList.get(i).toString().equals(check)) {
+				if (studentArrayList.get(i).toString().equals(studentIdentity)) {
 					found = studentArrayList.get(i);
 				}
 
@@ -588,17 +606,10 @@ public class MainFrame extends JFrame {
 				for (int i = 0; i < numOfRecords; i++) {
 					String tempCandKey = (String) currentTable.getValueAt(i, 0);
 					System.out.println(tempCandKey);
-					Student tempStu = findStudent(tempCandKey, students);// The
-																			// student
-																			// of
-																			// a
-																			// specific
-																			// row
-
-					// if the tempStu is not null, then gets their mark from the
-					// table
-					// and then plots the tempStu's average against their
-					// current mark
+					Student tempStu = findStudent(tempCandKey, students);
+					// The student of a specific row
+					// if the tempStu is not null, then gets their mark from the table
+					// and then plots the tempStu's average against their current mark
 					if (!(tempStu == null)) {
 						System.out.println(tempStu.toString());
 						int stuMarkInt = (Integer) currentTable
@@ -632,7 +643,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private class LoadListener implements ActionListener {
+	private class LoadAnonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -713,7 +724,10 @@ public class MainFrame extends JFrame {
 
 		}
 	}
-
+	
+	/**
+	 * MUSTA WILL DO
+	 */
 	public void findSettingsFile() {
 
 		String OS = System.getProperty("os.name").toLowerCase();

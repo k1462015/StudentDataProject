@@ -26,12 +26,16 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
-
+/**
+ * JFrame to allow configuration of SMTP settings
+ * @author TMH
+ *
+ */
 public class EmailSettingsFrame extends JFrame {
 	private String[] connecSecu;
 	private String[] authenMeth;
 	
-	File settingsFile;
+	private File settingsFile;
 	
 	//The values these hold will be from an existing ini file
 	private String serverPreLoaded;
@@ -41,17 +45,19 @@ public class EmailSettingsFrame extends JFrame {
 	private JPanel main;
 	
 	private HelpFrame hf;
-	
-	JTextField serverNameField;
-	JSpinner portSpinner;
-	JComboBox connectionBox;
-	JComboBox authenticationBox;
-	JTextField userField;
-	JButton ok;
-	JButton cancel;
+	private JTextField serverNameField;
+	private JSpinner portSpinner;
+	private JComboBox connectionBox;
+	private JComboBox authenticationBox;
+	private JTextField userField;
+	private JButton ok;
+	private JButton cancel;
 
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * @param settings - Holds file for settings.ini within users directory
+	 */
 	public EmailSettingsFrame(File settings) {
 		super("SMTP Server");
 		this.settingsFile = settings;
@@ -63,7 +69,7 @@ public class EmailSettingsFrame extends JFrame {
 			if (checkSettings(settingsFile) == true){//Checks if file is in correct format
 				
 				loadSettings(settingsFile);
-				displaySettings();
+				setSettings();
 			} else{
 				System.out.println("File doesn't follow correct format");
 			}
@@ -72,14 +78,7 @@ public class EmailSettingsFrame extends JFrame {
 		}
 	}
 	
-	/**
-	 * Made a quick method 
-	 * that allows you to quickly define 
-	 * the connection security options
-	 * and authentication methods
-	 */
-
-	public void setString() {
+	private void setString() {
 		connecSecu = new String[1];
 		connecSecu[0] = "StartTLS";
 
@@ -87,8 +86,8 @@ public class EmailSettingsFrame extends JFrame {
 		authenMeth[0] = "StartTLS";
 
 	}
-
-	public void initUi() {
+	
+	private void initUi() {
 		//Adds profile menu
 		addProfileMenu();
 		
@@ -206,8 +205,6 @@ public class EmailSettingsFrame extends JFrame {
 		
 		JButton helpBtn = new JButton("Help");
 		hf = new HelpFrame();
-//		hf.setLocation(1600, 550);
-//		hf.setVisible(false);
 		helpBtn.addActionListener(new ActionListener(){
 
 			@Override
@@ -230,8 +227,6 @@ public class EmailSettingsFrame extends JFrame {
 		buttonHolder.add(buttonEast,BorderLayout.EAST);
 		buttonWest.add(helpBtn);
 		buttonHolder.add(buttonWest,BorderLayout.WEST);
-		//JPanel buttonBorder = new JPanel(new BorderLayout());
-		//buttonBorder.add(buttonHolder, BorderLayout.EAST);
 		main.add(buttonHolder, BorderLayout.SOUTH);
 
 		add(main, BorderLayout.CENTER);
@@ -248,26 +243,29 @@ public class EmailSettingsFrame extends JFrame {
 
 	}
 	
-	public void addProfileMenu(){
+	/**
+	 * Adds profile menu to Menubar
+	 */
+	private void addProfileMenu(){
 		//Adds profile options //EXTRA FEATURE
-				JMenuBar menubar = new JMenuBar();
+		JMenuBar menubar = new JMenuBar();
 				
-				JMenu profiles = new JMenu("Profiles");
-				JRadioButton outlook = new JRadioButton("Outlook");
-				JRadioButton windowsLive = new JRadioButton("Windows Live");
-				JRadioButton gmail = new JRadioButton("Gmail");
-				JRadioButton yahoo = new JRadioButton("Yahoo");
-				outlook.addActionListener(new ActionListener(){
+		JMenu profiles = new JMenu("Profiles");
+		JRadioButton outlook = new JRadioButton("Outlook");
+		JRadioButton windowsLive = new JRadioButton("Windows Live");
+		JRadioButton gmail = new JRadioButton("Gmail");
+		JRadioButton yahoo = new JRadioButton("Yahoo");
+		outlook.addActionListener(new ActionListener(){
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						windowsLive.setSelected(false);
-						gmail.setSelected(false);
-						yahoo.setSelected(false);
-						serverNameField.setText("outlook.office365.com");
-						portSpinner.setValue(587);
-						
-					}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		windowsLive.setSelected(false);
+		gmail.setSelected(false);
+		yahoo.setSelected(false);
+		serverNameField.setText("outlook.office365.com");
+		portSpinner.setValue(587);
+			
+		}
 					
 				});
 				yahoo.addActionListener(new ActionListener(){
@@ -418,8 +416,7 @@ public class EmailSettingsFrame extends JFrame {
 		
 	}
 	
-	//Returns a String containing the selected settings, separated by a comma
-	public String settingsString(){
+	private String settingsString(){
 		
 		//The index of the settings info:
 		//ServerName[0], PortNum[1], UserName[2], StartTLS[3]
@@ -439,7 +436,11 @@ public class EmailSettingsFrame extends JFrame {
 		return s;
 	}
 	
-	//Checks to see if settings file contains info in the correct format
+	/**
+	 * 
+	 * @param settings - current settings file
+	 * @return true - if settings file is in correct format
+	 */
 	public boolean checkSettings(File settings){
 		
 		BufferedReader br;
@@ -465,7 +466,11 @@ public class EmailSettingsFrame extends JFrame {
 		
 	}
 	
-	//Gets existing settings file and loads up the data into appropriate variables
+	/**
+	 * Loads settings from file
+	 * @param settings - Current settings file
+	 * @return A string array of the values from file
+	 */
 	public String[] loadSettings(File settings){
 		
 		String[] settingsArray = {};
@@ -500,8 +505,10 @@ public class EmailSettingsFrame extends JFrame {
 		return settingsArray;
 	}
 	
-	//After loading up the settings, this method puts the settings within the widgets
-	public void displaySettings(){
+	/**
+	 * Inputs settings into corresponding widgets
+	 */
+	public void setSettings(){
 		serverNameField.setText(serverPreLoaded);
 		portSpinner.setValue(portPreLoaded);
 		userField.setText(userPreLoaded);
@@ -513,9 +520,5 @@ public class EmailSettingsFrame extends JFrame {
 		}
 		
 	}
-
-	/*public static void main(String[] args) {
-		EmailSettingsFrame frame = new EmailSettingsFrame();
-	}*/
 
 }

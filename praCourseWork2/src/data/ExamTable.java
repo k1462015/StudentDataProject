@@ -15,20 +15,42 @@ import student.Assessment;
 import student.Result;
 import student.Student;
 
+/**
+ * Creates JTable for Assessments & De-anonymises anon codes
+ * @author TMH
+ *
+ */
 public class ExamTable {
 	JTable table;
 
-	public ExamTable(Assessment ass, ArrayList<Assessment> assesments,
-			ArrayList<Student> students) {
+	/**
+	 * 
+	 * @param Assesment
+	 *            object containing results
+	 * @param ArrayList
+	 *            of all loaded Assessment
+	 * @param ArrayList
+	 *            of students
+	 */
+	public ExamTable(Assessment ass, ArrayList<Assessment> assesments,ArrayList<Student> students) {
 		deAnnonymise(assesments, students);
 		makeTable(ass);
 	}
-
+	
+	/**
+	 * Allows usage of readExamData method
+	 */
 	public ExamTable() {
 
 	}
 
-	public void makeTable(Assessment ass) {
+	/**
+	 * Generates a JTable Using results from Assessment
+	 * 
+	 * @param Assesment
+	 *            Obejct containing results
+	 */
+	public void makeTable(Assessment assessment) {
 		DefaultTableModel model = new DefaultTableModel() {
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -61,26 +83,27 @@ public class ExamTable {
 		System.out.println("Making JTable");
 		// Fetches first assessment and adds to table
 		// for (Assessment t : assessments) {
-		for (Result r : ass.getResults()) {
+		for (Result r : assessment.getResults()) {
 			String name = r.getName();
-			if(r.getName().equals("")){
+			if (r.getName().equals("")) {
 				name = r.getCandKey();
 			}
-			model.addRow(new Object[] { name,r.getModuleCode(), r.getAssessment(), r.getMark(), r.getGrade() });
+			model.addRow(new Object[] { name, r.getModuleCode(),
+					r.getAssessment(), r.getMark(), r.getGrade() });
 		}
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
 		table.setFillsViewportHeight(true);
 		table.setShowGrid(false);
-		// JScrollPane scrollPane = new JScrollPane(table);
-		// repaint();
-		// revalidate();
-
 	}
-
-	public void readExamData(BufferedReader bf,
-			ArrayList<Assessment> assesments, String assessment)
-			throws IOException {
+	
+	/**
+	 * Reads data from CSV file
+	 * @param BufferedReader containg csv file from file
+	 * @param ArrayList of currently load assessments
+	 * @throws IOException
+	 */
+	public void readExamData(BufferedReader bf,ArrayList<Assessment> assessments)throws IOException {
 		// Finds corresponding column indexes
 		// Reads first line to get column headings
 		String line = bf.readLine();
@@ -143,28 +166,27 @@ public class ExamTable {
 					ass, linesplit[candCol].replaceAll("\"", ""),
 					linesplit[nameCol].replaceAll("\"", ""),
 					Integer.parseInt(linesplit[markCol]), linesplit[gradeCol]);
-			assessment = temp.getModuleCode();
 			// First checks if Assessment array is empty
-			if (assesments.isEmpty()) {
+			if (assessments.isEmpty()) {
 				Assessment t1 = new Assessment();
 				t1.addResult(temp);
-				assesments.add(t1);
+				assessments.add(t1);
 				// Now checks if there is already an assessment
 				// object
 				// With same assessment number
 				// If not make new assessment object
 				// Then add record
-			} else if (!checkAllAss(temp.getAssessment(), assesments)) {
+			} else if (!checkAllAss(temp.getAssessment(), assessments)) {
 				Assessment t1 = new Assessment();
 				t1.addResult(temp);
-				assesments.add(t1);
+				assessments.add(t1);
 			} else {
 				// Since there is existing assessment object
 				// Finds it, and adds record
-				for (int i = 0; i < assesments.size(); i++) {
-					if (assesments.get(i).getResults().get(0).getAssessment()
+				for (int i = 0; i < assessments.size(); i++) {
+					if (assessments.get(i).getResults().get(0).getAssessment()
 							.equals(temp.getAssessment())) {
-						assesments.get(i).addResult(temp);
+						assessments.get(i).addResult(temp);
 					}
 				}
 			}
@@ -173,84 +195,31 @@ public class ExamTable {
 	}
 
 	/**
-	 * Checks through all Assessment Objects Within Assessment ArrayList If
-	 * finds existing one, that matches string returns true
-	 * 
-	 * @param s
-	 *            - assessment code
-	 * @return
+	 * Loops through all Assessment Objects within Assessment ArrayList
+	 * If finds existing one, that matches string returns true
+	 * @param assCode - Assessment code to check
+	 * @return true - If have have existing assessment 
 	 */
-	public boolean checkAllAss(String s, ArrayList<Assessment> assesments) {
-		for (Assessment t : assesments) {
-			if (t.getResults().get(0).getAssessment().equals(s)) {
+	public boolean checkAllAss(String assCode, ArrayList<Assessment> assessments) {
+		for (Assessment t : assessments) {
+			if (t.getResults().get(0).getAssessment().equals(assCode)) {
 				// If does have assessment already
 				return true;
 			}
 		}
 		return false;
 	}
-
-//	/**
-//	 * matches anonymous marking codes in records with students in arraylist If
-//	 * found, replaces with student numbers
-//	 */
-//	public void deAnnonymise(ArrayList<Assessment> assesments,
-//			ArrayList<Student> students) {
-//		System.out.println("Starting deannonymising...");
-//		for (Assessment a : assesments) {
-//			for (Result t : a.getResults()) {
-//				String candKey = t.getCandKey();
-//				candKey = candKey.replaceAll("\"", "");
-//
-//				// Checks if candKey is actually student number
-//				// If it's coursework, it will enter this if statement
-//				if (candKey.substring(candKey.length() - 2,
-//						candKey.length() - 1).equals("/")) {
-//					System.out.println("Coursework");
-//					// Removes the end /1 or /2 after student number
-//					candKey = candKey.substring(0, candKey.length() - 2);
-//					candKey = candKey.replaceAll("#", "");
-//					t.setCandKey(candKey);
-//
-//					for (Student s : students) {
-//						candKey = candKey.replaceAll("#", "");
-//						if (candKey.equals(s.getStudentNumber())) {
-//							// Finds student with matching student numbers
-//							System.out.println("Found Student "
-//									+ s.getStudentNumber()
-//									+ " who matches on JTable with sNumber "
-//									+ candKey);
-//
-//							String modCode = t.getModuleCode().replaceAll("\"",
-//									"");
-//							s.addMarks(modCode + " " + t.getAssessment(),
-//									t.getMark());
-//						}
-//					}
-//				} else {
-//					System.out.println("Normal exam");
-//					for (Student s : students) {
-//						candKey = candKey.replaceAll("#", "");
-//						if (candKey.equals(s.getAMC() + "")) {
-//							// Finds student with matching anonymous marking
-//							// code
-//							// Replaces it with student number
-//							t.setCandKey(s.getStudentNumber() + "");
-//							t.setName(s.getName());
-//							s.addMarks(t.getModuleCode().replaceAll("\"", "")
-//									+ " " + t.getAssessment(), t.getMark());
-//						}
-//					}
-//				}
-//			}
-//		}
-//
-//	}
 	
-	public void deAnnonymise(ArrayList<Assessment> assesments,
-			ArrayList<Student> students) {
+	/**
+	 * Loops through all currently loaded Students
+	 * Matches Anon Codes
+	 * If matched then replaces anon codes with Student Name
+	 * @param assessments - ArrayList of currently loaded Assessments
+	 * @param students - Arraylist of all students
+	 */
+	public void deAnnonymise(ArrayList<Assessment> assessments,ArrayList<Student> students) {
 		System.out.println("Starting deannonymising...");
-		for (Assessment a : assesments) {
+		for (Assessment a : assessments) {
 			for (Result t : a.getResults()) {
 				String candKey = t.getCandKey();
 				candKey = candKey.replaceAll("\"", "");
@@ -300,6 +269,9 @@ public class ExamTable {
 
 	}
 
+	/**
+	 * @return JTable with collated data
+	 */
 	public JTable getTable() {
 		return table;
 	}

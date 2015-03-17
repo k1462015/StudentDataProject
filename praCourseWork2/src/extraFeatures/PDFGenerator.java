@@ -22,28 +22,13 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
  
 /**
- * First iText example: Hello World.
+ * PDF Generator for student data
  */
 public class PDFGenerator {
  
     /** Path to the resulting PDF file. */
     public static final String RESULT
         = "/Users/tahmidulislam/Desktop/Document2.pdf";
- 
-    /**
-     * Creates a PDF file: hello.pdf
-     * @param    args    no arguments needed
-     */
-//    public static void main(String[] args)
-//    	throws DocumentException, IOException {
-//    	Student s = new Student("Tahmidul Islam","t@kcl.ac.uk",12312,"tutor@kcl.ac.uk");
-//    	s.addMarks("4CCS1", 24);
-//    	s.addMarks("4CCPRP",90);
-//    	s.addMarks("4CCS21", 74);
-//    	s.addMarks("4CCPR2P",50);
-//    	s.addParticipation("4CCS1PRP 45mins ago");
-//    	new PDFTEST().createPdf(s);
-//    }
     
     public void createPDFFile(String filepath){
     	 try {
@@ -118,30 +103,12 @@ public class PDFGenerator {
             }
             document.newPage();
         }
-//        //Adds title to PDF with student name and #Student
-//        Font fontbold = FontFactory.getFont("COURIER_BOLDOBLIQUE", 20, Font.BOLD + Font.UNDERLINE);
-//        Paragraph p = new Paragraph(s.getName()+","+"#"+s.getStudentNumber(), fontbold);
-//        p.setSpacingAfter(10);
-//        p.setAlignment(1); // Center
-//        document.add(p);
-//        
-//        
-//        //Creates table with student details
-//        document.add(createFirstTable(s));
-//        //Adds table that shows results
-//        document.add(createResultsTable(s));
-//        
-//        if(s.getParticipationArray().size() > 0){
-//        	//Adds participation records
-//        	document.add(createAccessTable(s));
-//        }
-        // step 5
         document.close();
     }
     
     /**
-     * Creates our first table
-     * @return our first table
+     * Creates table containing student data
+     * @return studentInfo table
      * @throws DocumentException 
      */
     public static PdfPTable createFirstTable(Student s) throws DocumentException {
@@ -205,13 +172,17 @@ public class PDFGenerator {
 
         return table;
     }
-    
+    /**
+     * Takes student results data and adds to a table
+     * @param s - student object
+     * @return
+     * @throws DocumentException
+     */
     public static PdfPTable createResultsTable(Student s) throws DocumentException {
-    	// a table with three columns
+    		// a table with three columns
         PdfPTable table = new PdfPTable(1);
         table.setWidthPercentage(50);
         table.setSpacingBefore(10);
-//        table.setWidths(new int[]{30,50});
         // the cell object
         PdfPCell cell;
         
@@ -233,7 +204,6 @@ public class PDFGenerator {
             cell.setBorderWidth(2); 
             cell.setFixedHeight(40f);
             cell.setLeading(30f, 0f);
-//            cell.setBorder(PdfPCell.NO_BORDER);
             table.addCell(cell);
         }
         
@@ -241,11 +211,15 @@ public class PDFGenerator {
     	return table;
     }
     
+    /**
+     * Generates table containg Access times
+     * @param s - student
+     * @return table
+     */
     public static PdfPTable createAccessTable(Student s){
     	PdfPTable table = new PdfPTable(1);
         table.setWidthPercentage(50);
         table.setSpacingBefore(1);
-//        table.setWidths(new int[]{30,50});
         // the cell object
         PdfPCell cell;
         

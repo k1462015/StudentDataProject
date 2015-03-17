@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import student.Student;
 import studentdata.Connector;
 import studentdata.DataTable;
-
+/**
+ * Connects to server and retrieves student data
+ * @author TMH
+ *
+ */
 public class ServerConnect {
 
 	public ServerConnect(ArrayList<Student> students) {

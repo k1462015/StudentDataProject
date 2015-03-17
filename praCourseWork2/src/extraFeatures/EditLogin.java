@@ -24,7 +24,12 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-
+/**
+ * Edit login frame
+ * Allows user to change user details
+ * @author TMH
+ *
+ */
 public class EditLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private static String currentDirectory = new File("").getAbsolutePath();
@@ -35,6 +40,9 @@ public class EditLogin extends JFrame {
 		initUi();
 	}
 	
+	/**
+	 * Adds all required components to frame
+	 */
 	public void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
 		
@@ -113,11 +121,18 @@ public class EditLogin extends JFrame {
 		setVisible(true);
 	}
 	
+	/**
+	 * Allows changing of user details
+	 * @param Cname - Current name
+	 * @param Cpass - Current password
+	 * @param Nname - New name
+	 * @param Npass - New password
+	 * @param Rpass - Re-type password
+	 */
 	public void edit(JTextField Cname, JPasswordField  Cpass, JTextField Nname, JPasswordField Npass,JPasswordField Rpass ){
 		BufferedReader br;
 		String userDetails ="";
 		try {
-			//br = new BufferedReader(new FileReader("praCourseWork2/login.txt"));
 			br = new BufferedReader(new FileReader(currentDirectory + "/login.txt"));
 
 			StringBuilder sb = new StringBuilder();

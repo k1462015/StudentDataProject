@@ -23,14 +23,17 @@ import org.w3c.dom.Document;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
 import static javafx.concurrent.Worker.State.FAILED;
-
+/**
+ * SwingBrowser 
+ * @author TMH
+ *
+ */
 public class Browser extends JPanel {
 
 	private final JFXPanel jfxPanel = new JFXPanel();
@@ -98,20 +101,6 @@ public class Browser extends JPanel {
 
 				WebView view = new WebView();
 				engine = view.getEngine();
-
-				// engine.titleProperty().addListener(new
-				// ChangeListener<String>() {
-				// @Override
-				// public void changed(ObservableValue<? extends String>
-				// observable, String oldValue, final String newValue) {
-				// SwingUtilities.invokeLater(new Runnable() {
-				// @Override
-				// public void run() {
-				// SimpleSwingBrowser.this.setTitle(newValue);
-				// }
-				// });
-				// }
-				// });
 
 				engine.setOnStatusChanged(new EventHandler<WebEvent<String>>() {
 					@Override
@@ -188,7 +177,11 @@ public class Browser extends JPanel {
 			}
 		});
 	}
-
+	
+	/**
+	 * Loads url into browser
+	 * @param url
+	 */
 	public void loadURL(final String url) {
 		Platform.runLater(new Runnable() {
 			@Override
@@ -211,8 +204,14 @@ public class Browser extends JPanel {
 			return null;
 		}
 	}
-
-	public static void printDocument(Document doc, OutputStream out)
+	/**
+	 * Reads data from website and filters out email and duration times
+	 * @param doc - currentPage
+	 * @param out
+	 * @throws IOException
+	 * @throws TransformerException
+	 */
+	public static void printDocument(Document doc)
 			throws IOException, TransformerException {
 		System.out.println("Retreiving document data");
 		TransformerFactory tf = TransformerFactory.newInstance();
@@ -257,7 +256,7 @@ public class Browser extends JPanel {
 
 	public void readDocument() {
 		try {
-			printDocument(engine.getDocument(), System.out);
+			printDocument(engine.getDocument());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

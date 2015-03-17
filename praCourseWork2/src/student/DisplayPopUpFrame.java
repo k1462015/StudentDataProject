@@ -13,10 +13,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
-
+/**
+ * Popup frame containing student info
+ * @author TMH
+ *
+ */
 public class DisplayPopUpFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	protected JLabel name;
+	private JLabel name;
 	private JLabel emailAddress;
 	private JLabel studentNumber;
 	private JLabel tutor;
@@ -41,7 +45,10 @@ public class DisplayPopUpFrame extends JFrame {
 		makePopUp();
 
 	}
-
+	
+	/**
+	 * Adds all components to popup frame
+	 */
 	public void makePopUp() {
 		// Initialises required JPanels
 		main = new JPanel();
@@ -126,6 +133,9 @@ public class DisplayPopUpFrame extends JFrame {
 
 	}
 	
+	/**
+	 * return - name of student in display pop up
+	 */
 	public String getName(){
 		return name.getText();
 	}

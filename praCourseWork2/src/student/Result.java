@@ -1,16 +1,20 @@
 package student;
-
+/**
+ * Contains student results data
+ * @author TMH
+ *
+ */
 public class Result {
-	protected String year;
-	protected String period;
-	protected String occ;
-	protected String map;
-	protected String name;
-	protected String moduleCode;
-	protected String assessment;
-	protected String candKey;
-	protected int mark;
-	protected String grade;
+	private String year;
+	private String period;
+	private String occ;
+	private String map;
+	private String name;
+	private String moduleCode;
+	private String assessment;
+	private String candKey;
+	private int mark;
+	private String grade;
 	
 	public Result(String year,String period,String moduleCode,String occ,String map,String assessment,String candKey,String name,int mark,String grade){
 		this.moduleCode = moduleCode;

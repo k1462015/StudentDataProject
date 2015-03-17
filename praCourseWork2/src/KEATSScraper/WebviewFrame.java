@@ -15,7 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-
+/**
+ * Frame containing browser and ability to scrape data
+ * @author tahmidulislam
+ *
+ */
 public class WebviewFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -29,6 +33,9 @@ public class WebviewFrame extends JFrame {
 		initComponents();
 	}
 	
+	/**
+	 * Adds all required components
+	 */
 	public void initComponents(){
 		JPanel bottomPane = new JPanel();
 		bottomPane.setLayout(new BorderLayout());
@@ -92,10 +99,17 @@ public class WebviewFrame extends JFrame {
 		
 	}
 	
+	/**
+	 * 
+	 * @return arraylist of emails
+	 */
 	public ArrayList<String> getEmails(){
 		return browser.getEmails();
 	}
-	
+	/**
+	 * 
+	 * @return arraylist of durations
+	 */
 	public ArrayList<String> getDurations(){
 		return browser.getDurations();
 	}
