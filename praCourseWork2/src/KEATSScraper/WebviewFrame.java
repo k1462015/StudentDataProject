@@ -17,6 +17,8 @@ import javax.swing.WindowConstants;
 
 
 public class WebviewFrame extends JFrame {
+
+	private static final long serialVersionUID = 1L;
 	private String url;
 	public Browser browser;
 	public JButton btnFetch;
@@ -101,8 +103,5 @@ public class WebviewFrame extends JFrame {
 	
 	
  	
-	public static void main(String [] args){
-		WebviewFrame wf = new WebviewFrame("https://login-keats.kcl.ac.uk/?errorcode=4");
-	}
 
 }

@@ -24,7 +24,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import main.MainFrame;
 
 public class EditLogin extends JFrame {
 	private static final long serialVersionUID = 1L;

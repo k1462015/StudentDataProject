@@ -2,11 +2,9 @@ package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -35,20 +33,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
-import javax.swing.ListSelectionModel;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 
 import org.jfree.data.xy.XYSeries;
 
 import student.Assessment;
 import student.DisplayPopUpFrame;
 import student.Student;
-import studentdata.Connector;
-import studentdata.DataTable;
 import KEATSScraper.WebviewFrame;
 
 import com.itextpdf.text.DocumentException;
