@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -30,19 +31,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import student.Student;
+
 /**
  * JFrame to send email
+ * 
  * @author TMH
  *
  */
@@ -61,26 +69,27 @@ public class SendEmailFrame extends JFrame {
 	private JTextArea headerField;
 	private JTextArea footerField;
 	private JTextArea prevField;
+	private JFrame progressFrame;
+	private JProgressBar progBar;
 
 	public SendEmailFrame(ArrayList<Student> student, File settings) {
 		super("Email Frame");
 		this.student = student;
 		initUi();
 	}
-	
-	
+
 	private void initUi() {
 		createTable(false);
 		selectedStudents = new ArrayList<Student>();
-		
+
 		findSettingsFile();
-		
-		LineBorder firstPageBorder = new LineBorder(Color.BLACK,2);
-		Font btnFont = new Font("Century Gothic",Font.BOLD,15);
+
+		LineBorder firstPageBorder = new LineBorder(Color.BLACK, 2);
+		Font btnFont = new Font("Century Gothic", Font.BOLD, 15);
 		// First Page
-		////JList
+		// //JList
 		firstPage = new JPanel(new BorderLayout());
-		/////////JList of students
+		// ///////JList of students
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBorder(firstPageBorder);
 		listPanel = new JPanel(new BorderLayout());
@@ -126,16 +135,16 @@ public class SendEmailFrame extends JFrame {
 		rightPane.setLayout(new BoxLayout(rightPane, BoxLayout.PAGE_AXIS));
 		rightPane.setBorder(firstPageBorder);
 		// /////////Header and footer
-		JLabel header = new JLabel("Header",SwingConstants.LEFT);
-		header.setFont(new Font("Century Gothic",Font.BOLD,30));
+		JLabel header = new JLabel("Header", SwingConstants.LEFT);
+		header.setFont(new Font("Century Gothic", Font.BOLD, 30));
 		headerField = new JTextArea();
-		headerField.setFont(new Font("Century Gothic",Font.BOLD,20));
+		headerField.setFont(new Font("Century Gothic", Font.BOLD, 20));
 		headerField.setBorder(firstPageBorder);
-		
-		JLabel footer = new JLabel("Footer",SwingConstants.LEFT);
-		footer.setFont(new Font("Century Gothic",Font.BOLD,30));
+
+		JLabel footer = new JLabel("Footer", SwingConstants.LEFT);
+		footer.setFont(new Font("Century Gothic", Font.BOLD, 30));
 		footerField = new JTextArea();
-		footerField.setFont(new Font("Century Gothic",Font.BOLD,20));
+		footerField.setFont(new Font("Century Gothic", Font.BOLD, 20));
 		footerField.setBorder(firstPageBorder);
 
 		rightPane.add(header);
@@ -149,7 +158,7 @@ public class SendEmailFrame extends JFrame {
 		JPanel nextHolder = new JPanel(new BorderLayout());
 		JButton next = new JButton("Next");
 		next.setFont(btnFont);
-	
+
 		next.addActionListener(new ActionListener() {
 
 			@Override
@@ -171,13 +180,13 @@ public class SendEmailFrame extends JFrame {
 		firstPage.add(nextHolder, BorderLayout.SOUTH);
 
 		// Second Page
-		LineBorder secondPageBorder = new LineBorder(Color.BLACK,2);
+		LineBorder secondPageBorder = new LineBorder(Color.BLACK, 2);
 		secondPage = new JPanel(new BorderLayout());
 		// ////////Preview
 		JPanel preview = new JPanel(new BorderLayout());
 		prevField = new JTextArea();
 		prevField.setEditable(false);
-		prevField.setFont(new Font("Century Gothic",Font.PLAIN,30));
+		prevField.setFont(new Font("Century Gothic", Font.PLAIN, 30));
 		preview.add(prevField, BorderLayout.CENTER);
 		prevField.setBorder(secondPageBorder);
 		secondPage.add(new JScrollPane(preview), BorderLayout.CENTER);
@@ -187,27 +196,25 @@ public class SendEmailFrame extends JFrame {
 		secondPage.add(bottomPanel, BorderLayout.SOUTH);
 
 		JPanel infoPanel = new JPanel();
-		infoPanel.setBorder(new LineBorder(Color.BLACK,1));
+		infoPanel.setBorder(new LineBorder(Color.BLACK, 1));
 		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
 		JPanel emailPanel = new JPanel(new BorderLayout());
 		JPanel passwordPanel = new JPanel(new BorderLayout());
-		
+
 		JLabel email = new JLabel("Email:");
-		email.setFont(new Font("Century Gothic",Font.BOLD,15));
+		email.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		JLabel pass = new JLabel("Password:");
-		pass.setFont(new Font("Century Gothic",Font.BOLD,15));
-		
-		
-		
+		pass.setFont(new Font("Century Gothic", Font.BOLD, 15));
+
 		emailField = new JTextField();
 		password = new JPasswordField();
-		
-		emailPanel.add(email,BorderLayout.WEST);
-		emailPanel.add(emailField,BorderLayout.CENTER);
-		
-		passwordPanel.add(pass,BorderLayout.WEST);
-		passwordPanel.add(password,BorderLayout.CENTER);
-		
+
+		emailPanel.add(email, BorderLayout.WEST);
+		emailPanel.add(emailField, BorderLayout.CENTER);
+
+		passwordPanel.add(pass, BorderLayout.WEST);
+		passwordPanel.add(password, BorderLayout.CENTER);
+
 		infoPanel.add(emailPanel);
 		infoPanel.add(passwordPanel);
 		bottomPanel.add(infoPanel, BorderLayout.CENTER);
@@ -222,61 +229,48 @@ public class SendEmailFrame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
 
+					@Override
+					public void run() {
+						progressFrame = new JFrame("Progress bar");
+						progBar = new JProgressBar();
+						progBar.setValue(0);
+						progBar.setStringPainted(true);
+						progBar.addChangeListener(new ChangeListener() {
 
-				int emailsSent = 0;
-                int authFail = 0;
-                int generalFail = 0;
-                String failedRecipients = "";
+							@Override
+							public void stateChanged(ChangeEvent e) {
+								if (progBar.getValue() == 100) {
+									progressFrame.dispose();
+									JOptionPane.showMessageDialog(null,
+											"Emails succesfully sent!");
+								}
 
-					for (Student s : selectedStudents) {
-						try {
-                            sendEmail(s.getEmail(), createEmail(s));
-                            if (sendEmail(s.getEmail(), createEmail(s))){
-                                emailsSent++;
-                                
-                            } else{
-                            	
-                                generalFail++;
-                                failedRecipients += "\n" + " - " + s.getName();
-                            }
-                        } catch (UnsupportedEncodingException e1) {
-                        	failedRecipients += "\n" + " - " + s.getName();
-                            generalFail++;
-                            
-                        } catch (AuthenticationFailedException e2) {
-                        	failedRecipients += "\n" + " - " + s.getName();
-                            authFail++;
-                            generalFail++;
-                            break;
-                            
-                        } catch (MessagingException e3) {
-                            //JOptionPane.showMessageDialog(null,"Email failed. Check recipient email address, your login and SMTP settings");
-                        	failedRecipients += s.getEmail() + " ";
-                            generalFail++;
-                            
-                          
-                        }
+							}
+
+						});
+
+						progressFrame.add(progBar);
+						progressFrame.setSize(300, 150);
+						progressFrame.setLocationRelativeTo(null);
+						progressFrame.setVisible(true);
 
 					}
-					
-	                String message  = "";
-	                if(emailsSent > 0){
-	                    message += emailsSent +" emails have been sent successfully.";
-	                } 
-	                
-	                if(generalFail > 0){
-	                    message += generalFail +" emails have failed.";
-	                    message += "\nFailed to send to these recipients: " + failedRecipients;
-	                } 
-	                
-	                    
-	                JOptionPane.showMessageDialog(null, message);
-	            
 
+				});
 
+				try {
+					sendEmail();
+				} catch (UnsupportedEncodingException e1) {
+					System.out.println("Encoding error");
+				} catch (AuthenticationFailedException e1) {
+					System.out.println("Incorrect user or password");
+				} catch (MessagingException e1) {
+					// TODO Auto-generated catch block
+					System.out.println("Something wrong with message");
+				}
 
-				
 			}
 
 		});
@@ -314,7 +308,6 @@ public class SendEmailFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-	
 
 	private JScrollPane createTable(boolean b) {
 		MyTableModel model = new MyTableModel();
@@ -323,18 +316,18 @@ public class SendEmailFrame extends JFrame {
 			model.addRow(new Object[] { s.getName().replaceAll("\"", ""), b });
 		}
 		table = new JTable(model);
-		table.setFont(new Font("Century Gothic",Font.BOLD,12));
+		table.setFont(new Font("Century Gothic", Font.BOLD, 12));
 
 		JTableHeader header = table.getTableHeader();
-		header.setFont(new Font("Century Gothic",Font.BOLD,15));
-	    header.setBackground(Color.black);
-	    header.setForeground(Color.WHITE);
-		
+		header.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		header.setBackground(Color.black);
+		header.setForeground(Color.WHITE);
+
 		table.setPreferredScrollableViewportSize(new Dimension(300, 350));
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.BLACK);
 		JScrollPane scrollPane = new JScrollPane(table);
-		
+
 		table.setGridColor(Color.black);
 
 		repaint();
@@ -380,7 +373,6 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
-
 	private String[] settingsData(File settings) {
 
 		BufferedReader br;
@@ -404,7 +396,6 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
-
 	private void getCheckedStudents() {
 		ArrayList<String> selectedRows = new ArrayList<String>();
 		for (int i = 0; i < table.getRowCount(); i++) {
@@ -422,7 +413,6 @@ public class SendEmailFrame extends JFrame {
 			}
 		}
 	}
-
 
 	private void findSettingsFile() {
 		String OS = System.getProperty("os.name").toLowerCase();
@@ -456,77 +446,138 @@ public class SendEmailFrame extends JFrame {
 			}
 		}
 	}
-	
 
-	private boolean sendEmail(String toAddress, String body)
-			throws UnsupportedEncodingException, AuthenticationFailedException, MessagingException {
-		System.out.println(toAddress);
-		String email = body;
-		String to = toAddress;
-		;// change accordingly
-		// default settings
-		String hostAddress = "outlook.office365.com"; //IP address in the form of DNS name
-		String port = "587";
-		String from = emailField.getText();// change accordingly
-		String startTls = "true";
+	public void sendEmail() throws UnsupportedEncodingException,
+			AuthenticationFailedException, MessagingException {
+		SwingWorker<Boolean, Double> worker = new SwingWorker<Boolean, Double>() {
 
-		// if the settings were loaded correctly, then the default settings will
-		// be changed
-		if (!(settingsArray == null)) {
-			hostAddress = settingsArray[0];
-			port = settingsArray[1];
-			startTls = settingsArray[3];
-		}
+			@Override
+			protected Boolean doInBackground()
+					throws UnsupportedEncodingException,
+					AuthenticationFailedException, MessagingException {
+				for (Student s : selectedStudents) {
+					try {
+						String toAddress = s.getEmail();
+						String body = createEmail(s);
 
-		// Holds the server default settings for outlook
-		Properties prop = System.getProperties();
-		prop.put("mail.smtp.auth", "true");
+						System.out.println(toAddress);
+						String email = body;
+						String to = toAddress;
+						;// change accordingly
+							// default settings
+						String hostAddress = "outlook.office365.com"; // IP
+																		// address
+																		// in
+																		// the
+																		// form
+																		// of
+																		// DNS
+																		// name
+						String port = "587";
+						String from = emailField.getText();// change accordingly
+						String startTls = "true";
 
-		if (!hostAddress.equals("smtp.mail.yahoo.com")) {// if it isn't yahoo,
-															// add these
-															// properties
-			prop.put("mail.smtp.socketFactory.port", port);
-			prop.put("mail.smtp.socketFactory.class",
-					"javax.net.ssl.SSLSocketFactory");
-		}
+						// if the settings were loaded correctly, then the
+						// default
+						// settings will
+						// be changed
+						if (!(settingsArray == null)) {
+							hostAddress = settingsArray[0];
+							port = settingsArray[1];
+							startTls = settingsArray[3];
+						}
 
-		prop.put("mail.smtp.starttls.enable", startTls);
-		prop.put("mail.smtp.host", hostAddress);
-		prop.put("mail.smtp.port", port);
+						// Holds the server default settings for outlook
+						Properties prop = System.getProperties();
+						prop.put("mail.smtp.auth", "true");
 
-		Session session = Session.getDefaultInstance(prop,
-				new javax.mail.Authenticator() {
+						if (!hostAddress.equals("smtp.mail.yahoo.com")) {// if
+																			// it
+																			// isn't
+																			// yahoo,
+																			// add
+																			// these
+																			// properties
+							prop.put("mail.smtp.socketFactory.port", port);
+							prop.put("mail.smtp.socketFactory.class",
+									"javax.net.ssl.SSLSocketFactory");
+						}
 
-					@Override
-					protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-						return new javax.mail.PasswordAuthentication(from,
-								new String(password.getPassword()));
+						prop.put("mail.smtp.starttls.enable", startTls);
+						prop.put("mail.smtp.host", hostAddress);
+						prop.put("mail.smtp.port", port);
+
+						Session session = Session.getDefaultInstance(prop,
+								new javax.mail.Authenticator() {
+
+									@Override
+									protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+										return new javax.mail.PasswordAuthentication(
+												from, new String(password
+														.getPassword()));
+									}
+								}
+
+						);
+
+						// compose the message
+
+						MimeMessage message = new MimeMessage(session);
+						message.setFrom(new InternetAddress(from));
+						message.addRecipient(Message.RecipientType.TO,
+								new InternetAddress(to));
+						message.setSubject("Results");
+						message.setText(email);
+
+						// Send message
+						Transport transport = session.getTransport("smtp");
+						transport.connect();
+						transport.sendMessage(message,
+								message.getAllRecipients());
+						transport.close();
+						System.out.println("message sent successfully....");
+
+						double currentIndex = selectedStudents.indexOf(s);
+						double totalSize = selectedStudents.size() - 1;
+						double percent = (currentIndex / totalSize) * 100;
+						publish(percent);
+					} catch (AuthenticationFailedException e1) {
+						// TODO Auto-generated catch block
+						System.out.println("Incorrect user or password");
+						JOptionPane.showMessageDialog(null,
+								"Incorrect user or password");
+						progressFrame.dispose();
+						break;
+					} catch (MessagingException e1) {
+						// TODO Auto-generated catch block
+						System.out.println("Something wrong with message");
+						JOptionPane.showMessageDialog(null,
+								"Something wrong with message");
+						progressFrame.dispose();
+						break;
 					}
+
 				}
+				return true;
+			}
 
-		);
+			@Override
+			protected void process(List<Double> chunks) {
+				// TODO Auto-generated method stub
+				Double value = chunks.get(chunks.size() - 1);
+				System.out.println(value);
+				progBar.setValue(value.intValue());
+				super.process(chunks);
+			}
 
-		// compose the message
-		
-			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress(from));
-			message.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					to));
-			message.setSubject("Results");
-			message.setText(email);
+			@Override
+			protected void done() {
+				System.out.println("Completed thread");
+			}
 
-			// Send message
-			Transport transport = session.getTransport("smtp");
-			transport.connect();
-			transport.sendMessage(message, message.getAllRecipients());
-			transport.close();
-			System.out.println("message sent successfully....");
-			return true;
-
-		
-
+		};
+		worker.execute();
 	}
-	
 
 	private String createEmail(Student s) {
 		ArrayList<String> marks = new ArrayList<String>();
