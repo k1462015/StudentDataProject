@@ -564,6 +564,9 @@ public class SendEmailFrame extends JFrame {
 			@Override
 			protected void process(List<Double> chunks) {
 				// TODO Auto-generated method stub
+				if(chunks.size() == 1){
+					progBar.setValue(100);
+				}
 				Double value = chunks.get(chunks.size() - 1);
 				System.out.println(value);
 				progBar.setValue(value.intValue());
