@@ -82,7 +82,6 @@ public class HelpFrame extends JFrame {
 		add(main);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		pack();
-		setVisible(true);
 	}
 
 }

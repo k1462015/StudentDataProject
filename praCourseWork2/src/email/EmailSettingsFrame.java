@@ -206,8 +206,8 @@ public class EmailSettingsFrame extends JFrame {
 		
 		JButton helpBtn = new JButton("Help");
 		hf = new HelpFrame();
-		hf.setLocation(1600, 550);
-		hf.setVisible(false);
+//		hf.setLocation(1600, 550);
+//		hf.setVisible(false);
 		helpBtn.addActionListener(new ActionListener(){
 
 			@Override
@@ -241,6 +241,10 @@ public class EmailSettingsFrame extends JFrame {
 		setSize(600, 300);
 		setLocationRelativeTo(null);
 		setVisible(true);
+		
+		//Sets help frame
+		hf.setLocation(1600, 550);
+		hf.setVisible(false);
 
 	}
 	
