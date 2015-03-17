@@ -23,9 +23,9 @@ public class HelpFrame extends JFrame {
 		main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));
 		main.setMaximumSize(new Dimension(500,500));
 
-		Font titleFonts = new Font("Calibri", Font.BOLD, 50);
-		Font subFont = new Font("Calibri", Font.PLAIN, 25);
-		Font paraFonts = new Font("Calibri", Font.PLAIN, 17);
+		Font titleFonts = new Font("Calibri", Font.BOLD, 32);
+		Font subFont = new Font("Calibri", Font.PLAIN, 21);
+		Font paraFonts = new Font("Calibri", Font.PLAIN, 15);
 
 		Map attributes = titleFonts.getAttributes();
 		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
