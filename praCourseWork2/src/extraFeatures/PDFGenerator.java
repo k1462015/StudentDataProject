@@ -183,7 +183,7 @@ public class PDFGenerator {
         cell.setBorderWidth(3);
         cell.setBackgroundColor(BaseColor.YELLOW);
         table.addCell(cell);
-        cell = new PdfPCell(new Phrase(s.getStudentNumber(),fontH1));
+        cell = new PdfPCell(new Phrase(s.getStudentNumber()+"",fontH1));
         cell.setFixedHeight(40f);
         cell.setPadding(5);
         cell.setLeading(30f, 0f);

@@ -1,4 +1,4 @@
-package praCourseWork2;
+package data;
 
 import java.util.ArrayList;
 

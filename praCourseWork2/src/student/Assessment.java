@@ -2,8 +2,6 @@ package student;
 
 import java.util.ArrayList;
 
-import praCourseWork2.Result;
-
 public class Assessment {
 	protected ArrayList<Result> results;
 	

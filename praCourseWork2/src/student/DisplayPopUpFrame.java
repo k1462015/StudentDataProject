@@ -1,4 +1,4 @@
-package praCourseWork2;
+package student;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -13,8 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
-
-import student.Student;
 
 public class DisplayPopUpFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -126,6 +124,10 @@ public class DisplayPopUpFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
+	}
+	
+	public String getName(){
+		return name.getText();
 	}
 
 }

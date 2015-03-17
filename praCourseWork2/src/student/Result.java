@@ -1,4 +1,4 @@
-package praCourseWork2;
+package student;
 
 public class Result {
 	protected String year;
@@ -71,6 +71,9 @@ public class Result {
 		name = n;
 	}
 	
+	public void setCandKey(String s){
+		candKey = s;
+	}
 	
 	
 	@Override

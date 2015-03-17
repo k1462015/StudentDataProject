@@ -26,7 +26,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import praCourseWork2.StudentFrame;
+import main.MainFrame;
 
 public class Login extends JFrame{
 	private static String currentDirectory = new File("").getAbsolutePath();
@@ -103,7 +103,7 @@ public class Login extends JFrame{
 					char[] correctPassword = details.get(1).toCharArray();
 					if ((username.getText().equals(details.get(0)) && passText.equals(details.get(1)))){
 						dispose();
-						JFrame frame = new StudentFrame();
+						JFrame frame = new MainFrame();
 					} else {
 						JOptionPane.showMessageDialog(null,"useranme or password is wrong");
 					}

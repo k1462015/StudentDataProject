@@ -1,4 +1,4 @@
-package praCourseWork2;
+package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -45,20 +45,23 @@ import javax.swing.table.JTableHeader;
 import org.jfree.data.xy.XYSeries;
 
 import student.Assessment;
+import student.DisplayPopUpFrame;
 import student.Student;
 import studentdata.Connector;
 import studentdata.DataTable;
-import websiteRelated.WebviewFrame;
+import KEATSScraper.WebviewFrame;
 
 import com.itextpdf.text.DocumentException;
 
+import data.ExamTable;
+import data.ServerConnect;
 import email.EmailSettingsFrame;
 import email.SendEmailFrame;
 import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
-import graphRelated.ScatterPlot;
+import graph.ScatterPlot;
 
-public class StudentFrame extends JFrame {
+public class MainFrame extends JFrame {
 	private ArrayList<Student> students;
 	private ArrayList<Assessment> assesments;
 	private JList list;
@@ -75,7 +78,7 @@ public class StudentFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private DisplayPopUpFrame display = null;
 
-	public StudentFrame() {
+	public MainFrame() {
 		// Initialises frame and sets title to team name
 		super("PRA Coursework - TMH");
 		examLoaded = false;
@@ -231,7 +234,7 @@ public class StudentFrame extends JFrame {
 			for (Student i : students) {
 				if (i.getName().toLowerCase()
 						.contains(buffer.toLowerCase())
-						|| i.getStudentNumber().contains(buffer)) {
+						|| (i.getStudentNumber()+"").contains(buffer)) {
 					listModel.addElement(i);
 				}
 			}
@@ -253,7 +256,7 @@ public class StudentFrame extends JFrame {
 					
 				} else {
 					
-					int confirm = JOptionPane.showConfirmDialog(StudentFrame.this, "Email Settings have not been configured."
+					int confirm = JOptionPane.showConfirmDialog(MainFrame.this, "Email Settings have not been configured."
 							+ "\nDefault Outlook Office 365 settings will be used."
 							+ "\nDo you wish to continue?", "Email to Students", JOptionPane.YES_NO_CANCEL_OPTION);
 					if (confirm == JOptionPane.YES_OPTION){
@@ -309,7 +312,7 @@ public class StudentFrame extends JFrame {
 			choosy.setFileFilter(filter);
 
 			// Checks if a file has been opened
-			int returnValue = choosy.showOpenDialog(StudentFrame.this);
+			int returnValue = choosy.showOpenDialog(MainFrame.this);
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				boolean validFile = false;
 
@@ -539,7 +542,7 @@ public class StudentFrame extends JFrame {
 		Student findStudent = null;
 		findStudent = findStudent(data, students);
 		if (display != null) {
-			if (display.name.getText().equals(findStudent.getName())) {
+			if (display.getName().equals(findStudent.getName())) {
 				// Debugging purposes
 				System.out.println("Disposed");
 				display.dispose();
@@ -652,7 +655,7 @@ public class StudentFrame extends JFrame {
 					"CSV Files", "csv");
 			choosy.setFileFilter(filter);
 
-			int returnValue = choosy.showOpenDialog(StudentFrame.this);
+			int returnValue = choosy.showOpenDialog(MainFrame.this);
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				boolean validFile = false;
 
@@ -695,7 +698,7 @@ public class StudentFrame extends JFrame {
 								+ succesImport
 								+ " codes were \nfor known students; "
 								+ failedImports + " were or unknown students";
-						JOptionPane.showMessageDialog(StudentFrame.this,
+						JOptionPane.showMessageDialog(MainFrame.this,
 								results);
 
 						anonLoaded = true;

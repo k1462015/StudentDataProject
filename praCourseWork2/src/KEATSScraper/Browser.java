@@ -1,4 +1,4 @@
-package websiteRelated;
+package KEATSScraper;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

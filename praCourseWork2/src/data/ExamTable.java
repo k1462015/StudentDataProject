@@ -1,4 +1,4 @@
-package praCourseWork2;
+package data;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
 import student.Assessment;
+import student.Result;
 import student.Student;
 
 public class ExamTable {
@@ -213,7 +214,7 @@ public class ExamTable {
 					// Removes the end /1 or /2 after student number
 					candKey = candKey.substring(0, candKey.length() - 2);
 					candKey = candKey.replaceAll("#", "");
-					t.candKey = candKey;
+					t.setCandKey(candKey);
 
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
@@ -224,7 +225,7 @@ public class ExamTable {
 							String modCode = t.getModuleCode().replaceAll("\"",
 									"");
 							s.addMarks(modCode + " " + t.getAssessment(),
-									t.mark);
+									t.getMark());
 						}
 					}
 				} else
@@ -234,10 +235,10 @@ public class ExamTable {
 							// Finds student with matching anonymous marking
 							// code
 							// Replaces it with student number
-							t.candKey = s.getStudentNumber()+"";
+							t.setCandKey(s.getStudentNumber()+"");
 							t.setName(s.getName());
 							s.addMarks(t.getModuleCode().replaceAll("\"", "")
-									+ " " + t.getAssessment(), t.mark);
+									+ " " + t.getAssessment(), t.getMark());
 						}
 					}
 
