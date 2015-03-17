@@ -465,10 +465,10 @@ public class MainFrame extends JFrame {
 				int row = table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				// Checks if column is student name column
-				if (column == 7) {
+				if (column == 0) {
 					// Create Display PopUp
-					String selectedItem = (String) table.getValueAt(row,
-							column - 1);
+					String selectedItem = (String) table.getValueAt(row,column );
+					System.out.println(selectedItem);
 					if (!selectedItem.substring(0, 1).equals("#")) {
 						System.out.println("Create Display PopUp");
 						showDisplayPopUp(selectedItem);
@@ -550,7 +550,7 @@ public class MainFrame extends JFrame {
 			// Checks if searching using student Number or toString
 			if (!check.substring(check.length() - 1, check.length())
 					.equals(")")) {
-				if ((studentArrayList.get(i).getStudentNumber()+"").equals(check)) {
+				if ((studentArrayList.get(i).getName().equals(check))) {
 					found = studentArrayList.get(i);
 				}
 			} else {
@@ -586,7 +586,7 @@ public class MainFrame extends JFrame {
 				// object from the arraylist,
 				// gets the average of the student and plots it with their mark.
 				for (int i = 0; i < numOfRecords; i++) {
-					String tempCandKey = (String) currentTable.getValueAt(i, 6);
+					String tempCandKey = (String) currentTable.getValueAt(i, 0);
 					System.out.println(tempCandKey);
 					Student tempStu = findStudent(tempCandKey, students);// The
 																			// student
@@ -602,7 +602,7 @@ public class MainFrame extends JFrame {
 					if (!(tempStu == null)) {
 						System.out.println(tempStu.toString());
 						int stuMarkInt = (Integer) currentTable
-								.getValueAt(i, 8);
+								.getValueAt(i, 3);
 						// double stuMark = (double) stuMarkInt;
 						// System.out.println(stuMark);
 						tempStu.calcAverage();
