@@ -22,10 +22,8 @@ public class HelpFrame extends JFrame {
 		initUi();
 	}
 	
-	/**
-	 * Adds all required components
-	 */
-	public void initUi() {
+
+	private void initUi() {
 		JPanel main = new JPanel();
 		main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));
 		main.setMaximumSize(new Dimension(500,500));

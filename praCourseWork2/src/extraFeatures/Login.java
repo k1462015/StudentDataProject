@@ -38,10 +38,8 @@ public class Login extends JFrame{
 		initUi();
 	}
 	
-	/**
-	 * Adds all required components to frame
-	 */
-	public void initUi(){
+	
+	private void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
 		
 		JPanel main = new JPanel(new BorderLayout());

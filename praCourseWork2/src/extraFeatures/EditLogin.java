@@ -40,10 +40,8 @@ public class EditLogin extends JFrame {
 		initUi();
 	}
 	
-	/**
-	 * Adds all required components to frame
-	 */
-	public void initUi(){
+
+	private void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
 		
 		JPanel center = new JPanel();
@@ -121,15 +119,8 @@ public class EditLogin extends JFrame {
 		setVisible(true);
 	}
 	
-	/**
-	 * Allows changing of user details
-	 * @param Cname - Current name
-	 * @param Cpass - Current password
-	 * @param Nname - New name
-	 * @param Npass - New password
-	 * @param Rpass - Re-type password
-	 */
-	public void edit(JTextField Cname, JPasswordField  Cpass, JTextField Nname, JPasswordField Npass,JPasswordField Rpass ){
+
+	private void edit(JTextField Cname, JPasswordField  Cpass, JTextField Nname, JPasswordField Npass,JPasswordField Rpass ){
 		BufferedReader br;
 		String userDetails ="";
 		try {

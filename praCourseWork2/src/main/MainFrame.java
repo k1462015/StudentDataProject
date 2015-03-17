@@ -278,7 +278,7 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				new PDFGenerator().createPdf(students);
+				new PDFGenerator().addDataPdf(students);
 			} catch (DocumentException | IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

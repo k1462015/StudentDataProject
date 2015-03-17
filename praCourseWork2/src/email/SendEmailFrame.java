@@ -68,10 +68,8 @@ public class SendEmailFrame extends JFrame {
 		initUi();
 	}
 	
-	/**
-	 * Adds all required components
-	 */
-	public void initUi() {
+	
+	private void initUi() {
 		createTable(false);
 		selectedStudents = new ArrayList<Student>();
 		
@@ -318,12 +316,7 @@ public class SendEmailFrame extends JFrame {
 	}
 	
 
-	/**
-	 * 
-	 * @param b - If student is clicked, boolean set to true
-	 * @return JScrollPane of list of students
-	 */
-	public JScrollPane createTable(boolean b) {
+	private JScrollPane createTable(boolean b) {
 		MyTableModel model = new MyTableModel();
 
 		for (Student s : student) {
@@ -387,12 +380,8 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
-	/**
-	 * Reads data from settings file
-	 * @param settings - current email settings file
-	 * @return Array containing settings data
-	 */
-	public String[] settingsData(File settings) {
+
+	private String[] settingsData(File settings) {
 
 		BufferedReader br;
 		String[] settingsArray = {};
@@ -415,10 +404,8 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
-	/**
-	 * Retrieves selected student objects using student names in table and puts into Arraylist of selectedStudents
-	 */
-	public void getCheckedStudents() {
+
+	private void getCheckedStudents() {
 		ArrayList<String> selectedRows = new ArrayList<String>();
 		for (int i = 0; i < table.getRowCount(); i++) {
 			if ((Boolean) table.getValueAt(i, 1)) {
@@ -436,10 +423,8 @@ public class SendEmailFrame extends JFrame {
 		}
 	}
 
-	/**
-	 * Retrieves settings file if it exists, else creates it
-	 */
-	public void findSettingsFile() {
+
+	private void findSettingsFile() {
 		String OS = System.getProperty("os.name").toLowerCase();
 
 		if (OS.contains("windows")) {
@@ -472,16 +457,8 @@ public class SendEmailFrame extends JFrame {
 		}
 	}
 	
-	/**
-	 * 
-	 * @param toAddress - recipient email address 
-	 * @param body - Message body
-	 * @return true - if message sent
-	 * @throws UnsupportedEncodingException
-	 * @throws AuthenticationFailedException
-	 * @throws MessagingException
-	 */
-	public boolean sendEmail(String toAddress, String body)
+
+	private boolean sendEmail(String toAddress, String body)
 			throws UnsupportedEncodingException, AuthenticationFailedException, MessagingException {
 		System.out.println(toAddress);
 		String email = body;
@@ -550,12 +527,8 @@ public class SendEmailFrame extends JFrame {
 
 	}
 	
-	/**
-	 * Creates message body using header,footer and student results
-	 * @param s - student object
-	 * @return
-	 */
-	public String createEmail(Student s) {
+
+	private String createEmail(Student s) {
 		ArrayList<String> marks = new ArrayList<String>();
 
 		String email = "";

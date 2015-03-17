@@ -46,10 +46,7 @@ public class DisplayPopUpFrame extends JFrame {
 
 	}
 	
-	/**
-	 * Adds all components to popup frame
-	 */
-	public void makePopUp() {
+	private void makePopUp() {
 		// Initialises required JPanels
 		main = new JPanel();
 		bottom = new JPanel();

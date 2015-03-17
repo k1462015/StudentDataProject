@@ -30,6 +30,10 @@ public class PDFGenerator {
     public static final String RESULT
         = "/Users/tahmidulislam/Desktop/Document2.pdf";
     
+    /**
+     * Creates a pdf file to write to
+     * @param filepath - directory to save to
+     */
     public void createPDFFile(String filepath){
     	 try {
 	            OutputStream file = new FileOutputStream(new File(filepath));
@@ -57,7 +61,7 @@ public class PDFGenerator {
      * @throws    DocumentException 
      * @throws    IOException 
      */
-    public void createPdf(ArrayList<Student> students)
+    public void addDataPdf(ArrayList<Student> students)
 	throws DocumentException, IOException {
     	//Checks users operating system
     	//Then creates PDF in desktop
