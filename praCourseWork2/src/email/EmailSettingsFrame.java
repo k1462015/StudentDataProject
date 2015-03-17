@@ -66,7 +66,7 @@ public class EmailSettingsFrame extends JFrame {
 		
 		if (!(settingsFile == null) ){//Checks if file path is legitimate
 			
-			if (checkSettings(settingsFile) == true){//Checks if file is in correct format
+			if (new Settings().checkSettings(settingsFile) == true){//Checks if file is in correct format
 				
 				loadSettings(settingsFile);
 				setSettings();
@@ -328,7 +328,7 @@ public class EmailSettingsFrame extends JFrame {
 		try {
 			System.out.println("File exists");
 			PrintWriter writer = new PrintWriter(settingsFile);
-			writer.println(settingsString());
+			writer.println();
 			writer.close();
 			
 			System.out.println("File writed.");
@@ -344,70 +344,7 @@ public class EmailSettingsFrame extends JFrame {
 		
 		//Create new settings file, save it in user's documents directory and write settings to 
 		//that file
-		
-		String OS = System.getProperty("os.name").toLowerCase();//Check's user's OS
-		
-		if (OS.contains("windows")){//If the OS is windows
-			String user = System.getProperty("user.name");
-			
-			//Creates a new file path for the settings file within Documents directory
-			File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
-			newFile.getParentFile().mkdirs(); //Creates the necessary directories
-			try {
-				newFile.createNewFile();
-				System.out.println("File created");
-				
-				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(settingsString());
-				writer.close();
-				System.out.println("File writed.");
-				dispose();
-			
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				
-			}
-		
-		
-		} else if (OS.contains("mac")){//If the OS is mac
-			String user = System.getProperty("user.name");
-			//String filePathStr = "/Users/" + user + "/Desktop";
-			File newFile = new File("/Users/" + user + "/Desktop/settings.ini");
-			newFile.getParentFile().mkdirs();
-			try {
-				newFile.createNewFile();
-				System.out.println("File created");
-				
-				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(settingsString());
-				writer.close();
-				System.out.println("File writed.");
-				dispose();
-			
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		} else if (OS.contains("nix")){//If the OS is mac/unix
-			//String user = System.getProperty("user.name");
-			//String filePathStr = "/Users/" + user + "/Desktop";
-			File newFile = new File("~/Desktop/settings.ini");
-			newFile.getParentFile().mkdirs();
-			try {
-				newFile.createNewFile();
-				System.out.println("File created");
-				
-				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(settingsString());
-				writer.close();
-				System.out.println("File writed.");
-				dispose();
-			
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				
-			}
-		}
+		new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
 		
 		
 	}
@@ -416,55 +353,8 @@ public class EmailSettingsFrame extends JFrame {
 		
 	}
 	
-	private String settingsString(){
-		
-		//The index of the settings info:
-		//ServerName[0], PortNum[1], UserName[2], StartTLS[3]
-		
-		Integer portNum = (Integer) portSpinner.getValue();	
-		String temp = (String) connectionBox.getSelectedItem();
-		String auth = temp.toLowerCase();
-		
-		String s = serverNameField.getText() + "," + portNum + "," + userField.getText();
-		
-		if (auth.equals("starttls")){
-			s += "," + true;
-		} else{
-			s += "," + false;
-		}
-		
-		return s;
-	}
 	
-	/**
-	 * 
-	 * @param settings - current settings file
-	 * @return true - if settings file is in correct format
-	 */
-	public boolean checkSettings(File settings){
-		
-		BufferedReader br;
-		try {
-			br = new BufferedReader(new FileReader(settings));
-			String s = br.readLine();
-			br.close();
-			System.out.println(s);
-			String[] settingsArray = s.split(",");
-			
-			if (settingsArray.length == 4){
-				return true;
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return false;
-		
-	}
+	
 	
 	/**
 	 * Loads settings from file
