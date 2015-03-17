@@ -43,8 +43,17 @@ public class ScatterPlot extends JFrame {
 		bar = new JMenuBar();
 		exportMenu = new JMenu("Export as...");
 		
-		PNGListener pngListen = new PNGListener();
-		JPGListener jpgListen = new JPGListener();
+		
+		
+		dataset = new XYSeriesCollection();
+		dataset.addSeries(data);
+		
+		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", moduleCode + " mark", dataset);
+		chartPanel = new ChartPanel(chart);
+		this.add(chartPanel);
+		
+		PNGListener pngListen = new PNGListener(chart, moduleCode);
+		JPGListener jpgListen = new JPGListener(chart, moduleCode);
 		
 		pngItem = new JMenuItem("PNG");
 		pngItem.addActionListener(pngListen);
@@ -56,13 +65,6 @@ public class ScatterPlot extends JFrame {
 		
 		bar.add(exportMenu);
 		
-		dataset = new XYSeriesCollection();
-		dataset.addSeries(data);
-		
-		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", moduleCode + " mark", dataset);
-		chartPanel = new ChartPanel(chart);
-		this.add(chartPanel);
-		
 		setJMenuBar(bar);
 		setVisible(true);
 		setSize(800,400);
@@ -70,132 +72,6 @@ public class ScatterPlot extends JFrame {
 	}
 	
 	
-	private class PNGListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			JMenuItem temp = (JMenuItem) e.getSource();
-			
-			JFileChooser chooser = new JFileChooser() {
-				public void approveSelection(){
-					
-					File filePath = super.getSelectedFile();
-					
-					String pathStr = filePath.getPath();
-					
-					if(!pathStr.endsWith(".png")){//if file path doesn't have ".png"...
-						pathStr += ".png"; //...appends ".png" to the end
-						filePath = new File(pathStr);//Updates filePath with new path
-					}
-					
-					if (filePath.exists() && getDialogType() == SAVE_DIALOG){//If that file exists
-						int decision = JOptionPane.showConfirmDialog(this, "This file already exists. Would you like to overwrite?", "File Exists", 
-								JOptionPane.YES_NO_CANCEL_OPTION);
-						switch (decision){
-						case JOptionPane.YES_OPTION:
-								try {
-									
-										ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
-										JOptionPane.showMessageDialog(null, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
-					
-								} catch (IOException e1) {
-										JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
-									
-							}
-							super.approveSelection();//Goes ahead with the file saving
-						case JOptionPane.NO_OPTION:
-							return;
-						case JOptionPane.CLOSED_OPTION:
-							return;
-						case JOptionPane.CANCEL_OPTION:
-							cancelSelection();
-							return;
-						
-						}
-					}
-					
-					try {
-						
-							ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
-							JOptionPane.showMessageDialog(null, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
-						
-					
-					} catch (IOException e1) {
-						JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
-					}
-				}
-			};
-			
-			chooser.setSelectedFile(new File(moduleCode+"." + temp.getText().toLowerCase()));
-			
-			int option = chooser.showSaveDialog(null);
-			
-		}
-		
-	}
 	
-	private class JPGListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			JMenuItem temp = (JMenuItem) e.getSource();
-			
-			JFileChooser chooser = new JFileChooser(){
-				
-				public void approveSelection(){
-				
-				File filePath = super.getSelectedFile();
-				
-				String pathStr = filePath.getPath();
-				
-				if(!pathStr.endsWith(".jpg")){//if file path doesn't have ".jpg"...
-					pathStr += ".jpg"; 
-					filePath = new File(pathStr);
-				}
-				
-				if (filePath.exists() && getDialogType() == SAVE_DIALOG){
-					int decision = JOptionPane.showConfirmDialog(this, "This file already exists. Would you like to overwrite?", "File Exists", 
-							JOptionPane.YES_NO_CANCEL_OPTION);
-					switch (decision){
-					case JOptionPane.YES_OPTION:
-							try {
-								ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
-								JOptionPane.showMessageDialog(null, "Chart saved as JPG file", "Success", JOptionPane.INFORMATION_MESSAGE);
-							
-							} catch (IOException e1) {
-								JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
-							}
-						super.approveSelection();//Goes ahead with the file saving
-					case JOptionPane.NO_OPTION:
-						return;
-					case JOptionPane.CLOSED_OPTION:
-						return;
-					case JOptionPane.CANCEL_OPTION:
-						cancelSelection();
-						return;
-					
-					}
-				}
-				
-				try {
-						ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
-						JOptionPane.showMessageDialog(null, "Chart saved as JPG file", "Success", JOptionPane.INFORMATION_MESSAGE);
-					
-				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				
-				}
-				
-			};
-			
-			chooser.setSelectedFile(new File(moduleCode+"." + temp.getText().toLowerCase()));
-			
-			int option = chooser.showSaveDialog(null);
-		}
-		
-	}
 	
 }
