@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 
-import praCourseWork2.Student;
+import student.Student;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;

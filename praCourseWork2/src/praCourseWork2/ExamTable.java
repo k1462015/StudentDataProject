@@ -12,6 +12,9 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import student.Assessment;
+import student.Student;
+
 public class ExamTable {
 	JTable table;
 	
@@ -63,7 +66,7 @@ public class ExamTable {
 		System.out.println("Making JTable");
 		// Fetches first assessment and adds to table
 		// for (Assessment t : assessments) {
-		for (Result r : ass.results) {
+		for (Result r : ass.getResults()) {
 			model.addRow(new Object[] { r.getYear(), r.getPeriod(),
 					r.getModuleCode(), r.getOcc(), r.getMap(),
 					r.getAssessment(), r.getCandKey(), r.getName(),
@@ -163,7 +166,7 @@ public class ExamTable {
 							// Since there is existing assessment object
 							// Finds it, and adds record
 							for (int i = 0; i < assesments.size(); i++) {
-								if (assesments.get(i).results.get(0).getAssessment()
+								if (assesments.get(i).getResults().get(0).getAssessment()
 										.equals(temp.getAssessment())) {
 									assesments.get(i).addResult(temp);
 								}
@@ -183,7 +186,7 @@ public class ExamTable {
 	 */
 	public boolean checkAllAss(String s,ArrayList<Assessment> assesments) {
 		for (Assessment t : assesments) {
-			if (t.results.get(0).getAssessment().equals(s)) {
+			if (t.getResults().get(0).getAssessment().equals(s)) {
 				// If does have assessment already
 				return true;
 			}
@@ -198,7 +201,7 @@ public class ExamTable {
 	public void deAnnonymise(ArrayList<Assessment> assesments,ArrayList<Student> students) {
 		System.out.println("Starting deannonymising...");
 		for (Assessment a : assesments) {
-			for (Result t : a.results) {
+			for (Result t : a.getResults()) {
 				String candKey = t.getCandKey();
 				candKey = candKey.replaceAll("\"", "");
 
@@ -214,7 +217,7 @@ public class ExamTable {
 
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
-						if (candKey.equals(s.studentNumber + "")) {
+						if (candKey.equals(s.getStudentNumber())) {
 							// Finds student with matching student numbers
 							// System.out.println("Found Student "+s.studentNumber+" who matches on JTable with sNumber "+candKey);
 
@@ -227,11 +230,11 @@ public class ExamTable {
 				} else
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
-						if (candKey.equals(s.aMC)) {
+						if (candKey.equals(s.getAMC()+"")) {
 							// Finds student with matching anonymous marking
 							// code
 							// Replaces it with student number
-							t.candKey = s.getStudentNumber();
+							t.candKey = s.getStudentNumber()+"";
 							t.setName(s.getName());
 							s.addMarks(t.getModuleCode().replaceAll("\"", "")
 									+ " " + t.getAssessment(), t.mark);

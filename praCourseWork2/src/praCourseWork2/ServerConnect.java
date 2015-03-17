@@ -2,6 +2,7 @@ package praCourseWork2;
 
 import java.util.ArrayList;
 
+import student.Student;
 import studentdata.Connector;
 import studentdata.DataTable;
 

@@ -1,6 +1,8 @@
-package praCourseWork2;
+package student;
 
 import java.util.ArrayList;
+
+import praCourseWork2.Result;
 
 public class Assessment {
 	protected ArrayList<Result> results;
@@ -23,5 +25,9 @@ public class Assessment {
 	
 	public Result getIndex(int count){
 		return results.get(count);
+	}
+	
+	public ArrayList<Result> getResults(){
+		return results;
 	}
 }

@@ -14,6 +14,8 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 
+import student.Student;
+
 public class DisplayPopUpFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	protected JLabel name;
@@ -29,10 +31,10 @@ public class DisplayPopUpFrame extends JFrame {
 	public DisplayPopUpFrame(Student student) {
 		super(student.getName() + " - Information Card");
 		// Initialises all required fields with constructor arguments
-		this.name = new JLabel(student.name);
-		this.emailAddress = new JLabel(student.email);
+		this.name = new JLabel(student.getName());
+		this.emailAddress = new JLabel(student.getEmail());
 		this.studentNumber = new JLabel("Student No. :   "
-				+ student.studentNumber);
+				+ student.getStudentNumber());
 		this.tutor = new JLabel("Tutor:     " + student.getTutor());
 		this.marks = student.getAssessMarks();
 		participation = student.getParticipationArray();

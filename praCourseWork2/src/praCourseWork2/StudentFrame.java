@@ -44,14 +44,16 @@ import javax.swing.table.JTableHeader;
 
 import org.jfree.data.xy.XYSeries;
 
+import student.Assessment;
+import student.Student;
 import studentdata.Connector;
 import studentdata.DataTable;
 import websiteRelated.WebviewFrame;
 
 import com.itextpdf.text.DocumentException;
 
-import emailRelated.EmailSettingsFrame;
-import emailRelated.SendEmailFrame;
+import email.EmailSettingsFrame;
+import email.SendEmailFrame;
 import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
 import graphRelated.ScatterPlot;
@@ -398,7 +400,7 @@ public class StudentFrame extends JFrame {
 								+ durations.size());
 						for (int i = 0; i < emails.size(); i++) {
 							for (Student s : students) {
-								if (s.email.equals(emails.get(i))) {
+								if (s.getEmail().equals(emails.get(i))) {
 									System.out.println("Found email of "
 											+ emails.get(i)
 											+ " with duration "
@@ -537,7 +539,7 @@ public class StudentFrame extends JFrame {
 		Student findStudent = null;
 		findStudent = findStudent(data, students);
 		if (display != null) {
-			if (display.name.getText().equals(findStudent.name)) {
+			if (display.name.getText().equals(findStudent.getName())) {
 				// Debugging purposes
 				System.out.println("Disposed");
 				display.dispose();
@@ -554,7 +556,7 @@ public class StudentFrame extends JFrame {
 			// Checks if searching using student Number or toString
 			if (!check.substring(check.length() - 1, check.length())
 					.equals(")")) {
-				if (studentArrayList.get(i).getStudentNumber().equals(check)) {
+				if ((studentArrayList.get(i).getStudentNumber()+"").equals(check)) {
 					found = studentArrayList.get(i);
 				}
 			} else {
@@ -610,7 +612,7 @@ public class StudentFrame extends JFrame {
 						// double stuMark = (double) stuMarkInt;
 						// System.out.println(stuMark);
 						tempStu.calcAverage();
-						data.add(tempStu.average, stuMarkInt);
+						data.add(tempStu.getAverage(), stuMarkInt);
 					} else {
 						System.out.println("Error error error");
 					}
@@ -680,7 +682,7 @@ public class StudentFrame extends JFrame {
 							String[] line = bf.readLine().split(",");
 							for (Student s : students) {
 								int temp = Integer.parseInt(line[0]);
-								if (temp == s.studentNumber) {
+								if (temp == s.getStudentNumber()) {
 									s.setAMC(line[1]);
 									succesImport++;
 								}

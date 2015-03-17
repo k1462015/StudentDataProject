@@ -1,4 +1,4 @@
-package emailRelated;
+package email;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,7 +40,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
-import praCourseWork2.Student;
+import student.Student;
 
 public class SendEmailFrame extends JFrame {
 	private ArrayList<Student> student;
@@ -231,6 +231,16 @@ public class SendEmailFrame extends JFrame {
 
 					for (Student s : selectedStudent) {
 						try {
+//							JFrame frame = new JFrame();
+//							JProgressBar pb = new JProgressBar(0,100);
+//							pb.setValue(0);
+//							pb.setStringPainted(true);
+	//
+//							frame.add(pb);
+//							frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//							frame.setVisible(true);
+//							frame.setSize(500, 500);
+							System.out.println("Current percentage is "+((selectedStudent.indexOf(s) / selectedStudent.size())*100));
                             sendEmail(s.getEmail(), createEmail(s));
                             if (sendEmail(s.getEmail(), createEmail(s))){
                                 emailsSent++;

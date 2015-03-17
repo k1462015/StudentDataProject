@@ -1,4 +1,4 @@
-package praCourseWork2;
+package student;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,13 +35,12 @@ public class Student {
 		return name;
 	}
 	
-	public String getStudentNumber(){
-		String s = Integer.toString(studentNumber);
-		return s;
+	public int getStudentNumber(){
+		return studentNumber;
 	}
 	
 	public String getEmail(){
-		return this.email;
+		return email;
 		
 	}
 	
@@ -54,12 +53,17 @@ public class Student {
 		this.aMC = anon;
 	}
 	
+	public String getAMC(){
+		return aMC;
+	}
+	
 	public void addMarks(String modAss, int mark){
 		String temp = modAss + " " + mark;
 		System.out.println(temp);
 		getAssessMarks().add(temp);
 		marks.put(modAss, mark);
 	}
+	
 	
 	public ArrayList<String> getMarks(){
 		return getAssessMarks(); 
@@ -106,6 +110,10 @@ public class Student {
 
 	public void setTutor(String tutor) {
 		this.tutor = tutor;
+	}
+	
+	public double getAverage(){
+		return average;
 	}
 
 	
