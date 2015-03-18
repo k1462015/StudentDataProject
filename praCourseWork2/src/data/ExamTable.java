@@ -4,10 +4,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JViewport;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
@@ -243,6 +249,53 @@ public class ExamTable {
 		}
 
 	}
+	
+	public void writeCSVFile(JTabbedPane tabbedPane){
+		String filepath = "";
+		JFileChooser chooser;
+		chooser = new JFileChooser();
+	    chooser.setDialogTitle("Select where you'd like to save the CSV file");
+	    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	    chooser.setSelectedFile(new File(tabbedPane.getTitleAt(tabbedPane.getSelectedIndex())));
+	    chooser.setAcceptAllFileFilterUsed(true);
+
+	    if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+	    	filepath = chooser.getSelectedFile()+".csv";
+	      System.out.println("getCurrentDirectory(): "
+	         +  chooser.getCurrentDirectory());
+	      System.out.println("getSelectedFile() : "
+	         +  chooser.getSelectedFile());
+	      }
+	    else {
+	      System.out.println("No Selection ");
+	      }
+
+		try {
+			FileWriter writer = new FileWriter(filepath);
+			JScrollPane currentScrollPane = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
+			JViewport viewport = currentScrollPane.getViewport();
+			JTable currentTable = (JTable) viewport.getView();
+
+			for(int i = 0; i < currentTable.getColumnCount(); i++){
+				writer.write(currentTable.getColumnName(i) + ",");
+	        }
+			writer.write("\n");
+
+			for(int i=0; i< currentTable.getRowCount(); i++) {
+	            for(int j=0; j < currentTable.getColumnCount(); j++) {
+	            	writer.write(currentTable.getValueAt(i,j).toString()+",");
+	            }
+	            writer.write("\n");
+	        }
+
+
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 
 	/**
 	 * @return JTable with collated data

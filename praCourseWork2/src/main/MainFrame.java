@@ -54,8 +54,10 @@ import email.Settings;
 import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
 import graph.ScatterPlot;
+
 /**
  * Main frame containing all components to display student data
+ * 
  * @author TMH
  *
  */
@@ -68,7 +70,7 @@ public class MainFrame extends JFrame {
 	private boolean examLoaded;
 	private boolean anonLoaded;
 	private File settingsFile;
-	
+
 	ArrayList<String> emails;
 	ArrayList<String> durations;
 	private DisplayPopUpFrame display = null;
@@ -82,13 +84,12 @@ public class MainFrame extends JFrame {
 		InitUI();
 
 	}
-	
-	
+
 	private void InitUI() {
-		//Adds MenuBar
+		// Adds MenuBar
 		addMenuBar();
-		
-		////Fetches Students and creates JList
+
+		// //Fetches Students and creates JList
 		students = new ArrayList<Student>();
 		ServerConnect sc = new ServerConnect(students);
 		JList list = createJList(students);
@@ -96,12 +97,10 @@ public class MainFrame extends JFrame {
 		search.addKeyListener(new searchListener());
 		list.setFixedCellHeight(30);// cell formatting
 		list.setFixedCellWidth(260);// same thing
-		
-		
+
 		// Initializes required fields
 		assesments = new ArrayList<Assessment>();
 		tabbedPane = new JTabbedPane();
-
 
 		// Adds search and list to LeftPane Panel
 		JPanel leftPane = new JPanel();
@@ -121,9 +120,9 @@ public class MainFrame extends JFrame {
 		setVisible(true);
 
 	}
-	
-	private void addMenuBar(){
-		//Adds MenuBar to frame
+
+	private void addMenuBar() {
+		// Adds MenuBar to frame
 		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("File");
 		JMenu data = new JMenu("Data");
@@ -132,33 +131,33 @@ public class MainFrame extends JFrame {
 		menuBar.add(data);
 		menuBar.add(extra);
 		setJMenuBar(menuBar);
-				
-		////////File Menu
+
+		// //////File Menu
 		JMenuItem loadExam = new JMenuItem("Load exam results");
 		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
 		JMenuItem exit = new JMenuItem("Exit");
-				
+
 		loadAnon.addActionListener(new LoadAnonListener());
 		loadExam.addActionListener(new loadExamListener());
-		exit.addActionListener(new ActionListener(){
+		exit.addActionListener(new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			dispose();
-						
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+
 			}
-					
+
 		});
 		file.add(loadExam);
 		file.add(loadAnon);
 		file.add(exit);
-					
-		////////Data Menu
+
+		// //////Data Menu
 		JMenuItem settings = new JMenuItem("Email Settings");
 		JMenuItem emailStudent = new JMenuItem("Email to Students");
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
 		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
-		
+
 		settings.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -167,20 +166,20 @@ public class MainFrame extends JFrame {
 
 			}
 
-		});	
+		});
 		emailStudent.addActionListener(new emailListener());
 		compareAverage.addActionListener(new AverageListener());
-		fetchPart.addActionListener(new fetchListener());	
-		
+		fetchPart.addActionListener(new fetchListener());
+
 		data.add(settings);
 		data.add(emailStudent);
 		data.add(compareAverage);
 		data.add(fetchPart);
-		
-		
-		///////Extra Menu
+
+		// /////Extra Menu
 		JMenuItem pdf = new JMenuItem("Generate PDF");
-		JMenuItem userEdit= new JMenuItem("User settings");
+		JMenuItem userEdit = new JMenuItem("User settings");
+		JMenuItem exportCSV = new JMenuItem("Export selected table");
 		pdf.addActionListener(new pdfListener());
 		userEdit.addActionListener(new ActionListener() {
 
@@ -192,20 +191,25 @@ public class MainFrame extends JFrame {
 			}
 
 		});
-		extra.add(pdf);
+		exportCSV.addActionListener(new CSVExporter());
 		extra.add(userEdit);
+		extra.add(pdf);
+		extra.add(exportCSV);
+
 	}
-	
+
 	/**
 	 * Compiles a JList of students
-	 * @param students - Arraylist of students
+	 * 
+	 * @param students
+	 *            - Arraylist of students
 	 * @return
 	 */
 	public JList createJList(ArrayList<Student> students) {
 
 		DefaultListModel defListMod = new DefaultListModel();
 		// create a list of items that are editable original list
-		
+
 		// goes through arraylist of Student objects, calls toString and adds
 		// the Strings to DefaultListModel (DLM)
 		for (Student s : students) {
@@ -229,20 +233,23 @@ public class MainFrame extends JFrame {
 		list.setFont(new Font("Calibri", Font.BOLD, 20));
 		return list;
 	}
-	
+
 	/**
 	 * 
-	 * @param studentIdentity - Used to identify student
-	 * @param studentArrayList - ArrayList of students to search through
+	 * @param studentIdentity
+	 *            - Used to identify student
+	 * @param studentArrayList
+	 *            - ArrayList of students to search through
 	 * @return
 	 */
-	public Student findStudent(String studentIdentity, ArrayList<Student> studentArrayList) {
+	public Student findStudent(String studentIdentity,
+			ArrayList<Student> studentArrayList) {
 		Student found = null;
 
 		for (int i = 0; i < studentArrayList.size(); i++) {
 			// Checks if searching using student Number or toString
-			if (!studentIdentity.substring(studentIdentity.length() - 1, studentIdentity.length())
-					.equals(")")) {
+			if (!studentIdentity.substring(studentIdentity.length() - 1,
+					studentIdentity.length()).equals(")")) {
 				if ((studentArrayList.get(i).getName().equals(studentIdentity))) {
 					found = studentArrayList.get(i);
 				}
@@ -257,10 +264,9 @@ public class MainFrame extends JFrame {
 		return found;
 
 	}
-	
+
 	/**
-	 * Loops through assessments
-	 * Generates a tabbed pane for each assessment
+	 * Loops through assessments Generates a tabbed pane for each assessment
 	 */
 	public void tabbedPane() {
 		String name = "";
@@ -271,15 +277,16 @@ public class MainFrame extends JFrame {
 			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
 					+ " " + a.getAssessment(a.getIndex(count));
 			count++;
-			ExamTable jtable = new ExamTable(a,assesments,students);
+			ExamTable jtable = new ExamTable(a, assesments, students);
 			jtable.getTable().addMouseListener(new TableListener());
 			tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
 		}
 		assesments.clear();
 	}
-	
+
 	/**
 	 * Locates student from ArrayList and then displays Popup with student info
+	 * 
 	 * @param studentName
 	 */
 	public void generateDisplayPopUp(String studentName) {
@@ -295,9 +302,8 @@ public class MainFrame extends JFrame {
 		display = new DisplayPopUpFrame(findStudent);
 
 	}
-	
-	
-	private class searchListener extends KeyAdapter{
+
+	private class searchListener extends KeyAdapter {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			JTextField search = (JTextField) e.getSource();
@@ -308,39 +314,36 @@ public class MainFrame extends JFrame {
 			String buffer = search.getText();
 			// store all matching students in serachStudent arraylist
 			for (Student i : students) {
-				if (i.getName().toLowerCase()
-						.contains(buffer.toLowerCase())
-						|| (i.getStudentNumber()+"").contains(buffer)) {
+				if (i.getName().toLowerCase().contains(buffer.toLowerCase())
+						|| (i.getStudentNumber() + "").contains(buffer)) {
 					listModel.addElement(i);
 				}
 			}
-			
+
 		}
 
-	
-		
 	}
-	
+
 	private class LoadAnonListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if(new CSVLoader().loadAnonCode(MainFrame.this, students)){
+			if (new CSVLoader().loadAnonCode(MainFrame.this, students)) {
 				anonLoaded = true;
-			}else{
+			} else {
 				anonLoaded = false;
 			}
 
 		}
 	}
-	
-	private class loadExamListener implements ActionListener{
+
+	private class loadExamListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				if(new CSVLoader().checkValidCSV(MainFrame.this, assesments)){
-					//Creates table and adds to Tabbed Pane
+				if (new CSVLoader().checkValidCSV(MainFrame.this, assesments)) {
+					// Creates table and adds to Tabbed Pane
 					tabbedPane();
 					examLoaded = true;
 				}
@@ -348,34 +351,44 @@ public class MainFrame extends JFrame {
 				e1.printStackTrace();
 			}
 
-			
 		}
-		
+
 	}
-	
-	private class emailListener implements ActionListener{
+
+	private class emailListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// // New Email Frame
 			if (anonLoaded == true && examLoaded == true) {
-				if (!(settingsFile == null)){//If settings file has been loaded 
-					new SendEmailFrame(students, settingsFile);	
+				if (!(settingsFile == null)) {// If settings file has been
+												// loaded
+					new SendEmailFrame(students, settingsFile);
 				} else {
-					int confirm = JOptionPane.showConfirmDialog(null, "Email Settings have not been configured."
-							+ "\nDefault Outlook Office 365 settings will be used."
-							+ "\nDo you wish to continue?", "Email to Students", JOptionPane.YES_NO_CANCEL_OPTION);
-					if (confirm == JOptionPane.YES_OPTION){
+					int confirm = JOptionPane
+							.showConfirmDialog(
+									null,
+									"Email Settings have not been configured."
+											+ "\nDefault Outlook Office 365 settings will be used."
+											+ "\nDo you wish to continue?",
+									"Email to Students",
+									JOptionPane.YES_NO_CANCEL_OPTION);
+					if (confirm == JOptionPane.YES_OPTION) {
 						new SendEmailFrame(students, settingsFile);
-					}				}
+					}
+				}
 			} else {
-				JOptionPane.showMessageDialog(null,	"Anonymous Markings Codes file needs to be"+ " uploaded \nExam marks file needs to be uploaded ");
+				JOptionPane
+						.showMessageDialog(
+								null,
+								"Anonymous Markings Codes file needs to be"
+										+ " uploaded \nExam marks file needs to be uploaded ");
 			}
-			
+
 		}
-		
+
 	}
-	
-	private class pdfListener implements ActionListener{
+
+	private class pdfListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -385,12 +398,16 @@ public class MainFrame extends JFrame {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			JOptionPane.showMessageDialog(null,	students.size()	+ " Student information succesfully succesfully imported to PDF in desktop");
+			JOptionPane
+					.showMessageDialog(
+							null,
+							students.size()
+									+ " Student information succesfully succesfully imported to PDF in desktop");
 		}
-		
+
 	}
 
-	private class TableListener extends MouseAdapter{
+	private class TableListener extends MouseAdapter {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -401,7 +418,8 @@ public class MainFrame extends JFrame {
 				// Checks if column is student name column
 				if (column == 0) {
 					// Create Display PopUp
-					String selectedItem = (String) table.getValueAt(row,column );
+					String selectedItem = (String) table
+							.getValueAt(row, column);
 					System.out.println(selectedItem);
 					if (!selectedItem.substring(0, 1).equals("#")) {
 						System.out.println("Create Display PopUp");
@@ -414,12 +432,9 @@ public class MainFrame extends JFrame {
 				}
 			}
 
-			
 		}
-		
+
 	}
-	
-	
 
 	private class AverageListener implements ActionListener {
 
@@ -445,8 +460,10 @@ public class MainFrame extends JFrame {
 					System.out.println(tempCandKey);
 					Student tempStu = findStudent(tempCandKey, students);
 					// The student of a specific row
-					// if the tempStu is not null, then gets their mark from the table
-					// and then plots the tempStu's average against their current mark
+					// if the tempStu is not null, then gets their mark from the
+					// table
+					// and then plots the tempStu's average against their
+					// current mark
 					if (!(tempStu == null)) {
 						System.out.println(tempStu.toString());
 						int stuMarkInt = (Integer) currentTable
@@ -465,8 +482,7 @@ public class MainFrame extends JFrame {
 				ScatterPlot scatter = new ScatterPlot("Graph",
 						"Comparison of Average in Assessment", modCode, data);
 
-			} else 
-			if (anonLoaded == true && examLoaded == false) {
+			} else if (anonLoaded == true && examLoaded == false) {
 				JOptionPane
 						.showMessageDialog(rootPane,
 								"You need to load an exam results file, before you can create the chart");
@@ -480,8 +496,8 @@ public class MainFrame extends JFrame {
 		}
 
 	}
-	
-	private class fetchListener implements ActionListener{
+
+	private class fetchListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -498,13 +514,12 @@ public class MainFrame extends JFrame {
 			messagePanel.add(new JLabel("URL:"));
 			messagePanel.add(urlField);
 
-			int response = JOptionPane.showConfirmDialog(null,
-					messagePanel, "Please Enter module Code and the URL",
+			int response = JOptionPane.showConfirmDialog(null, messagePanel,
+					"Please Enter module Code and the URL",
 					JOptionPane.OK_CANCEL_OPTION);
 
 			if (response == JOptionPane.OK_OPTION) {
-				System.out.println("Module code is: "
-						+ moduleField.getText());
+				System.out.println("Module code is: " + moduleField.getText());
 				System.out.println("URL is : " + urlField.getText());
 				while (moduleField.getText().equals("")
 						&& urlField.getText().equals("")) {
@@ -522,20 +537,16 @@ public class MainFrame extends JFrame {
 						emails = wb.getEmails();
 						durations = wb.getDurations();
 
-						System.out.println("Emails size is "
-								+ emails.size() + " and duration size is "
-								+ durations.size());
+						System.out.println("Emails size is " + emails.size()
+								+ " and duration size is " + durations.size());
 						for (int i = 0; i < emails.size(); i++) {
 							for (Student s : students) {
 								if (s.getEmail().equals(emails.get(i))) {
 									System.out.println("Found email of "
-											+ emails.get(i)
-											+ " with duration "
+											+ emails.get(i) + " with duration "
 											+ durations.get(i));
-									s.addParticipation(moduleField
-											.getText()
-											+ " "
-											+ durations.get(i) + " ago");
+									s.addParticipation(moduleField.getText()
+											+ " " + durations.get(i) + " ago");
 								}
 							}
 						}
@@ -547,12 +558,20 @@ public class MainFrame extends JFrame {
 					}
 				});
 			}
-			
+
 		}
-		
+
 	}
 
-	
-	
+	private class CSVExporter implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (examLoaded) {
+				new ExamTable().writeCSVFile(tabbedPane);
+			}
+		}
+
+	}
 
 }
