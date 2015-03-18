@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import student.Assessment;
 import main.MainFrame;
 
 public class CSVLoader {
@@ -21,7 +22,7 @@ public class CSVLoader {
 	}
 	
 	
-	public boolean checkValidCSV(JFrame frame){
+	public boolean checkValidCSV(JFrame frame,ArrayList<Assessment> assesments) throws IOException{
 		JFileChooser choosy = new JFileChooser();
 		File f = new File("C://Users//Saif//workspace");
 		choosy.setCurrentDirectory(f);
@@ -34,7 +35,7 @@ public class CSVLoader {
 		// Checks if a file has been opened
 		int returnValue = choosy.showOpenDialog(frame);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			boolean validFile = false;
+			boolean isValidFile = false;
 
 			// Sets file to chosen file
 			File file = choosy.getSelectedFile();
@@ -49,7 +50,7 @@ public class CSVLoader {
 				String[] linesplit = line.split(",");
 				if (!linesplit[0].matches(".*\\d.*") && (linesplit[0].matches("Year") || linesplit[0].matches("\"Year\""))) {
 					System.out.println("First line is "+linesplit[0]);
-					validFile = true;
+					isValidFile = true;
 				}else{
 				System.out.println("Not a exam.csv file");
 			}
@@ -57,9 +58,19 @@ public class CSVLoader {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			return validFile;
+
+			if (isValidFile) {
+				BufferedReader bf1 = new BufferedReader(new FileReader(file));
+				new ExamTable().readExamData(bf1, assesments);		
+
+			} else {
+				JOptionPane.showMessageDialog(null,
+						"Please upload a valid exam.csv file");
+			}
+			return isValidFile;
 		}
 		return false;
+		
 	}
 	
 
