@@ -66,8 +66,10 @@ public class ScatterPlot extends JFrame {
 		bar.add(exportMenu);
 		
 		setJMenuBar(bar);
-		setVisible(true);
 		setSize(800,400);
+		setLocationRelativeTo(null);
+		setVisible(true);
+
 		
 	}
 	

@@ -84,7 +84,7 @@ public class SendEmailFrame extends JFrame {
 
 		loadedSettings = new Settings().findSettingsFile();
 
-		LineBorder firstPageBorder = new LineBorder(Color.BLACK, 2);
+		LineBorder firstPageBorder = new LineBorder(Color.BLACK, 1);
 		Font btnFont = new Font("Century Gothic", Font.BOLD, 15);
 		// First Page
 		// //JList
