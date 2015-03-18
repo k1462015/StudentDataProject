@@ -21,14 +21,6 @@ public class Assessment {
 		results.add(r);
 	}
 	
-	public String getAssessment(Result r){
-		return r.getAssessment();
-	}
-	
-	public String getModuleCode(Result r){
-		return r.getModuleCode();
-	}
-	
 	/**
 	 * Retrieves results from arraylist of results using index number
 	 * @param index

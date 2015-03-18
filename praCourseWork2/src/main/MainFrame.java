@@ -274,8 +274,8 @@ public class MainFrame extends JFrame {
 		// loops through each assesment and creates a tab and a table for that
 		// assessment
 		for (Assessment a : assesments) {
-			name = (a.getModuleCode(a.getIndex(count))).replaceAll("\"", "")
-					+ " " + a.getAssessment(a.getIndex(count));
+			name = (a.getIndex(count).getModuleCode()).replaceAll("\"", "")
+					+ " " + a.getIndex(count).getAssessment();
 			count++;
 			ExamTable jtable = new ExamTable(a, assesments, students);
 			jtable.getTable().addMouseListener(new TableListener());
