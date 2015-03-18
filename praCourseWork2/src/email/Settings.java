@@ -57,8 +57,7 @@ public class Settings {
 
 			// Creates a new file path for the settings file within Documents
 			// directory
-			File newFile = new File("C:\\Users\\" + user
-					+ "\\Documents\\settings.ini");
+			File newFile = new File("C:\\Users\\" + user + "\\Documents\\settings.ini");
 			newFile.getParentFile().mkdirs(); // Creates the necessary
 												// directories
 			try {
@@ -66,8 +65,7 @@ public class Settings {
 				System.out.println("File created");
 
 				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(serverName + "," + portSpinner + "," + userName
-						+ "," + true);
+				writer.println(serverName + "," + portSpinner + "," + userName + "," + true);
 				writer.close();
 				System.out.println("File writed.");
 
@@ -78,7 +76,6 @@ public class Settings {
 
 		} else if (OS.contains("mac")) {// If the OS is mac
 			String user = System.getProperty("user.name");
-			// String filePathStr = "/Users/" + user + "/Desktop";
 			File newFile = new File("/Users/" + user + "/Desktop/settings.ini");
 			newFile.getParentFile().mkdirs();
 			try {
@@ -86,8 +83,7 @@ public class Settings {
 				System.out.println("File created");
 
 				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(serverName + "," + portSpinner + "," + userName
-						+ "," + true);
+				writer.println(serverName + "," + portSpinner + "," + userName + "," + true);
 				writer.close();
 				System.out.println("File writed.");
 
@@ -96,8 +92,6 @@ public class Settings {
 				e1.printStackTrace();
 			}
 		} else if (OS.contains("nix")) {// If the OS is mac/unix
-			// String user = System.getProperty("user.name");
-			// String filePathStr = "/Users/" + user + "/Desktop";
 			File newFile = new File("~/Desktop/settings.ini");
 			newFile.getParentFile().mkdirs();
 			try {
@@ -105,8 +99,7 @@ public class Settings {
 				System.out.println("File created");
 
 				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(serverName + "," + portSpinner + "," + userName
-						+ "," + true);
+				writer.println(serverName + "," + portSpinner + "," + userName + "," + true);
 				writer.close();
 				System.out.println("File writed.");
 
