@@ -321,6 +321,7 @@ public class EmailSettingsFrame extends JFrame {
 				
 				System.out.println("File written.");
 				
+				JOptionPane.showMessageDialog(null, "Settings have been saved");
 				
 				dispose();
 				
@@ -330,14 +331,16 @@ public class EmailSettingsFrame extends JFrame {
 			} finally {
 				dispose();
 			}
+			
 		} else {//if it doesn't exist
 			
 			
 			//Create new settings file, save it in user's documents directory and write settings to 
 			//that file
 			
-				new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
-		
+			new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
+				
+			JOptionPane.showMessageDialog(null, "Settings have been saved");
 			
 			dispose();
 		}
@@ -345,8 +348,8 @@ public class EmailSettingsFrame extends JFrame {
 		} else if(serverNameField.getText().equals("") || userField.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Some fields are empty", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		}
 	}
+}
 		
 	
 	
