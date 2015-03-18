@@ -20,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
@@ -237,7 +238,7 @@ public class EmailSettingsFrame extends JFrame {
 		setVisible(true);
 		
 		//Sets help frame
-		hf.setLocation(1600, 550);
+		hf.setLocationRelativeTo(null);
 		hf.setVisible(false);
 
 	}
@@ -301,38 +302,51 @@ public class EmailSettingsFrame extends JFrame {
 	private class okListener implements ActionListener{
 
 		@Override
-		public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 			
-		//if settings file exists 
-	if (!(settingsFile == null)){
-		//Write to settingsFile
-		try {
-			System.out.println("File exists");
-			PrintWriter writer = new PrintWriter(settingsFile);
-			writer.println(serverNameField.getText()+","+portSpinner.getValue()+","+userField.getText()+","+true);
-			writer.close();
+	if (!(serverNameField.getText().equals("")) && !(userField.getText().equals(""))){		
+				
 			
-			System.out.println("File writed.");
+			//if settings file exists 
+		if (!(settingsFile == null)){
+			//Write to settingsFile
+			try {
+				System.out.println("File exists");
+				PrintWriter writer = new PrintWriter(settingsFile);
 			
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			System.out.println("File not found");
-		} finally {
+					writer.println(serverNameField.getText()+","+portSpinner.getValue()+","+userField.getText()+","+true);
+					writer.close();
+		
+				
+				System.out.println("File written.");
+				dispose();
+				
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				System.out.println("File not found");
+			} finally {
+				dispose();
+			}
+		} else {//if it doesn't exist
+			
+			
+			//Create new settings file, save it in user's documents directory and write settings to 
+			//that file
+			
+				
+				new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
+		
+			
 			dispose();
 		}
-	} else {//if it doesn't exist
-		
-		
-		//Create new settings file, save it in user's documents directory and write settings to 
-		//that file
-		new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
-		
-		
-	}
 			
+		} else if(serverNameField.getText().equals("") || userField.getText().equals("")){
+			JOptionPane.showMessageDialog(null, "Some fields are empty", "Error", JOptionPane.ERROR_MESSAGE);
 		}
-		
+		}
 	}
+		
+	
 	
 	
 	
