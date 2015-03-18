@@ -486,7 +486,7 @@ public class MainFrame extends JFrame {
 					}
 				}
 
-				String modCode = (String) currentTable.getValueAt(0, 1);
+				String modCode = (String) currentTable.getValueAt(0, 2);
 				System.out.println("Making chart...");
 				ScatterPlot scatter = new ScatterPlot("Graph",
 						"Comparison of Average in Assessment", modCode, data);
