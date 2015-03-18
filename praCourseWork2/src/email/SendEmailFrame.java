@@ -301,7 +301,6 @@ public class SendEmailFrame extends JFrame {
 
 		// Default JFrame Stuff
 		add(firstPage, BorderLayout.CENTER);
-		// add(secondPage,BorderLayout.CENTER);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setSize(800, 600);
 		setLocationRelativeTo(null);
@@ -344,7 +343,7 @@ public class SendEmailFrame extends JFrame {
 		header.setFont(new Font("Century Gothic", Font.BOLD, 15));
 		header.setBackground(Color.black);
 		header.setForeground(Color.WHITE);
-
+		//table settings
 		table.setPreferredScrollableViewportSize(new Dimension(300, 350));
 		table.setFillsViewportHeight(true);
 		table.setGridColor(Color.BLACK);
@@ -366,16 +365,16 @@ public class SendEmailFrame extends JFrame {
 
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
-			Class clazz = String.class;
+			Class thisClass = String.class;
 			switch (columnIndex) {
 			case 0:
-				clazz = String.class;
+				thisClass = String.class;
 				break;
 			case 1:
-				clazz = Boolean.class;
+				thisClass = Boolean.class;
 				break;
 			}
-			return clazz;
+			return thisClass;
 		}
 
 		@Override
@@ -396,13 +395,14 @@ public class SendEmailFrame extends JFrame {
 	}
 
 	private void getCheckedStudents() {
+		//first get all the selected rows and get the string 
 		ArrayList<String> selectedRows = new ArrayList<String>();
 		for (int i = 0; i < table.getRowCount(); i++) {
 			if ((Boolean) table.getValueAt(i, 1)) {
 				selectedRows.add((String) table.getValueAt(i, 0));
 			}
 		}
-
+		// then for each string match it to a students and get the student object
 		for (Student temp : student) {
 			for (String h : selectedRows) {
 				if (temp.getName().equals(h)) {
@@ -451,8 +451,7 @@ public class SendEmailFrame extends JFrame {
 						if (!hostAddress.equals("smtp.mail.yahoo.com")) {
 							// If it isn't yahoo add these properties
 							prop.put("mail.smtp.socketFactory.port", port);
-							prop.put("mail.smtp.socketFactory.class",
-									"javax.net.ssl.SSLSocketFactory");
+							prop.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
 						}
 
 						prop.put("mail.smtp.starttls.enable", startTls);
@@ -464,9 +463,7 @@ public class SendEmailFrame extends JFrame {
 
 									@Override
 									protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-										return new javax.mail.PasswordAuthentication(
-												from, new String(password
-														.getPassword()));
+										return new javax.mail.PasswordAuthentication(from, new String(password.getPassword()));
 									}
 								}
 
@@ -476,16 +473,14 @@ public class SendEmailFrame extends JFrame {
 
 						MimeMessage message = new MimeMessage(session);
 						message.setFrom(new InternetAddress(from));
-						message.addRecipient(Message.RecipientType.TO,
-								new InternetAddress(to));
+						message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
 						message.setSubject("Results");
 						message.setText(email);
 
 						// Send message
 						Transport transport = session.getTransport("smtp");
 						transport.connect();
-						transport.sendMessage(message,
-								message.getAllRecipients());
+						transport.sendMessage(message,message.getAllRecipients());
 						transport.close();
 						System.out.println("message sent successfully....");
 
@@ -496,15 +491,13 @@ public class SendEmailFrame extends JFrame {
 					} catch (AuthenticationFailedException e1) {
 						// TODO Auto-generated catch block
 						System.out.println("Incorrect user or password");
-						JOptionPane.showMessageDialog(null,
-								"Incorrect user or password");
+						JOptionPane.showMessageDialog(null, "Incorrect user or password");
 						progressFrame.dispose();
 						break;
 					} catch (MessagingException e1) {
 						// TODO Auto-generated catch block
 						System.out.println("Something wrong with message");
-						JOptionPane.showMessageDialog(null,
-								"Something wrong with message");
+						JOptionPane.showMessageDialog(null, "Something wrong with message");
 						progressFrame.dispose();
 						break;
 					}
@@ -548,7 +541,6 @@ public class SendEmailFrame extends JFrame {
 
 		email += footerField.getText();
 		System.out.println(email);
-		// emails.add(email);
 		marks.clear();
 		return email;
 	}
