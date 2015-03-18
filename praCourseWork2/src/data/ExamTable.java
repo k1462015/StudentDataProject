@@ -94,7 +94,7 @@ public class ExamTable {
 			if (r.getName().equals("")) {
 				name = r.getCandKey();
 			}
-			model.addRow(new Object[] { name, r.getModuleCode(),r.getAssessment(), r.getMark(), r.getGrade() });
+			model.addRow(new Object[] { name,r.getAssessment(),r.getAssessment(), r.getMark(), r.getGrade() });
 		}
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
