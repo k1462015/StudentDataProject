@@ -48,6 +48,7 @@ import data.ExamTable;
 import data.ServerConnect;
 import email.EmailSettingsFrame;
 import email.SendEmailFrame;
+import email.Settings;
 import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
 import graph.ScatterPlot;
@@ -66,8 +67,6 @@ public class MainFrame extends JFrame {
 	private boolean anonLoaded;
 	private File settingsFile;
 	
-	// Holds directory of settings file. The file
-	// itself may or may not exist
 	ArrayList<String> emails;
 	ArrayList<String> durations;
 	private DisplayPopUpFrame display = null;
@@ -77,55 +76,30 @@ public class MainFrame extends JFrame {
 		super("PRA Coursework - TMH");
 		examLoaded = false;
 		anonLoaded = false;
-		findSettingsFile();
+		settingsFile = new Settings().findSettingsFile();
 		InitUI();
 
 	}
-	/**
-	 * Adds all required components to frame
-	 */
-	public void InitUI() {
-
-		tabbedPane = new JTabbedPane();
-		// addJTable();
-		JMenuBar menu = new JMenuBar();
-
+	
+	
+	private void InitUI() {
+		//Adds MenuBar to frame
+		JMenuBar menuBar = new JMenuBar();
 		JMenu file = new JMenu("File");
 		JMenu data = new JMenu("Data");
 		JMenu extra = new JMenu("Extra");
-
-		JMenuItem settings = new JMenuItem("Email Settings");
-		settings.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				new EmailSettingsFrame(settingsFile);
-
-			}
-
-		});
-
-		JMenuItem pdf = new JMenuItem("Generate PDF");
-		extra.add(pdf);
-		pdf.addActionListener(new pdfListener());
-
-		data.add(settings);
-
-		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
+		menuBar.add(file);
+		menuBar.add(data);
+		menuBar.add(extra);
+		setJMenuBar(menuBar);
+		
+		////////File Menu
 		JMenuItem loadExam = new JMenuItem("Load exam results");
+		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
 		JMenuItem exit = new JMenuItem("Exit");
-		JMenuItem userEdit= new JMenuItem("User settings");
-		userEdit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				JFrame userSet = new EditLogin();
-
-			}
-
-		});;
+		
+		loadAnon.addActionListener(new LoadAnonListener());
+		loadExam.addActionListener(new loadExamListener());
 		exit.addActionListener(new ActionListener(){
 
 			@Override
@@ -135,55 +109,66 @@ public class MainFrame extends JFrame {
 			}
 			
 		});
-		
-		
-		JMenuItem compareAverage = new JMenuItem("Compare to Average");
-		AverageListener avgListener = new AverageListener();
-		compareAverage.addActionListener(avgListener);
-
-		JMenuItem emailStudent = new JMenuItem("Email to Students");
-		emailStudent.addActionListener(new emailListener());
-		
-		data.add(emailStudent);
-		data.add(compareAverage);
-
-		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
-		fetchPart.addActionListener(new fetchListener());
-		data.add(fetchPart);
-
-		// Initiliases assesment arrayList
-		assesments = new ArrayList<Assessment>();
-
-		LoadAnonListener loadListen = new LoadAnonListener();
-		loadAnon.addActionListener(loadListen);
-		loadExam.addActionListener(new loadExamListener());
-
 		file.add(loadExam);
 		file.add(loadAnon);
 		file.add(exit);
-		menu.add(file);
-		this.setJMenuBar(menu);
-		setJMenuBar(menu);
+			
+		////////Data Menu
+		JMenuItem settings = new JMenuItem("Email Settings");
+		JMenuItem emailStudent = new JMenuItem("Email to Students");
+		JMenuItem compareAverage = new JMenuItem("Compare to Average");
+		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
+		
+		settings.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
+				new EmailSettingsFrame(settingsFile);
+
+			}
+
+		});	
+		emailStudent.addActionListener(new emailListener());
+		compareAverage.addActionListener(new AverageListener());
+		fetchPart.addActionListener(new fetchListener());	
+		
+		data.add(settings);
+		data.add(emailStudent);
+		data.add(compareAverage);
+		data.add(fetchPart);
+		
+		
+		///////Extra Menu
+		JMenuItem pdf = new JMenuItem("Generate PDF");
+		JMenuItem userEdit= new JMenuItem("User settings");
+		pdf.addActionListener(new pdfListener());
+		userEdit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				JFrame userSet = new EditLogin();
+
+			}
+
+		});
+		extra.add(pdf);
+		extra.add(userEdit);
+		
+		////Fetches Students and creates JList
 		students = new ArrayList<Student>();
-		// Fetches all student details from the server and adds to the student
-		// ArrayList
 		ServerConnect sc = new ServerConnect(students);
-
 		JList list = createJList(students);
-
 		JTextField search = new JTextField(22);
 		search.addKeyListener(new searchListener());
 		list.setFixedCellHeight(30);// cell formatting
 		list.setFixedCellWidth(260);// same thing
-		extra.add(userEdit);
-		// Sets top panel with search to borderLayout, so search JTextField
-		// Stretches through the top dynamically
+		
+		
+		// Initializes required fields
+		assesments = new ArrayList<Assessment>();
+		tabbedPane = new JTabbedPane();
 
-		// Adds menu items
-		menu.add(file);
-		menu.add(data);
-		menu.add(extra);
 
 		// Adds search and list to LeftPane Panel
 		JPanel leftPane = new JPanel();
@@ -196,12 +181,46 @@ public class MainFrame extends JFrame {
 		add(tabbedPane, BorderLayout.CENTER);
 
 		// Default JFrame settings
-		setSize(1200, 650);// MR:added size
+		setSize(1200, 650);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);// MR:added location
+		setLocationRelativeTo(null);
 		validate();
 		setVisible(true);
 
+	}
+	
+	/**
+	 * Compiles a JList of students
+	 * @param students - Arraylist of students
+	 * @return
+	 */
+	public JList createJList(ArrayList<Student> students) {
+
+		DefaultListModel defListMod = new DefaultListModel();
+		// create a list of items that are editable original list
+		
+		// goes through arraylist of Student objects, calls toString and adds
+		// the Strings to DefaultListModel (DLM)
+		for (Student s : students) {
+			defListMod.addElement(s.toString());
+		}
+
+		list = new JList(defListMod);// creates a new JList using the DLM
+		list.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Student findStudent = null;
+				if (e.getClickCount() == 2) {
+					String selectedItem = list.getSelectedValue().toString();
+					showDisplayPopUp(selectedItem);
+				}
+			}
+		});
+
+		list.setSelectionBackground(Color.black);
+		list.setSelectionForeground(Color.WHITE);
+		list.setFont(new Font("Calibri", Font.BOLD, 20));
+		return list;
 	}
 	
 	private class searchListener implements KeyListener{
@@ -501,42 +520,7 @@ public class MainFrame extends JFrame {
 		
 	}
 	
-	/**
-	 * Compiles a JList of students
-	 * @param students - Arraylist of students
-	 * @return
-	 */
-	public JList createJList(ArrayList<Student> students) {
-
-		DefaultListModel defListMod = new DefaultListModel();// create a list of
-																// items that
-																// are editable.
-																// original list
-		// does not allow you to do that. this allows more flexibility
-
-		// goes through arraylist of Student objects, calls toString and adds
-		// the Strings to DefaultListModel (DLM)
-		for (Student s : students) {
-			defListMod.addElement(s.toString());
-		}
-
-		list = new JList(defListMod);// creates a new JList using the DLM
-		list.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Student findStudent = null;
-				if (e.getClickCount() == 2) {
-					String selectedItem = list.getSelectedValue().toString();
-					showDisplayPopUp(selectedItem);
-				}
-			}
-		});
-
-		list.setSelectionBackground(Color.black);
-		list.setSelectionForeground(Color.WHITE);
-		list.setFont(new Font("Calibri", Font.BOLD, 20));
-		return list;
-	}
+	
 	
 	/**
 	 * Locates student from ArrayList and then displays Popup with student info
@@ -725,67 +709,5 @@ public class MainFrame extends JFrame {
 		}
 	}
 	
-	/**
-	 * MUSTA WILL DO
-	 */
-	public void findSettingsFile() {
-
-		String OS = System.getProperty("os.name").toLowerCase();
-
-		if (OS.contains("windows")) {
-			String user = System.getProperty("user.name");
-			String filePathStr = "C:\\Users\\" + user + "\\Documents";
-			System.out.println(filePathStr);
-			filePathStr += "\\settings.ini";
-			System.out.println(filePathStr);
-
-			File f = new File(filePathStr);
-
-			if (f.exists() && !f.isDirectory()) {
-				System.out.println("Settings.ini exists");
-				settingsFile = f;
-				
-			} else {
-				System.out.println("Settings.ini doesn't exist yet");
-				
-			}
-
-		} else if (OS.contains("mac")) {
-			String user = System.getProperty("user.name");
-			String filePathStr = "/Users/" + user + "/Desktop";
-			System.out.println(filePathStr);
-			filePathStr += "/settings.ini";
-			System.out.println(filePathStr);
-
-			File f = new File(filePathStr);
-
-			if (f.exists() && !f.isDirectory()) {
-				System.out.println("Settings.ini exists");
-				settingsFile = f;
-				
-			} else {
-				System.out.println("Settings.ini doesn't exist yet");
-				
-			}
-		} else if (OS.contains("nix")) {
-			String filePathStr = "~/Desktop";
-			System.out.println(filePathStr);
-			filePathStr += "/settings.ini";
-			System.out.println(filePathStr);
-
-			File f = new File(filePathStr);
-
-			if (f.exists() && !f.isDirectory()) {
-				System.out.println("Settings.ini exists");
-				settingsFile = f;
-				
-			} else {
-				System.out.println("Settings.ini doesn't exist yet");
-				
-			}
-		}
-		
-
-	}
 
 }

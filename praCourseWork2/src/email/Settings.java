@@ -171,6 +171,22 @@ public class Settings {
 				System.out.println("Settings.ini exists in macs");
 				settings = f;
 			}
+		}else if (OS.contains("nix")) {
+			String filePathStr = "~/Desktop";
+			System.out.println(filePathStr);
+			filePathStr += "/settings.ini";
+			System.out.println(filePathStr);
+
+			File f = new File(filePathStr);
+
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists");
+				settings = f;
+				
+			} else {
+				System.out.println("Settings.ini doesn't exist yet");
+				
+			}
 		}
 		return settings;
 	}
