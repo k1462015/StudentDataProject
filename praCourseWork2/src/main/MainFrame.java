@@ -269,17 +269,26 @@ public class MainFrame extends JFrame {
 	 * Loops through assessments Generates a tabbed pane for each assessment
 	 */
 	public void tabbedPane() {
-		String name = "";
 		int count = 0;
+		boolean checkExists = false;
 		// loops through each assesment and creates a tab and a table for that
 		// assessment
 		for (Assessment a : assesments) {
-			name = (a.getIndex(count).getModuleCode()).replaceAll("\"", "")
-					+ " " + a.getIndex(count).getAssessment();
+			String name = (a.getIndex(count).getModuleCode()).replaceAll("\"", "")+ " " + a.getIndex(count).getAssessment()+" "+a.getIndex(count).getYear();
+			for(int i = 0; i < tabbedPane.getTabCount();i++){
+				if(tabbedPane.getTitleAt(i).equals(name)){
+					checkExists = true;
+				}
+			}
+			if(!checkExists){
 			count++;
 			ExamTable jtable = new ExamTable(a, assesments, students);
 			jtable.getTable().addMouseListener(new TableListener());
 			tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
+			}else{
+				JOptionPane.showMessageDialog(null, "You have already uploaded this CSV file before.\nPlease upload a different CSV file.");
+			}
+
 		}
 		assesments.clear();
 	}
