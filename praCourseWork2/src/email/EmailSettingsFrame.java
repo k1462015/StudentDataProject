@@ -67,7 +67,6 @@ public class EmailSettingsFrame extends JFrame {
 		if (!(settingsFile == null) ){//Checks if file path is legitimate
 			
 			if (new Settings().checkSettings(settingsFile) == true){//Checks if file is in correct format
-				
 				loadSettings(settingsFile);
 				setSettings();
 			} else{
@@ -218,8 +217,8 @@ public class EmailSettingsFrame extends JFrame {
 			}
 			
 		});
+		//adding buttons to frame
 		JPanel buttonHolder = new JPanel(new BorderLayout());
-		//buttonHolder.setAlignmentX(RIGHT_ALIGNMENT);
 		JPanel buttonEast = new JPanel(new FlowLayout());
 		JPanel buttonWest = new JPanel(new FlowLayout());
 		buttonEast.add(cancel);
