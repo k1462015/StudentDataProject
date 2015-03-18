@@ -254,31 +254,16 @@ public class EmailSettingsFrame extends JFrame {
 		JRadioButton outlook = new JRadioButton("Outlook");
 		JRadioButton windowsLive = new JRadioButton("Windows Live");
 		JRadioButton gmail = new JRadioButton("Gmail");
-		JRadioButton yahoo = new JRadioButton("Yahoo");
 		outlook.addActionListener(new ActionListener(){
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		windowsLive.setSelected(false);
 		gmail.setSelected(false);
-		yahoo.setSelected(false);
-		serverNameField.setText("outlook.office365.com");
+		serverNameField.setText("smtp-mail.outlook.com");
 		portSpinner.setValue(587);
 			
 		}
-					
-				});
-				yahoo.addActionListener(new ActionListener(){
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						windowsLive.setSelected(false);
-						outlook.setSelected(false);
-						gmail.setSelected(false);
-						serverNameField.setText("smtp.yahoo.com");
-						portSpinner.setValue(587);
-						
-					}
 					
 				});
 				gmail.addActionListener(new ActionListener(){
@@ -287,7 +272,6 @@ public class EmailSettingsFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						windowsLive.setSelected(false);
 						outlook.setSelected(false);
-						yahoo.setSelected(false);
 						serverNameField.setText("smtp.gmail.com");
 						portSpinner.setValue(465);
 						
@@ -300,7 +284,6 @@ public class EmailSettingsFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						outlook.setSelected(false);
 						gmail.setSelected(false);
-						yahoo.setSelected(false);
 						serverNameField.setText("smtp.live.com");
 						portSpinner.setValue(587);
 						
@@ -311,7 +294,6 @@ public class EmailSettingsFrame extends JFrame {
 				profiles.add(windowsLive);
 				profiles.add(outlook);
 				profiles.add(gmail);
-				profiles.add(yahoo);
 				menubar.add(profiles);
 				
 				setJMenuBar(menubar);
