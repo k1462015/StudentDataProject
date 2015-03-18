@@ -29,8 +29,7 @@ public class CSVLoader {
 		choosy.setCurrentDirectory(f);
 
 		// Creates filter so user can only select CSV file
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CSV Files", "csv");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
 		choosy.setFileFilter(filter);
 		
 		// Checks if a file has been opened
@@ -82,8 +81,7 @@ public class CSVLoader {
 		choosy.setCurrentDirectory(f);
 
 		// Creates filter so user can only select CSV file
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(
-				"CSV Files", "csv");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
 		choosy.setFileFilter(filter);
 
 		int returnValue = choosy.showOpenDialog(frame);
@@ -110,8 +108,7 @@ public class CSVLoader {
 			}
 			if (validFile) {
 				try {
-					BufferedReader bf = new BufferedReader(new FileReader(
-							file));
+					BufferedReader bf = new BufferedReader(new FileReader(file));
 					while (bf.ready()) {
 						String[] line = bf.readLine().split(",");
 						for (Student s : students) {
@@ -125,12 +122,8 @@ public class CSVLoader {
 						totalImports++;
 					}
 					int failedImports = totalImports - succesImport;
-					String results = "Annonymous marking codes imported. "
-							+ succesImport
-							+ " codes were \nfor known students; "
-							+ failedImports + " were or unknown students";
-					JOptionPane.showMessageDialog(null,
-							results);
+					String results = "Annonymous marking codes imported. " + succesImport + " codes were \nfor known students; " + failedImports + " were or unknown students";
+					JOptionPane.showMessageDialog(null,results);
 
 					anonLoaded = true;
 
@@ -140,13 +133,9 @@ public class CSVLoader {
 					System.out.println("Error");
 				}
 
-				System.out.println("You have chosen "
-						+ choosy.getSelectedFile().getName()
-						+ " to be imported");
+				System.out.println("You have chosen " + choosy.getSelectedFile().getName() + " to be imported");
 			} else {
-				JOptionPane
-						.showMessageDialog(null,
-								"Please upload a valid \nAnonymous marking code csv file");
+				JOptionPane.showMessageDialog(null,"Please upload a valid \nAnonymous marking code csv file");
 			}
 
 		}
