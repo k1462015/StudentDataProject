@@ -32,6 +32,7 @@ import javax.swing.SwingConstants;
  */
 public class EditLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
+	//store the directory of the project
 	private static String currentDirectory = new File("").getAbsolutePath();
 
 
@@ -43,7 +44,7 @@ public class EditLogin extends JFrame {
 
 	private void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
-		
+		// initialise JPanels
 		JPanel center = new JPanel();
 		center.setLayout(new BoxLayout(center,BoxLayout.PAGE_AXIS));
 		center.add(Box.createVerticalGlue());
@@ -54,7 +55,7 @@ public class EditLogin extends JFrame {
 		JPanel row3 = new JPanel(new BorderLayout());
 		JPanel row4 = new JPanel(new BorderLayout());
 		JPanel row5 = new JPanel(new BorderLayout());
-		
+		//create buttons, labels and textfields
 		JButton save = new JButton("Save");
 		save.setFont(font);
 		JButton cancel = new JButton("Cancel");
@@ -75,7 +76,7 @@ public class EditLogin extends JFrame {
 		JTextField Nusername = new JTextField(20);
 		JPasswordField Npassword = new JPasswordField(20);
 		JPasswordField Rpassword = new JPasswordField(20);
-		
+		//checks to see if current password and username are correct then changes to new ones
 		save.addActionListener(new ActionListener(){
 
 			@Override
@@ -124,11 +125,12 @@ public class EditLogin extends JFrame {
 		BufferedReader br;
 		String userDetails ="";
 		try {
+			//get the login file as it has the username and password stored inside it
 			br = new BufferedReader(new FileReader(currentDirectory + "/login.txt"));
 
 			StringBuilder sb = new StringBuilder();
 	        String line = br.readLine();
-
+	        // store the contents of the file as a string
 	        while (line != null) {
 	            sb.append(line);
 	            sb.append(System.lineSeparator());
@@ -146,17 +148,22 @@ public class EditLogin extends JFrame {
     	  String newPass1 = new String(Npass.getPassword());
     	  String newPass2 = new String(Rpass.getPassword());
 	      details = new ArrayList(Arrays.asList(str.trim().split("\\s*,\\s*")));
+	      //first make sure every field has data in it
 	      if (Cname.getText().equals("") || Cpass.getPassword().length == 0 || Nname.getText().equals("")|| newPass1.equals("") || newPass2.equals("")){
 	    	  JOptionPane.showMessageDialog(null,"please enter a useranme or password");
 	      } else {
+	    	  // check if the current username and paswword are correct
 	    	  if (!(Cname.getText().equals(details.get(0)) && passText.equals(details.get(1)))){
 	    			  JOptionPane.showMessageDialog(null,"useranme or password is wrong");
 	    	  } else {
+	    		  //check if the new password and retype new passwords fields are the same 
 	    		  if(newPass1.equals(newPass2)){
 		    		  PrintWriter writer;
 		    		  try {
+		    			  //clear the contents of the file
 		    			  writer = new PrintWriter(currentDirectory + "/login.txt");
 						  writer.print("");
+						  //add the new user details to the file
 						  writer.print(Nname.getText() +","+newPass1);
 						  writer.close();
 						  JOptionPane.showMessageDialog(null,"New user details have been saved");
