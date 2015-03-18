@@ -74,7 +74,8 @@ public class CSVLoader {
 		
 	}
 	
-	public void loadAnonCode(JFrame frame,ArrayList<Student> students,boolean anonLoaded){
+	public boolean loadAnonCode(JFrame frame,ArrayList<Student> students){
+		boolean anonLoaded = false;
 		JFileChooser choosy = new JFileChooser();
 
 		File f = new File("C://Users");
@@ -149,6 +150,7 @@ public class CSVLoader {
 			}
 
 		}
+		return anonLoaded;
 
 	}
 	

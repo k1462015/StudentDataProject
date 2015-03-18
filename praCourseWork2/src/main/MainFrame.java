@@ -518,9 +518,8 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			if (examLoaded == true && anonLoaded == true) {
-
+				System.out.println("Plotting graph...");
 				JScrollPane currentScrollPane = (JScrollPane) tabbedPane
 						.getComponentAt(tabbedPane.getSelectedIndex());
 				JViewport viewport = currentScrollPane.getViewport();
@@ -559,7 +558,8 @@ public class MainFrame extends JFrame {
 				ScatterPlot scatter = new ScatterPlot("Graph",
 						"Comparison of Average in Assessment", modCode, data);
 
-			} else if (anonLoaded == true && examLoaded == false) {
+			} else 
+			if (anonLoaded == true && examLoaded == false) {
 				JOptionPane
 						.showMessageDialog(rootPane,
 								"You need to load an exam results file, before you can create the chart");
@@ -578,7 +578,11 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			new CSVLoader().loadAnonCode(MainFrame.this, students, anonLoaded);
+			if(new CSVLoader().loadAnonCode(MainFrame.this, students)){
+				anonLoaded = true;
+			}else{
+				anonLoaded = false;
+			}
 
 		}
 	}
