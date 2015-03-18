@@ -15,13 +15,10 @@ public class ServerConnect {
 	public ServerConnect(ArrayList<Student> students) {
 		// Create a Connector object and open the connection to the server
 		Connector server = new Connector();
-		boolean success = server.connect("TMH",
-
-		"944ff2da7cd193c64ec9459a42f38786");
+		boolean success = server.connect("TMH","944ff2da7cd193c64ec9459a42f38786");
 
 		if (success == false) {
-			System.out
-					.println("Fatal error: could not open connection to server");
+			System.out.println("Fatal error: could not open connection to server");
 			System.exit(1);
 		}
 
@@ -49,8 +46,7 @@ public class ServerConnect {
 			String[] studentDetails1 = temp.split(",");
 			int studentNumber = Integer.parseInt(studentDetails1[2]);
 
-			Student temp1 = new Student(studentDetails1[0], studentDetails1[1],
-					studentNumber, studentDetails1[3]);
+			Student temp1 = new Student(studentDetails1[0], studentDetails1[1],studentNumber, studentDetails1[3]);
 			students.add(temp1);
 
 		}
