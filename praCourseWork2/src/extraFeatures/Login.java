@@ -30,6 +30,7 @@ import main.MainFrame;
  *
  */
 public class Login extends JFrame{
+	// get the path of the project directory 
 	private static String currentDirectory = new File("").getAbsolutePath();
 	private final long serialVersionUID = 1L;
 	
@@ -62,11 +63,12 @@ public class Login extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				BufferedReader br;
 				try {
+					//get the login file 
 					br = new BufferedReader(new FileReader(currentDirectory + "/login.txt"));
 
 					StringBuilder sb = new StringBuilder();
 			        String line = br.readLine();
-
+			        //store the contents of the file as a string
 			        while (line != null) {
 			            sb.append(line);
 			            sb.append(System.lineSeparator());
@@ -82,12 +84,13 @@ public class Login extends JFrame{
 
 			      ArrayList<String> details = null;
 			      details = new ArrayList(Arrays.asList(str.trim().split("\\s*,\\s*")));
-				
+			      // check if something has been entered for username and password fields
 				if (username.getText().equals("") || password.getPassword().length == 0){
 					JOptionPane.showMessageDialog(null,"please enter a useranme or password");
 				} else {
 					String passText = new String(password.getPassword());				
 					char[] correctPassword = details.get(1).toCharArray();
+					// check if the login details are correct
 					if ((username.getText().equals(details.get(0)) && passText.equals(details.get(1)))){
 						dispose();
 						JFrame frame = new MainFrame();
