@@ -12,6 +12,11 @@ import javax.swing.JOptionPane;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
+/**
+ * ActionListener for exporting graph as PNG
+ * @author TMH
+ *
+ */
 public class PNGListener implements ActionListener {
 	
 	private JFreeChart chart;
@@ -22,13 +27,14 @@ public class PNGListener implements ActionListener {
 		this.modCode = module;
 	}
 	
-	@Override
+	
 	public void actionPerformed(ActionEvent e) {
 		
-		JMenuItem temp = (JMenuItem) e.getSource();
+		JMenuItem temp = (JMenuItem) e.getSource(); 
 		
 		JFileChooser chooser = new JFileChooser() {
-			public void approveSelection(){
+			
+			public void approveSelection(){//Here, the behaviour of the approve button of the JFileChooser is altered
 				
 				File filePath = super.getSelectedFile();
 				
@@ -39,7 +45,7 @@ public class PNGListener implements ActionListener {
 					filePath = new File(pathStr);//Updates filePath with new path
 				}
 				
-				if (filePath.exists() && getDialogType() == SAVE_DIALOG){//If that file exists
+				if (filePath.exists() && getDialogType() == SAVE_DIALOG){//If there exists a file with the same name and path
 					int decision = JOptionPane.showConfirmDialog(this, "This file already exists. Would you like to overwrite?", "File Exists", 
 							JOptionPane.YES_NO_CANCEL_OPTION);
 					switch (decision){
@@ -47,11 +53,11 @@ public class PNGListener implements ActionListener {
 							try {
 								
 									ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
-									JOptionPane.showMessageDialog(null, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
+									JOptionPane.showMessageDialog(this, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
 									this.cancelSelection();
 				
 							} catch (IOException e1) {
-									JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
+									JOptionPane.showMessageDialog(this, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
 								
 						}
 						super.approveSelection();//Goes ahead with the file saving
@@ -69,19 +75,20 @@ public class PNGListener implements ActionListener {
 				try {
 					
 						ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
-						JOptionPane.showMessageDialog(null, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(this, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
 						this.cancelSelection();
 					
 				
 				} catch (IOException e1) {
-					JOptionPane.showMessageDialog(null, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, "Failed to export chart", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		};
 		
-		chooser.setSelectedFile(new File(modCode+"." + temp.getText().toLowerCase()));
+		//Sets the text within the file name textfield to the module code, concatenates the file type to the end
+		chooser.setSelectedFile(new File(modCode+"." + temp.getText().toLowerCase())); 
 		
-		int option = chooser.showSaveDialog(null);
+		chooser.showSaveDialog(null);
 		
 	}
 
