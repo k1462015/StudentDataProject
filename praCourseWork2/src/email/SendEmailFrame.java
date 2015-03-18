@@ -82,7 +82,7 @@ public class SendEmailFrame extends JFrame {
 		createTable(false);
 		selectedStudents = new ArrayList<Student>();
 
-		findSettingsFile();
+		loadedSettings = new Settings().findSettingsFile();
 
 		LineBorder firstPageBorder = new LineBorder(Color.BLACK, 2);
 		Font btnFont = new Font("Century Gothic", Font.BOLD, 15);
@@ -246,11 +246,8 @@ public class SendEmailFrame extends JFrame {
 									JOptionPane.showMessageDialog(null,
 											"Emails succesfully sent!");
 								}
-
 							}
-
 						});
-
 						progressFrame.add(progBar);
 						progressFrame.setSize(300, 150);
 						progressFrame.setLocationRelativeTo(null);
@@ -293,11 +290,13 @@ public class SendEmailFrame extends JFrame {
 
 		if (!(loadedSettings == null)) {
 			// System.out.println("hello");
-			String[] temp = settingsData(loadedSettings);
+			String[] temp = new Settings().settingsData(loadedSettings);
 			if (temp.length == 4) {
 				settingsArray = temp;
 				emailField.setText(settingsArray[2]);
 			}
+		} else {
+			System.out.println("No loaded settings file");
 		}
 
 		// Default JFrame Stuff
@@ -307,6 +306,29 @@ public class SendEmailFrame extends JFrame {
 		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setVisible(true);
+	}
+
+	public String[] settingsData(File settings) {
+
+		BufferedReader br;
+		String[] settingsArray = {};
+		try {
+			br = new BufferedReader(new FileReader(settings));
+			String s = br.readLine();
+			br.close();
+			System.out.println(s);
+			settingsArray = s.split(",");
+			return settingsArray;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return settingsArray;
+
 	}
 
 	private JScrollPane createTable(boolean b) {
@@ -373,29 +395,6 @@ public class SendEmailFrame extends JFrame {
 
 	}
 
-	private String[] settingsData(File settings) {
-
-		BufferedReader br;
-		String[] settingsArray = {};
-		try {
-			br = new BufferedReader(new FileReader(settings));
-			String s = br.readLine();
-			br.close();
-			System.out.println(s);
-			settingsArray = s.split(",");
-			return settingsArray;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return settingsArray;
-
-	}
-
 	private void getCheckedStudents() {
 		ArrayList<String> selectedRows = new ArrayList<String>();
 		for (int i = 0; i < table.getRowCount(); i++) {
@@ -410,39 +409,6 @@ public class SendEmailFrame extends JFrame {
 					System.out.println(temp.getName() + "checked students");
 					selectedStudents.add(temp);
 				}
-			}
-		}
-	}
-
-	private void findSettingsFile() {
-		String OS = System.getProperty("os.name").toLowerCase();
-
-		if (OS.contains("windows")) {
-			String user = System.getProperty("user.name");
-			String filePathStr = "C:\\Users\\" + user + "\\Documents";
-			System.out.println(filePathStr);
-			filePathStr += "\\settings.ini";
-			System.out.println(filePathStr);
-
-			File f = new File(filePathStr);
-
-			if (f.exists() && !f.isDirectory()) {
-				System.out.println("Settings.ini exists");
-				loadedSettings = f;
-			}
-
-		} else if (OS.contains("mac")) {
-			String user = System.getProperty("user.name");
-			String filePathStr = "/Users/" + user + "/Desktop";
-			System.out.println(filePathStr);
-			filePathStr += "/settings.ini";
-			System.out.println(filePathStr);
-
-			File f = new File(filePathStr);
-
-			if (f.exists() && !f.isDirectory()) {
-				System.out.println("Settings.ini exists");
-				loadedSettings = f;
 			}
 		}
 	}
@@ -463,24 +429,15 @@ public class SendEmailFrame extends JFrame {
 						System.out.println(toAddress);
 						String email = body;
 						String to = toAddress;
-						;// change accordingly
-							// default settings
-						String hostAddress = "outlook.office365.com"; // IP
-																		// address
-																		// in
-																		// the
-																		// form
-																		// of
-																		// DNS
-																		// name
+						// default settings
+						String hostAddress = "outlook.office365.com";
+						// IP address in the form of DNS name
 						String port = "587";
 						String from = emailField.getText();// change accordingly
 						String startTls = "true";
 
 						// if the settings were loaded correctly, then the
-						// default
-						// settings will
-						// be changed
+						// default settings will be changed
 						if (!(settingsArray == null)) {
 							hostAddress = settingsArray[0];
 							port = settingsArray[1];
@@ -491,13 +448,8 @@ public class SendEmailFrame extends JFrame {
 						Properties prop = System.getProperties();
 						prop.put("mail.smtp.auth", "true");
 
-						if (!hostAddress.equals("smtp.mail.yahoo.com")) {// if
-																			// it
-																			// isn't
-																			// yahoo,
-																			// add
-																			// these
-																			// properties
+						if (!hostAddress.equals("smtp.mail.yahoo.com")) {
+							// If it isn't yahoo add these properties
 							prop.put("mail.smtp.socketFactory.port", port);
 							prop.put("mail.smtp.socketFactory.class",
 									"javax.net.ssl.SSLSocketFactory");
@@ -564,7 +516,7 @@ public class SendEmailFrame extends JFrame {
 			@Override
 			protected void process(List<Double> chunks) {
 				// TODO Auto-generated method stub
-				if(selectedStudents.size() == 1){
+				if (selectedStudents.size() == 1) {
 					progBar.setValue(100);
 				}
 				Double value = chunks.get(chunks.size() - 1);

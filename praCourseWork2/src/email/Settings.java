@@ -44,7 +44,7 @@ public class Settings {
 
 	}
 
-	public void writeToFile(String serverName,String userName,int portSpinner) {
+	public void writeToFile(String serverName, String userName, int portSpinner) {
 		// Create new settings file, save it in user's documents directory and
 		// write settings to
 		// that file
@@ -66,8 +66,7 @@ public class Settings {
 				System.out.println("File created");
 
 				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(serverName + ","
-						+ portSpinner + "," + userName
+				writer.println(serverName + "," + portSpinner + "," + userName
 						+ "," + true);
 				writer.close();
 				System.out.println("File writed.");
@@ -87,8 +86,7 @@ public class Settings {
 				System.out.println("File created");
 
 				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(serverName + ","
-						+ portSpinner + "," + userName
+				writer.println(serverName + "," + portSpinner + "," + userName
 						+ "," + true);
 				writer.close();
 				System.out.println("File writed.");
@@ -107,8 +105,7 @@ public class Settings {
 				System.out.println("File created");
 
 				PrintWriter writer = new PrintWriter(newFile);
-				writer.println(serverName+ ","
-						+ portSpinner + "," + userName
+				writer.println(serverName + "," + portSpinner + "," + userName
 						+ "," + true);
 				writer.close();
 				System.out.println("File writed.");
@@ -119,6 +116,63 @@ public class Settings {
 			}
 		}
 
+	}
+
+	public String[] settingsData(File settings) {
+
+		BufferedReader br;
+		String[] settingsArray = {};
+		try {
+			br = new BufferedReader(new FileReader(settings));
+			String s = br.readLine();
+			br.close();
+			System.out.println(s);
+			settingsArray = s.split(",");
+			return settingsArray;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return settingsArray;
+
+	}
+	
+	public File findSettingsFile() {
+		String OS = System.getProperty("os.name").toLowerCase();
+		File settings = null;
+		if (OS.contains("windows")) {
+			String user = System.getProperty("user.name");
+			String filePathStr = "C:\\Users\\" + user + "\\Documents";
+			System.out.println(filePathStr);
+			filePathStr += "\\settings.ini";
+			System.out.println(filePathStr);
+
+			File f = new File(filePathStr);
+
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists in windows");
+				settings = f;
+			}
+
+		} else if (OS.contains("mac")) {
+			String user = System.getProperty("user.name");
+			String filePathStr = "/Users/" + user + "/Desktop";
+			System.out.println(filePathStr);
+			filePathStr += "/settings.ini";
+			System.out.println(filePathStr);
+
+			File f = new File(filePathStr);
+
+			if (f.exists() && !f.isDirectory()) {
+				System.out.println("Settings.ini exists in macs");
+				settings = f;
+			}
+		}
+		return settings;
 	}
 
 }

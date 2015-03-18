@@ -328,7 +328,7 @@ public class EmailSettingsFrame extends JFrame {
 		try {
 			System.out.println("File exists");
 			PrintWriter writer = new PrintWriter(settingsFile);
-			writer.println();
+			writer.println(serverNameField.getText()+","+portSpinner.getValue()+","+userField.getText()+","+true);
 			writer.close();
 			
 			System.out.println("File writed.");
