@@ -163,7 +163,7 @@ public class MainFrame extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				new EmailSettingsFrame(settingsFile);
+				new EmailSettingsFrame();
 
 			}
 
@@ -418,8 +418,6 @@ public class MainFrame extends JFrame {
 		}
 		
 	}
-	
-	
 	
 	
 

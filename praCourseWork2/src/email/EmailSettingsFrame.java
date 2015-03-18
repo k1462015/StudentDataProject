@@ -59,9 +59,9 @@ public class EmailSettingsFrame extends JFrame {
 	/**
 	 * @param settings - Holds file for settings.ini within users directory
 	 */
-	public EmailSettingsFrame(File settings) {
+	public EmailSettingsFrame() {
 		super("SMTP Server");
-		this.settingsFile = settings;
+		this.settingsFile = new Settings().findSettingsFile();
 		
 		initUi();
 		
@@ -77,6 +77,7 @@ public class EmailSettingsFrame extends JFrame {
 			System.out.println("File doesn't exist");
 		}
 	}
+	
 	
 	private void setString() {
 		connecSecu = new String[1];
@@ -319,6 +320,8 @@ public class EmailSettingsFrame extends JFrame {
 		
 				
 				System.out.println("File written.");
+				
+				
 				dispose();
 				
 			} catch (FileNotFoundException e1) {
@@ -333,7 +336,6 @@ public class EmailSettingsFrame extends JFrame {
 			//Create new settings file, save it in user's documents directory and write settings to 
 			//that file
 			
-				
 				new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
 		
 			
