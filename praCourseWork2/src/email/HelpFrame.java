@@ -24,10 +24,11 @@ public class HelpFrame extends JFrame {
 	
 
 	private void initUi() {
+		//create main panel and set the layout of it
 		JPanel main = new JPanel();
 		main.setLayout(new BoxLayout(main, BoxLayout.PAGE_AXIS));
 		main.setMaximumSize(new Dimension(500,500));
-
+		//set fonts 
 		Font titleFonts = new Font("Calibri", Font.BOLD, 32);
 		Font subFont = new Font("Calibri", Font.PLAIN, 21);
 		Font paraFonts = new Font("Calibri", Font.PLAIN, 15);
@@ -47,8 +48,7 @@ public class HelpFrame extends JFrame {
 		// serverName.setFont(subFont);
 		main.add(serverName);
 
-		JLabel serverNameDes = new JLabel(
-				"Most server names are written in the form (mail.domain.com)");
+		JLabel serverNameDes = new JLabel("Most server names are written in the form (mail.domain.com)");
 		serverNameDes.setFont(paraFonts);
 		main.add(serverNameDes);
 
@@ -56,8 +56,7 @@ public class HelpFrame extends JFrame {
 		port.setFont(subFont.deriveFont(subattributes));
 		main.add(port);
 
-		JLabel portDes = new JLabel(
-				"The port number identifies what type of port it is. E.G port 465 for SSMTP port");
+		JLabel portDes = new JLabel("The port number identifies what type of port it is. E.G port 465 for SSMTP port");
 		portDes.setFont(paraFonts);
 		main.add(portDes);
 
@@ -67,11 +66,9 @@ public class HelpFrame extends JFrame {
 
 		JLabel authenMethod = new JLabel("Authentication Mehtod");
 		authenMethod.setFont(subFont.deriveFont(subattributes));
-		// serverName.setFont(subFont);
 		main.add(authenMethod);
 
-		JLabel authenDes = new JLabel(
-				"Default authentication method used here is StartTLS ");
+		JLabel authenDes = new JLabel("Default authentication method used here is StartTLS ");
 		authenDes.setFont(paraFonts);
 		main.add(authenDes);
 
