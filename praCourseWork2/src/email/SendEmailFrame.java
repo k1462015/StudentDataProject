@@ -564,7 +564,7 @@ public class SendEmailFrame extends JFrame {
 			@Override
 			protected void process(List<Double> chunks) {
 				// TODO Auto-generated method stub
-				if(chunks.size() == 1){
+				if(selectedStudents.size() == 1){
 					progBar.setValue(100);
 				}
 				Double value = chunks.get(chunks.size() - 1);
