@@ -88,8 +88,7 @@ public class ExamTable {
 			if (r.getName().equals("")) {
 				name = r.getCandKey();
 			}
-			model.addRow(new Object[] { name, r.getModuleCode(),
-					r.getAssessment(), r.getMark(), r.getGrade() });
+			model.addRow(new Object[] { name, r.getModuleCode(),r.getAssessment(), r.getMark(), r.getGrade() });
 		}
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
@@ -121,35 +120,25 @@ public class ExamTable {
 		int gradeCol = 0;
 		for (int i = 0; i < linesplit.length; i++) {
 			System.out.println(linesplit[i]);
-			if (linesplit[i].equals("\"#Module\"")
-					|| linesplit[i].equals("#Module")) {
+			if (linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")) {
 				moduleCol = i;
-			} else if (linesplit[i].equals("\"#Ass#\"")
-					|| linesplit[i].equals("#Ass#")) {
+			} else if (linesplit[i].equals("\"#Ass#\"") || linesplit[i].equals("#Ass#")) {
 				assCol = i;
-			} else if (linesplit[i].equals("\"#Cand Key\"")
-					|| linesplit[i].equals("#Cand Key")) {
+			} else if (linesplit[i].equals("\"#Cand Key\"") || linesplit[i].equals("#Cand Key")) {
 				candCol = i;
-			} else if (linesplit[i].equals("\"Mark\"")
-					|| linesplit[i].equals("Mark")) {
+			} else if (linesplit[i].equals("\"Mark\"") || linesplit[i].equals("Mark")) {
 				markCol = i;
-			} else if (linesplit[i].equals("\"Grade\"")
-					|| linesplit[i].equals("Grade")) {
+			} else if (linesplit[i].equals("\"Grade\"") || linesplit[i].equals("Grade")) {
 				gradeCol = i;
-			} else if (linesplit[i].equals("\"Year\"")
-					|| linesplit[i].equals("Year")) {
+			} else if (linesplit[i].equals("\"Year\"") || linesplit[i].equals("Year")) {
 				yearCol = i;
-			} else if (linesplit[i].equals("\"Period\"")
-					|| linesplit[i].equals("Period")) {
+			} else if (linesplit[i].equals("\"Period\"") || linesplit[i].equals("Period")) {
 				periodCol = i;
-			} else if (linesplit[i].equals("\"Occ\"")
-					|| linesplit[i].equals("Occ")) {
+			} else if (linesplit[i].equals("\"Occ\"") || linesplit[i].equals("Occ")) {
 				occCol = i;
-			} else if (linesplit[i].equals("\"Name\"")
-					|| linesplit[i].equals("Name")) {
+			} else if (linesplit[i].equals("\"Name\"") || linesplit[i].equals("Name")) {
 				nameCol = i;
-			} else if (linesplit[i].equals("\"#Map\"")
-					|| linesplit[i].equals("#Map")) {
+			} else if (linesplit[i].equals("\"#Map\"") || linesplit[i].equals("#Map")) {
 				mapCol = i;
 			}
 
@@ -159,13 +148,7 @@ public class ExamTable {
 		while ((line = bf.readLine()) != null) {
 			linesplit = line.split(",");
 			String ass = linesplit[assCol].replaceAll("\"", "");
-			Result temp = new Result(linesplit[yearCol].replaceAll("\"", ""),
-					linesplit[periodCol].replaceAll("\"", ""),
-					linesplit[moduleCol].replaceAll("\"", ""),
-					linesplit[occCol], linesplit[mapCol].replaceAll("\"", ""),
-					ass, linesplit[candCol].replaceAll("\"", ""),
-					linesplit[nameCol].replaceAll("\"", ""),
-					Integer.parseInt(linesplit[markCol]), linesplit[gradeCol]);
+			Result temp = new Result(linesplit[yearCol].replaceAll("\"", ""), linesplit[periodCol].replaceAll("\"", ""), linesplit[moduleCol].replaceAll("\"", ""), linesplit[occCol], linesplit[mapCol].replaceAll("\"", ""), ass, linesplit[candCol].replaceAll("\"", ""), linesplit[nameCol].replaceAll("\"", ""), Integer.parseInt(linesplit[markCol]), linesplit[gradeCol]);
 			// First checks if Assessment array is empty
 			if (assessments.isEmpty()) {
 				Assessment t1 = new Assessment();
@@ -184,8 +167,7 @@ public class ExamTable {
 				// Since there is existing assessment object
 				// Finds it, and adds record
 				for (int i = 0; i < assessments.size(); i++) {
-					if (assessments.get(i).getResults().get(0).getAssessment()
-							.equals(temp.getAssessment())) {
+					if (assessments.get(i).getResults().get(0).getAssessment().equals(temp.getAssessment())) {
 						assessments.get(i).addResult(temp);
 					}
 				}
@@ -226,8 +208,7 @@ public class ExamTable {
 
 				// Checks if candKey is actually student number
 				// If it's coursework, it will enter this if statement
-				if (candKey.substring(candKey.length() - 2,
-						candKey.length() - 1).equals("/")) {
+				if (candKey.substring(candKey.length() - 2, candKey.length() - 1).equals("/")) {
 					System.out.println("Coursework");
 					// Removes the end /1 or /2 after student number
 					candKey = candKey.substring(0, candKey.length() - 2);
@@ -238,15 +219,10 @@ public class ExamTable {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.getStudentNumber())) {
 							// Finds student with matching student numbers
-							System.out.println("Found Student "
-									+ s.getStudentNumber()
-									+ " who matches on JTable with sNumber "
-									+ candKey);
+							System.out.println("Found Student " + s.getStudentNumber() + " who matches on JTable with sNumber " + candKey);
 
-							String modCode = t.getModuleCode().replaceAll("\"",
-									"");
-							s.addMarks(modCode + " " + t.getAssessment(),
-									t.getMark());
+							String modCode = t.getModuleCode().replaceAll("\"","");
+							s.addMarks(modCode + " " + t.getAssessment(), t.getMark());
 						}
 					}
 				} else {
@@ -259,8 +235,7 @@ public class ExamTable {
 							// Replaces it with student number
 							t.setCandKey(s.getStudentNumber() + "");
 							t.setName(s.getName());
-							s.addMarks(t.getModuleCode().replaceAll("\"", "")
-									+ " " + t.getAssessment(), t.getMark());
+							s.addMarks(t.getModuleCode().replaceAll("\"", "") + " " + t.getAssessment(), t.getMark());
 						}
 					}
 				}
