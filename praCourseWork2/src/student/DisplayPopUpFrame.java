@@ -65,27 +65,27 @@ public class DisplayPopUpFrame extends JFrame {
 		studentNumber.setHorizontalAlignment(SwingConstants.LEFT);
 		tutor.setHorizontalAlignment(SwingConstants.LEFT);
 
-		// Adds sNumber and tutor email to bottom JPanel
+		// Adds student Number and tutor email to bottom JPanel
 		bottom.setLayout(new BoxLayout(bottom, BoxLayout.PAGE_AXIS));
-		JPanel sNumber = new JPanel(new BorderLayout());
+		JPanel sNumberPanel = new JPanel(new BorderLayout());
 		studentNumber.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-		sNumber.add(this.studentNumber, BorderLayout.WEST);
+		sNumberPanel.add(this.studentNumber, BorderLayout.WEST);
 		JPanel tutorPanel = new JPanel(new BorderLayout());
 		this.tutor.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 		tutorPanel.add(this.tutor, BorderLayout.WEST);
-		bottom.add(sNumber);
+		bottom.add(sNumberPanel);
 		bottom.add(tutorPanel);
 
-		// Gets participation data
+		// Gets participation data and adds to popup frame
 		for (String s : participation) {
 			JLabel temp = new JLabel("Last Access: " + s);
 			temp.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-			temp.setFont(new Font("Calibri",Font.PLAIN,30));
+			temp.setFont(h2);
 			JPanel tempHolder = new JPanel(new BorderLayout());
 			tempHolder.add(temp, BorderLayout.CENTER);
 			bottom.add(tempHolder);
 		}
-
+		//If there is results for the Student
 		if (!marks.isEmpty()) {
 			// Sets font of results label and adds it to the window
 			results = new JLabel("Results:", SwingConstants.CENTER);
@@ -94,11 +94,10 @@ public class DisplayPopUpFrame extends JFrame {
 			tResult.add(results, BorderLayout.CENTER);
 			bottom.add(tResult);
 
-			// Loops through each of the marks and adds them to the bottom of
-			// the panel
+			//Loops through each of the marks and adds them to the bottom of the panel
 			for (String m : marks) {
 				JLabel temp = new JLabel(m);
-				temp.setFont(temp.getFont().deriveFont(18.0f));
+				temp.setFont(h2);
 				temp.setHorizontalAlignment(SwingConstants.CENTER);
 				JPanel tempHolder = new JPanel(new BorderLayout());
 				tempHolder.add(temp, BorderLayout.CENTER);
