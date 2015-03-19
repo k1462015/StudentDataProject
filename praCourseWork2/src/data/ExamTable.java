@@ -154,8 +154,7 @@ public class ExamTable {
 		// Adds records to assessments
 		while ((line = bf.readLine()) != null) {
 			linesplit = line.split(",");
-			String ass = linesplit[assCol].replaceAll("\"", "");
-			Result temp = new Result(linesplit[yearCol].replaceAll("\"", ""), linesplit[periodCol].replaceAll("\"", ""), linesplit[moduleCol].replaceAll("\"", ""), linesplit[occCol], linesplit[mapCol].replaceAll("\"", ""), ass, linesplit[candCol].replaceAll("\"", ""), linesplit[nameCol].replaceAll("\"", ""), Integer.parseInt(linesplit[markCol]), linesplit[gradeCol]);
+			Result temp = new Result(linesplit[yearCol].replaceAll("\"", ""), linesplit[moduleCol].replaceAll("\"", ""), linesplit[assCol].replaceAll("\"", ""), linesplit[candCol].replaceAll("\"", ""), linesplit[nameCol].replaceAll("\"", ""), Integer.parseInt(linesplit[markCol]), linesplit[gradeCol]);
 			// First checks if Assessment array is empty
 			if (assessments.isEmpty()) {
 				Assessment t1 = new Assessment();

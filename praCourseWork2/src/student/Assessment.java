@@ -8,7 +8,9 @@ import java.util.ArrayList;
  */
 public class Assessment {
 	private ArrayList<Result> results;
-	
+	/**
+	 * Initialises ArrayList of results
+	 */
 	public Assessment(){
 		results = new ArrayList<Result>();
 	}
@@ -22,7 +24,7 @@ public class Assessment {
 	}
 	
 	/**
-	 * Retrieves results from arraylist of results using index number
+	 * Retrieves results from ArrayList of results using index number
 	 * @param index
 	 * @return
 	 */
