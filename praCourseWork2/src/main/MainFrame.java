@@ -7,20 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -34,7 +28,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jfree.data.xy.XYSeries;
 
@@ -138,7 +131,7 @@ public class MainFrame extends JFrame {
 		JMenuItem exit = new JMenuItem("Exit");
 
 		loadAnon.addActionListener(new LoadAnonListener());
-		loadExam.addActionListener(new loadExamListener());
+		loadExam.addActionListener(new LoadExamListener());
 		exit.addActionListener(new ActionListener() {
 
 			@Override
@@ -167,9 +160,9 @@ public class MainFrame extends JFrame {
 			}
 
 		});
-		emailStudent.addActionListener(new emailListener());
-		compareAverage.addActionListener(new AverageListener());
-		fetchPart.addActionListener(new fetchListener());
+		emailStudent.addActionListener(new EmailListener());
+		compareAverage.addActionListener(new GraphListener());
+		fetchPart.addActionListener(new FetchListener());
 
 		data.add(settings);
 		data.add(emailStudent);
@@ -180,7 +173,7 @@ public class MainFrame extends JFrame {
 		JMenuItem pdf = new JMenuItem("Generate PDF");
 		JMenuItem userEdit = new JMenuItem("User settings");
 		JMenuItem exportCSV = new JMenuItem("Export selected table");
-		pdf.addActionListener(new pdfListener());
+		pdf.addActionListener(new PDFListener());
 		userEdit.addActionListener(new ActionListener() {
 
 			@Override
@@ -283,7 +276,7 @@ public class MainFrame extends JFrame {
 			if(!checkExists){
 			count++;
 			ExamTable jtable = new ExamTable(a, assesments, students);
-			jtable.getTable().addMouseListener(new TableListener());
+			jtable.getTable().addMouseListener(new NameCellListener());
 			tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
 			}else{
 				JOptionPane.showMessageDialog(null, "You have already uploaded this CSV file before.\nPlease upload a different CSV file.");
@@ -346,7 +339,7 @@ public class MainFrame extends JFrame {
 		}
 	}
 
-	private class loadExamListener implements ActionListener {
+	private class LoadExamListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -364,7 +357,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private class emailListener implements ActionListener {
+	private class EmailListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// // New Email Frame
@@ -397,7 +390,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private class pdfListener implements ActionListener {
+	private class PDFListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -416,7 +409,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private class TableListener extends MouseAdapter {
+	private class NameCellListener extends MouseAdapter {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
@@ -445,7 +438,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private class AverageListener implements ActionListener {
+	private class GraphListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -506,7 +499,7 @@ public class MainFrame extends JFrame {
 
 	}
 
-	private class fetchListener implements ActionListener {
+	private class FetchListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -578,6 +571,8 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (examLoaded) {
 				new ExamTable().writeCSVFile(tabbedPane);
+			}else{
+				JOptionPane.showMessageDialog(null, "Please upload a exam.CSV file first");
 			}
 		}
 

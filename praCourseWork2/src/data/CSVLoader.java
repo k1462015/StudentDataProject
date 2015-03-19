@@ -14,7 +14,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import student.Assessment;
 import student.Student;
-import main.MainFrame;
 
 public class CSVLoader {
 	
