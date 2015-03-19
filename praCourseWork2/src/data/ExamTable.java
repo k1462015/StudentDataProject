@@ -31,13 +31,10 @@ public class ExamTable {
 	JTable table;
 
 	/**
-	 * 
-	 * @param Assesment
-	 *            object containing results
-	 * @param ArrayList
-	 *            of all loaded Assessment
-	 * @param ArrayList
-	 *            of students
+	 * Constructor used to create Table
+	 * @param ass - Assesment object containing results
+	 * @param assesments - ArrayList of all loaded Assessment
+	 * @param students - ArrayList of students
 	 */
 	public ExamTable(Assessment ass, ArrayList<Assessment> assesments,ArrayList<Student> students) {
 		deAnnonymise(assesments, students);
@@ -53,9 +50,7 @@ public class ExamTable {
 
 	/**
 	 * Generates a JTable Using results from Assessment
-	 * 
-	 * @param Assesment
-	 *            Obejct containing results
+	 * @param Assesment object containing results
 	 */
 	public void makeTable(Assessment assessment) {
 		DefaultTableModel model = new DefaultTableModel() {
@@ -68,6 +63,7 @@ public class ExamTable {
 
 		// Assigns column headings
 		model.addColumn("Name/Anon Codes");
+		model.addColumn("Student Number");
 		model.addColumn("#Ass");
 		model.addColumn("Module Code");
 		model.addColumn("Mark");
@@ -82,11 +78,8 @@ public class ExamTable {
 		header.setBackground(Color.black);
 		header.setForeground(Color.WHITE);
 
-		// Sets cell selection to single
-		// So only one cell is selected
-		// Also retrieves data when name is clicked
+		// Sets cell selection to single so only one cell is selected
 		table.setCellSelectionEnabled(true);
-
 		System.out.println("Making JTable");
 		// Fetches first assessment and adds to table
 		// for (Assessment t : assessments) {
@@ -95,7 +88,7 @@ public class ExamTable {
 			if (r.getName().equals("")) {
 				name = r.getCandKey();
 			}
-			model.addRow(new Object[] { name,r.getAssessment(),r.getModuleCode(), r.getMark(), r.getGrade() });
+			model.addRow(new Object[] { name,r.getCandKey(),r.getAssessment(),r.getModuleCode(), r.getMark(), r.getGrade() });
 		}
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
@@ -106,7 +99,7 @@ public class ExamTable {
 	/**
 	 * Reads data from CSV file
 	 * @param BufferedReader containg csv file from file
-	 * @param ArrayList of currently load assessments
+	 * @param ArrayList of currently loaded assessments
 	 * @throws IOException
 	 */
 	public void readExamData(BufferedReader bf,ArrayList<Assessment> assessments)throws IOException {
@@ -210,25 +203,19 @@ public class ExamTable {
 		for (Assessment a : assessments) {
 			for (Result t : a.getResults()) {
 				String candKey = t.getCandKey();
-				candKey = candKey.replaceAll("\"", "");
-
 				// Checks if candKey is actually student number
 				// If it's coursework, it will enter this if statement
 				if (candKey.substring(candKey.length() - 2, candKey.length() - 1).equals("/")) {
-					System.out.println("Coursework");
-					// Removes the end /1 or /2 after student number
+					//Removes the end /1 or /2 after student number
 					candKey = candKey.substring(0, candKey.length() - 2);
 					candKey = candKey.replaceAll("#", "");
-					t.setCandKey(candKey);
-
+					
 					for (Student s : students) {
-						candKey = candKey.replaceAll("#", "");
-						if (candKey.equals(s.getStudentNumber())) {
-							// Finds student with matching student numbers
+						// Finds student with matching student numbers
+						if (candKey.equals(s.getStudentNumber()+"")) {
 							System.out.println("Found Student " + s.getStudentNumber() + " who matches on JTable with sNumber " + candKey);
-
-							String modCode = t.getModuleCode().replaceAll("\"","");
-							s.addMarks(modCode + " " + t.getAssessment(), t.getMark());
+							t.setCandKey(s.getStudentNumber() + "");
+							s.addMarks(t.getModuleCode() + " " + t.getAssessment(), t.getMark());
 						}
 					}
 				} else {
@@ -236,12 +223,11 @@ public class ExamTable {
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.getAMC() + "")) {
-							// Finds student with matching anonymous marking
-							// code
+							// Finds student with matching anonymous marking code
 							// Replaces it with student number
 							t.setCandKey(s.getStudentNumber() + "");
 							t.setName(s.getName());
-							s.addMarks(t.getModuleCode().replaceAll("\"", "") + " " + t.getAssessment(), t.getMark());
+							s.addMarks(t.getModuleCode() + " " + t.getAssessment(), t.getMark());
 						}
 					}
 				}

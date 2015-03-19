@@ -223,19 +223,19 @@ public class MainFrame extends JFrame {
 
 
 	private Student findStudent(String studentIdentity,
-			ArrayList<Student> studentArrayList) {
+			ArrayList<Student> students) {
 		Student found = null;
 
-		for (int i = 0; i < studentArrayList.size(); i++) {
+		for (int i = 0; i < students.size(); i++) {
 			// Checks if searching using student Number or toString
 			if (!studentIdentity.substring(studentIdentity.length() - 1,
 					studentIdentity.length()).equals(")")) {
-				if ((studentArrayList.get(i).getName().equals(studentIdentity))) {
-					found = studentArrayList.get(i);
+				if (((students.get(i).getStudentNumber()+"").equals(studentIdentity))) {
+					found = students.get(i);
 				}
 			} else {
-				if (studentArrayList.get(i).toString().equals(studentIdentity)) {
-					found = studentArrayList.get(i);
+				if (students.get(i).toString().equals(studentIdentity)) {
+					found = students.get(i);
 				}
 
 			}
@@ -275,6 +275,7 @@ public class MainFrame extends JFrame {
 	private void generateDisplayPopUp(String studentName) {
 		Student findStudent = null;
 		findStudent = findStudent(studentName, students);
+		if(findStudent != null){
 		if (display != null) {
 			if (display.getName().equals(findStudent.getName())) {
 				// Debugging purposes
@@ -283,7 +284,9 @@ public class MainFrame extends JFrame {
 			}
 		}
 		display = new DisplayPopUpFrame(findStudent);
-
+		}else{
+			System.out.println("No student found");
+		}
 	}
 
 	private class searchListener extends KeyAdapter {
@@ -311,7 +314,7 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (new CSVLoader().loadAnonCode(MainFrame.this, students)) {
+			if (new CSVLoader().loadAnonCode(students)) {
 				anonLoaded = true;
 			} else {
 				anonLoaded = false;
@@ -325,7 +328,7 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
-				if (new CSVLoader().checkValidCSV(MainFrame.this, assesments)) {
+				if (new CSVLoader().loadExamCSV(assesments)) {
 					// Creates table and adds to Tabbed Pane
 					tabbedPane();
 					examLoaded = true;
@@ -401,8 +404,7 @@ public class MainFrame extends JFrame {
 				// Checks if column is student name column
 				if (column == 0) {
 					// Create Display PopUp
-					String selectedItem = (String) table
-							.getValueAt(row, column);
+					String selectedItem = (String) table.getValueAt(row, column+1);
 					System.out.println(selectedItem);
 					if (!selectedItem.substring(0, 1).equals("#")) {
 						System.out.println("Create Display PopUp");

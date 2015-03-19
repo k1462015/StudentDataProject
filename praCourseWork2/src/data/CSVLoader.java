@@ -16,13 +16,20 @@ import student.Assessment;
 import student.Student;
 
 public class CSVLoader {
-	
+	/**
+	 * Empty constructor to allow access to checkValidCSV method and loadAnonCode
+	 */
 	public CSVLoader(){
 		
 	}
 	
-	
-	public boolean checkValidCSV(JFrame frame,ArrayList<Assessment> assesments) throws IOException{
+	/**
+	 * Checks if user has uploaded a valid CSV file, if they have it will call the read the data from the CSV
+	 * @param assesments -ArrayList of assessments
+	 * @return - true if valid file has been uploaded
+	 * @throws IOException
+	 */
+	public boolean loadExamCSV(ArrayList<Assessment> assesments) throws IOException{
 		JFileChooser choosy = new JFileChooser();
 		File f = new File("C://Users//Saif//workspace");
 		choosy.setCurrentDirectory(f);
@@ -32,7 +39,7 @@ public class CSVLoader {
 		choosy.setFileFilter(filter);
 		
 		// Checks if a file has been opened
-		int returnValue = choosy.showOpenDialog(frame);
+		int returnValue = choosy.showOpenDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			boolean isValidFile = false;
 
@@ -72,7 +79,12 @@ public class CSVLoader {
 		
 	}
 	
-	public boolean loadAnonCode(JFrame frame,ArrayList<Student> students){
+	/**
+	 * 
+	 * @param students -  Arraylist of students to allow anonymous marking codes can be matched with student Numbers
+	 * @return true - if user has uploaded a valid Anonymous marking code CSV
+	 */
+	public boolean loadAnonCode(ArrayList<Student> students){
 		boolean anonLoaded = false;
 		JFileChooser choosy = new JFileChooser();
 
@@ -83,7 +95,7 @@ public class CSVLoader {
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
 		choosy.setFileFilter(filter);
 
-		int returnValue = choosy.showOpenDialog(frame);
+		int returnValue = choosy.showOpenDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			boolean validFile = false;
 
