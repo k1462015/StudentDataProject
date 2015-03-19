@@ -62,8 +62,14 @@ public class ExamTable {
 		};
 
 		// Assigns column headings
-		model.addColumn("Name/Anon Codes");
-		model.addColumn("Student Number");
+		boolean isAnonymised = !assessment.getResults().get(0).getCandKey().contains("#");
+		if(isAnonymised){
+			model.addColumn("Name");
+			model.addColumn("Student Number");
+		}else{
+			model.addColumn("Anon Codes");
+		}
+		
 		model.addColumn("#Ass");
 		model.addColumn("Module Code");
 		model.addColumn("Mark");
@@ -88,7 +94,11 @@ public class ExamTable {
 			if (r.getName().equals("")) {
 				name = r.getCandKey();
 			}
-			model.addRow(new Object[] { name,r.getCandKey(),r.getAssessment(),r.getModuleCode(), r.getMark(), r.getGrade() });
+			if(isAnonymised){
+				model.addRow(new Object[] { name,r.getCandKey(),r.getAssessment(),r.getModuleCode(), r.getMark(), r.getGrade() });
+			}else{
+				model.addRow(new Object[] {r.getCandKey(),r.getAssessment(),r.getModuleCode(), r.getMark(), r.getGrade() });
+			}
 		}
 
 		table.setPreferredScrollableViewportSize(new Dimension(200, 300));
