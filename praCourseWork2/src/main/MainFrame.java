@@ -191,14 +191,8 @@ public class MainFrame extends JFrame {
 
 	}
 
-	/**
-	 * Compiles a JList of students
-	 * 
-	 * @param students
-	 *            - Arraylist of students
-	 * @return
-	 */
-	public JList createJList(ArrayList<Student> students) {
+	
+	private JList createJList(ArrayList<Student> students) {
 
 		DefaultListModel defListMod = new DefaultListModel();
 		// create a list of items that are editable original list
@@ -227,15 +221,8 @@ public class MainFrame extends JFrame {
 		return list;
 	}
 
-	/**
-	 * 
-	 * @param studentIdentity
-	 *            - Used to identify student
-	 * @param studentArrayList
-	 *            - ArrayList of students to search through
-	 * @return
-	 */
-	public Student findStudent(String studentIdentity,
+
+	private Student findStudent(String studentIdentity,
 			ArrayList<Student> studentArrayList) {
 		Student found = null;
 
@@ -258,10 +245,8 @@ public class MainFrame extends JFrame {
 
 	}
 
-	/**
-	 * Loops through assessments Generates a tabbed pane for each assessment
-	 */
-	public void tabbedPane() {
+
+	private void tabbedPane() {
 		int count = 0;
 		boolean checkExists = false;
 		// loops through each assesment and creates a tab and a table for that
@@ -286,12 +271,8 @@ public class MainFrame extends JFrame {
 		assesments.clear();
 	}
 
-	/**
-	 * Locates student from ArrayList and then displays Popup with student info
-	 * 
-	 * @param studentName
-	 */
-	public void generateDisplayPopUp(String studentName) {
+	
+	private void generateDisplayPopUp(String studentName) {
 		Student findStudent = null;
 		findStudent = findStudent(studentName, students);
 		if (display != null) {
