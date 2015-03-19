@@ -290,7 +290,7 @@ public class SendEmailFrame extends JFrame {
 		
 		//If settings are loaded, sets email field to corresponding email
 		if (!(loadedSettings == null)) {
-			String[] temp = new Settings().settingsData(loadedSettings);
+			String[] temp = new Settings().readSettingsData(loadedSettings);
 			if (temp.length == 4) {
 				settingsArray = temp;
 				emailField.setText(settingsArray[2]);

@@ -2,14 +2,14 @@ package student;
 
 import java.util.ArrayList;
 /**
- * Assessment containing Arraylist of results
+ * Assessment class containing ArrayList of results
  * @author TMH
  *
  */
 public class Assessment {
 	private ArrayList<Result> results;
 	/**
-	 * Initialises ArrayList of results
+	 * Initializes ArrayList of results
 	 */
 	public Assessment(){
 		results = new ArrayList<Result>();
