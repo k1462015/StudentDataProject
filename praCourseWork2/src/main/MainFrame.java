@@ -125,8 +125,10 @@ public class MainFrame extends JFrame {
 		setJMenuBar(menuBar);
 
 		// //////File Menu
-		JMenuItem loadExam = new JMenuItem("Load exam results");
+		JMenuItem loadExam = new JMenuItem("Load Exam Results");
+		loadExam.setToolTipText("Loads exam results from CSV file");
 		JMenuItem loadAnon = new JMenuItem("Load anonymous marking codes");
+		loadAnon.setToolTipText("Loads anonymous marking codes from CSV file");
 		JMenuItem exit = new JMenuItem("Exit");
 
 		loadAnon.addActionListener(new LoadAnonListener());
@@ -146,9 +148,13 @@ public class MainFrame extends JFrame {
 
 		// //////Data Menu
 		JMenuItem settings = new JMenuItem("Email Settings");
-		JMenuItem emailStudent = new JMenuItem("Email to Students");
+		settings.setToolTipText("Configure SMTP email settings");
+		JMenuItem emailStudent = new JMenuItem("Send Email");
+		emailStudent.setToolTipText("Email results to students");
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
+		compareAverage.setToolTipText("Generates a Scatter Plot Graph for the selected tab");
 		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
+		fetchPart.setToolTipText("Fetches participation data from KEATS");
 
 		settings.addActionListener(new ActionListener() {
 			@Override
@@ -170,9 +176,10 @@ public class MainFrame extends JFrame {
 
 		// /////Extra Menu
 		JMenuItem pdf = new JMenuItem("Generate PDF");
+		pdf.setToolTipText("Saves PDF with all existing data to Desktop");
 		JMenuItem exportCSV = new JMenuItem("Export selected table");
+		exportCSV.setToolTipText("Exports current selected table to a CSV file");
 		pdf.addActionListener(new PDFListener());
-
 		exportCSV.addActionListener(new CSVExporter());
 		extra.add(pdf);
 		extra.add(exportCSV);
@@ -183,15 +190,13 @@ public class MainFrame extends JFrame {
 	private JList createJList(ArrayList<Student> students) {
 
 		DefaultListModel defListMod = new DefaultListModel();
-		// create a list of items that are editable original list
 
-		// goes through arraylist of Student objects, calls toString and adds
-		// the Strings to DefaultListModel (DLM)
+		// Goes through arraylist of Student objects, calls toString and adds the Strings to DefaultListModel (DLM)
 		for (Student s : students) {
 			defListMod.addElement(s.toString());
 		}
-
-		list = new JList(defListMod);// creates a new JList using the DLM
+		//Creates a new JList using the model
+		list = new JList(defListMod);
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -535,7 +540,7 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (examLoaded) {
-				new ExamTable().writeCSVFile(tabbedPane);
+				new ExamTable().exportCSVToFile(tabbedPane);
 			}else{
 				JOptionPane.showMessageDialog(null, "Please upload a exam.CSV file first");
 			}

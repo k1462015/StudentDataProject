@@ -33,30 +33,22 @@ import javax.swing.SpinnerNumberModel;
  *
  */
 public class EmailSettingsFrame extends JFrame {
-	private String[] connecSecu;
-	private String[] authenMeth;
-	
+	private String[] connecSecu,authenMeth;
+	private String serverPreLoaded,userPreLoaded,authPreLoaded;
+	private JTextField serverNameField,userField;
+	private JComboBox connectionBox,authenticationBox;
 	private File settingsFile;
-	
-	//The values these hold will be from an existing ini file
-	private String serverPreLoaded;
 	private Integer portPreLoaded;
-	private String userPreLoaded;
-	private String authPreLoaded;
 	private JPanel main;
-	
 	private HelpFrame hf;
-	private JTextField serverNameField;
 	private JSpinner portSpinner;
-	private JComboBox connectionBox;
-	private JComboBox authenticationBox;
-	private JTextField userField;
-	private JButton ok;
-	private JButton cancel;
+	private JButton ok,cancel;
 
 	private static final long serialVersionUID = 1L;
 	
 	/**
+	 * Checks if settings file exists is valid
+	 * Also initializes frame
 	 * @param settings - Holds file for settings.ini within users directory
 	 */
 	public EmailSettingsFrame() {
@@ -64,17 +56,13 @@ public class EmailSettingsFrame extends JFrame {
 		this.settingsFile = new Settings().findSettingsFile();
 		
 		initUi();
-		
-		if (!(settingsFile == null) ){//Checks if file path is legitimate
-			
-			if (new Settings().checkSettings(settingsFile) == true){//Checks if file is in correct format
+		//Checks if file path is valid
+		if (!(settingsFile == null) ){
+			//Checks if file is in correct format
+			if (new Settings().checkSettings(settingsFile) == true){
 				loadSettings(settingsFile);
 				setSettings();
-			} else{
-				System.out.println("File doesn't follow correct format");
 			}
-		} else {
-			System.out.println("File doesn't exist");
 		}
 	}
 	
@@ -101,13 +89,11 @@ public class EmailSettingsFrame extends JFrame {
 		main.add(box, BorderLayout.CENTER);
 		
 		// Create a font for all labels
-		// Try different fonts if you wish
-		//All of them will change if you change this one
-		Font font = new Font("Arial", Font.PLAIN, 20);
+		Font font = new Font("Calibri", Font.PLAIN, 20);
 		
 		//Settings Label
 		JLabel settings = new JLabel("Settings");
-		settings.setFont(new Font("Arial", Font.BOLD, 30));
+		settings.setFont(new Font("Calibri", Font.BOLD, 30));
 		settings.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 		JPanel settingsPanel = new JPanel(new BorderLayout());
 		settingsPanel.add(settings, BorderLayout.WEST);
@@ -152,7 +138,7 @@ public class EmailSettingsFrame extends JFrame {
 		//Security and Authentication
 		JLabel security = new JLabel("Security and Authentication");
 		security.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-		security.setFont(new Font("Arial", Font.BOLD, 30));
+		security.setFont(new Font("Calibri", Font.BOLD, 30));
 		JPanel securityPanel = new JPanel(new BorderLayout());
 		securityPanel.add(security, BorderLayout.WEST);
 		box.add(securityPanel);
@@ -244,9 +230,7 @@ public class EmailSettingsFrame extends JFrame {
 
 	}
 	
-	/**
-	 * Adds profile menu to Menubar
-	 */
+
 	private void addProfileMenu(){
 		//Adds profile options //EXTRA FEATURE
 		JMenuBar menubar = new JMenuBar();
@@ -304,25 +288,17 @@ public class EmailSettingsFrame extends JFrame {
 
 		@Override
 	public void actionPerformed(ActionEvent e) {
-			
-	if (!(serverNameField.getText().equals("")) && !(userField.getText().equals(""))){		
-				
-			
+	if (!(serverNameField.getText().equals("")) && !(userField.getText().equals(""))){
 			//if settings file exists 
 		if (!(settingsFile == null)){
 			//Write to settingsFile
 			try {
-				System.out.println("File exists");
 				PrintWriter writer = new PrintWriter(settingsFile);
 			
-					writer.println(serverNameField.getText()+","+portSpinner.getValue()+","+userField.getText()+","+true);
-					writer.close();
-		
-				
-				System.out.println("File written.");
+				writer.println(serverNameField.getText()+","+portSpinner.getValue()+","+userField.getText()+","+true);
+				writer.close();
 				
 				JOptionPane.showMessageDialog(null, "Settings have been saved");
-				
 				dispose();
 				
 			} catch (FileNotFoundException e1) {
@@ -332,73 +308,38 @@ public class EmailSettingsFrame extends JFrame {
 				dispose();
 			}
 			
-		} else {//if it doesn't exist
-			
-			
-			//Create new settings file, save it in user's documents directory and write settings to 
-			//that file
-			
+		} else {
+			//if it doesn't exist
+			//Create new settings file, save it in user's documents directory and write settings to that file
 			new Settings().writeToFile(serverNameField.getText(), userField.getText(),(Integer) portSpinner.getValue());
-				
 			JOptionPane.showMessageDialog(null, "Settings have been saved");
-			
 			dispose();
-		}
+			}
 			
 		} else if(serverNameField.getText().equals("") || userField.getText().equals("")){
 			JOptionPane.showMessageDialog(null, "Some fields are empty", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 		}
-	}
-}
 		
-	
-	
-	
-	
-	
-	/**
-	 * Loads settings from file
-	 * @param settings - Current settings file
-	 * @return A string array of the values from file
-	 */
-	public String[] loadSettings(File settings){
-		
+	private String[] loadSettings(File settings) throws FileNotFoundException,IOException{
 		String[] settingsArray = {};
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(settings));
-			String s = br.readLine();
-			System.out.println(s);
-			
-			settingsArray = s.split(",");
-			
-			
-			this.serverPreLoaded = settingsArray[0];
-			this.portPreLoaded =  Integer.parseInt(settingsArray[1]);
-			this.userPreLoaded = settingsArray[2];
-			this.authPreLoaded = settingsArray[3];
-			
-			/*for (String p: settingsArray){
-				System.out.println(p);
-			}*/
-			
-			return settingsArray;
+		BufferedReader br = new BufferedReader(new FileReader(settings));
+		String s = br.readLine();
+		System.out.println(s);
 		
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ArrayIndexOutOfBoundsException e){
-			e.printStackTrace();
-		}
+		settingsArray = s.split(",");
+		
+		this.serverPreLoaded = settingsArray[0];
+		this.portPreLoaded =  Integer.parseInt(settingsArray[1]);
+		this.userPreLoaded = settingsArray[2];
+		this.authPreLoaded = settingsArray[3];
+		
 		return settingsArray;
+		
 	}
 	
-	/**
-	 * Inputs settings into corresponding widgets
-	 */
-	public void setSettings(){
+	private void setSettings(){
 		serverNameField.setText(serverPreLoaded);
 		portSpinner.setValue(portPreLoaded);
 		userField.setText(userPreLoaded);

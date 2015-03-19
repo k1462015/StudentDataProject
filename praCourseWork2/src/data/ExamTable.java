@@ -23,7 +23,7 @@ import student.Result;
 import student.Student;
 
 /**
- * Creates JTable for Assessments & De-anonymises anon codes
+ * Creates JTable using Assessment data & De-anonymises anon codes
  * @author TMH
  *
  */
@@ -49,8 +49,8 @@ public class ExamTable {
 	}
 
 	/**
-	 * Generates a JTable Using results from Assessment
-	 * @param Assesment object containing results
+	 * Generates a JTable using results from Assessment data
+	 * @param assessments - Assessment object
 	 */
 	public void makeTable(Assessment assessment) {
 		DefaultTableModel model = new DefaultTableModel() {
@@ -87,8 +87,7 @@ public class ExamTable {
 		// Sets cell selection to single so only one cell is selected
 		table.setCellSelectionEnabled(true);
 		System.out.println("Making JTable");
-		// Fetches first assessment and adds to table
-		// for (Assessment t : assessments) {
+		// Fetches first assessment and adds results data to model
 		for (Result r : assessment.getResults()) {
 			String name = r.getName();
 			if (r.getName().equals("")) {
@@ -107,8 +106,8 @@ public class ExamTable {
 	}
 	
 	/**
-	 * Reads data from CSV file
-	 * @param BufferedReader containg csv file from file
+	 * Reads data from CSV file and adds to Assessment ArrayList
+	 * @param BufferedReader containing CSV file from file
 	 * @param ArrayList of currently loaded assessments
 	 * @throws IOException
 	 */
@@ -117,17 +116,7 @@ public class ExamTable {
 		// Reads first line to get column headings
 		String line = bf.readLine();
 		String[] linesplit = line.split(",");
-		int yearCol = 0;
-		int periodCol = 0;
-		int occCol = 0;
-		int nameCol = 0;
-		int mapCol = 0;
-
-		int moduleCol = 0;
-		int assCol = 0;
-		int candCol = 0;
-		int markCol = 0;
-		int gradeCol = 0;
+		int yearCol = 0,nameCol= 0,moduleCol = 0,assCol = 0,candCol = 0,markCol = 0,gradeCol = 0;
 		for (int i = 0; i < linesplit.length; i++) {
 			System.out.println(linesplit[i]);
 			if (linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")) {
@@ -142,15 +131,9 @@ public class ExamTable {
 				gradeCol = i;
 			} else if (linesplit[i].equals("\"Year\"") || linesplit[i].equals("Year")) {
 				yearCol = i;
-			} else if (linesplit[i].equals("\"Period\"") || linesplit[i].equals("Period")) {
-				periodCol = i;
-			} else if (linesplit[i].equals("\"Occ\"") || linesplit[i].equals("Occ")) {
-				occCol = i;
-			} else if (linesplit[i].equals("\"Name\"") || linesplit[i].equals("Name")) {
+			}  else if (linesplit[i].equals("\"Name\"") || linesplit[i].equals("Name")) {
 				nameCol = i;
-			} else if (linesplit[i].equals("\"#Map\"") || linesplit[i].equals("#Map")) {
-				mapCol = i;
-			}
+			} 
 
 		}
 
@@ -163,18 +146,14 @@ public class ExamTable {
 				Assessment t1 = new Assessment();
 				t1.addResult(temp);
 				assessments.add(t1);
-				// Now checks if there is already an assessment
-				// object
-				// With same assessment number
-				// If not make new assessment object
-				// Then add record
+				// Checks if there is already an assessment object with same assessment number
+				// If not make new assessment object then adds record
 			} else if (!checkAllAss(temp.getAssessment(), assessments)) {
 				Assessment t1 = new Assessment();
 				t1.addResult(temp);
 				assessments.add(t1);
 			} else {
-				// Since there is existing assessment object
-				// Finds it, and adds record
+				// Since there is existing assessment object finds it, and adds record
 				for (int i = 0; i < assessments.size(); i++) {
 					if (assessments.get(i).getResults().get(0).getAssessment().equals(temp.getAssessment())) {
 						assessments.get(i).addResult(temp);
@@ -189,7 +168,7 @@ public class ExamTable {
 	 * Loops through all Assessment Objects within Assessment ArrayList
 	 * If finds existing one, that matches string returns true
 	 * @param assCode - Assessment code to check
-	 * @return true - If have have existing assessment 
+	 * @return true - If have existing assessment 
 	 */
 	public boolean checkAllAss(String assCode, ArrayList<Assessment> assessments) {
 		for (Assessment t : assessments) {
@@ -202,19 +181,17 @@ public class ExamTable {
 	}
 	
 	/**
-	 * Loops through all currently loaded Students
-	 * Matches Anon Codes
+	 * Loops through all currently loaded Students and matches Anon Codes
 	 * If matched then replaces anon codes with Student Name
 	 * @param assessments - ArrayList of currently loaded Assessments
-	 * @param students - Arraylist of all students
+	 * @param students - ArrayList of all students
 	 */
 	public void deAnnonymise(ArrayList<Assessment> assessments,ArrayList<Student> students) {
-		System.out.println("Starting deannonymising...");
 		for (Assessment a : assessments) {
 			for (Result t : a.getResults()) {
 				String candKey = t.getCandKey();
 				// Checks if candKey is actually student number
-				// If it's coursework, it will enter this if statement
+				// If candKey is student Number, then is coursework file
 				if (candKey.substring(candKey.length() - 2, candKey.length() - 1).equals("/")) {
 					//Removes the end /1 or /2 after student number
 					candKey = candKey.substring(0, candKey.length() - 2);
@@ -223,18 +200,15 @@ public class ExamTable {
 					for (Student s : students) {
 						// Finds student with matching student numbers
 						if (candKey.equals(s.getStudentNumber()+"")) {
-							System.out.println("Found Student " + s.getStudentNumber() + " who matches on JTable with sNumber " + candKey);
 							t.setCandKey(s.getStudentNumber() + "");
 							s.addMarks(t.getModuleCode() + " " + t.getAssessment(), t.getMark());
 						}
 					}
 				} else {
-					System.out.println("Normal exam");
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.getAMC() + "")) {
-							// Finds student with matching anonymous marking code
-							// Replaces it with student number
+							// Finds student with matching anonymous marking code replaces it with student number
 							t.setCandKey(s.getStudentNumber() + "");
 							t.setName(s.getName());
 							s.addMarks(t.getModuleCode() + " " + t.getAssessment(), t.getMark());
@@ -246,52 +220,46 @@ public class ExamTable {
 
 	}
 	
-	public void writeCSVFile(JTabbedPane tabbedPane){
+	/**
+	 * Exports currently selected table to file
+	 * @param tabbedPane - Currently loaded tabbedPane
+	 */
+	public void exportCSVToFile(JTabbedPane tabbedPane){
 		
-		String filepath = "";
-		JFileChooser chooser;
-		chooser = new JFileChooser();
+		JFileChooser chooser = new JFileChooser();
 	    chooser.setDialogTitle("Select where you'd like to save the CSV file");
 	    chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 	    String tabName = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
 	    chooser.setSelectedFile(new File(tabName.replaceAll("/", "-")));
 	    chooser.setAcceptAllFileFilterUsed(true);
-
+	    
+	    //If user chooses valid directory then saves CSV there
 	    if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-	    	filepath = chooser.getSelectedFile()+".csv";
-	      System.out.println("getCurrentDirectory(): "
-	         +  chooser.getCurrentDirectory());
-	      System.out.println("getSelectedFile() : "
-	         +  chooser.getSelectedFile());
-	      
+	    	String filepath = chooser.getSelectedFile()+".csv";      
 	      try {
+	    	  	//Uses a file choo
 				FileWriter writer = new FileWriter(filepath);
 				JScrollPane currentScrollPane = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 				JViewport viewport = currentScrollPane.getViewport();
 				JTable currentTable = (JTable) viewport.getView();
-
+				
+				//Goes through column headings and adds to CSV file
 				for(int i = 0; i < currentTable.getColumnCount(); i++){
 					writer.write(currentTable.getColumnName(i) + ",");
 		        }
 				writer.write("\n");
-
+				//Goes through rows and adds to CSV file
 				for(int i=0; i< currentTable.getRowCount(); i++) {
 		            for(int j=0; j < currentTable.getColumnCount(); j++) {
 		            	writer.write(currentTable.getValueAt(i,j).toString()+",");
 		            }
 		            writer.write("\n");
 		        }
-
-
-				writer.flush();
 				writer.close();
 				JOptionPane.showMessageDialog(null, "Table data successfully exported as CSV file");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-	      }
-	    else {
-	      System.out.println("No Selection ");
 	      }
 
 		

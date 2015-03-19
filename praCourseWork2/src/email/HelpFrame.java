@@ -16,7 +16,9 @@ import javax.swing.WindowConstants;
  *
  */
 public class HelpFrame extends JFrame {
-
+	/**
+	 * Initializes gui
+	 */
 	public HelpFrame() {
 		super("Help");
 		initUi();
@@ -45,7 +47,6 @@ public class HelpFrame extends JFrame {
 
 		JLabel serverName = new JLabel("Server Name");
 		serverName.setFont(subFont.deriveFont(subattributes));
-		// serverName.setFont(subFont);
 		main.add(serverName);
 
 		JLabel serverNameDes = new JLabel("Most server names are written in the form (mail.domain.com)");

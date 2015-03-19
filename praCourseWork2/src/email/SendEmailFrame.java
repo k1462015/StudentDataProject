@@ -50,29 +50,28 @@ import student.Student;
 
 /**
  * JFrame to send email
- * 
  * @author TMH
  *
  */
 public class SendEmailFrame extends JFrame {
 	private ArrayList<Student> student;
 	private JTable table;
-	private JPanel listPanel;
-	private JPanel firstPage;
-	private JPanel secondPage;
+	private JPanel listPanel,firstPage,secondPage;
 	private File loadedSettings;
 	private String[] settingsArray;
 
 	private JTextField emailField;
 	private JPasswordField password;
 	private ArrayList<Student> selectedStudents;
-	private JTextArea headerField;
-	private JTextArea footerField;
-	private JTextArea prevField;
+	private JTextArea headerField,footerField,prevField;
 	private JFrame progressFrame;
 	private JLabel sending;
 	private JProgressBar progBar;
-
+	/**
+	 * 
+	 * @param student - ArrayList of students
+	 * @param settings - Settings file containing Email Settings
+	 */
 	public SendEmailFrame(ArrayList<Student> student, File settings) {
 		super("Email Frame");
 		this.student = student;

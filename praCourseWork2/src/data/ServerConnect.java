@@ -11,7 +11,10 @@ import studentdata.DataTable;
  *
  */
 public class ServerConnect {
-
+	/**
+	 * Loads students into ArrayList of students
+	 * @param students - ArrayList to load students into
+	 */
 	public ServerConnect(ArrayList<Student> students) {
 		// Create a Connector object and open the connection to the server
 		Connector server = new Connector();
