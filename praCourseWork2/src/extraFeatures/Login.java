@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,8 +31,6 @@ import main.MainFrame;
  *
  */
 public class Login extends JFrame{
-	// get the path of the project directory 
-	private static String currentDirectory = new File("").getAbsolutePath();
 	private final long serialVersionUID = 1L;
 	
 	public Login(){
@@ -64,7 +63,8 @@ public class Login extends JFrame{
 				BufferedReader br;
 				try {
 					//get the login file 
-					br = new BufferedReader(new FileReader(currentDirectory + "/login.txt"));
+					String url = this.getClass().getResource("/login.txt").getPath();
+					br = new BufferedReader(new FileReader(url));
 
 					StringBuilder sb = new StringBuilder();
 			        String line = br.readLine();

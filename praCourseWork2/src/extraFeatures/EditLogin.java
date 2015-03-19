@@ -32,9 +32,6 @@ import javax.swing.SwingConstants;
  */
 public class EditLogin extends JFrame {
 	private static final long serialVersionUID = 1L;
-	//store the directory of the project
-	private static String currentDirectory = new File("").getAbsolutePath();
-
 
 	public EditLogin(){
 		super("Edit Login details");
@@ -126,7 +123,8 @@ public class EditLogin extends JFrame {
 		String userDetails ="";
 		try {
 			//get the login file as it has the username and password stored inside it
-			br = new BufferedReader(new FileReader(currentDirectory + "/login.txt"));
+			String url = this.getClass().getResource("/login.txt").getPath();
+			br = new BufferedReader(new FileReader(url));
 
 			StringBuilder sb = new StringBuilder();
 	        String line = br.readLine();
@@ -161,7 +159,9 @@ public class EditLogin extends JFrame {
 		    		  PrintWriter writer;
 		    		  try {
 		    			  //clear the contents of the file
-		    			  writer = new PrintWriter(currentDirectory + "/login.txt");
+		    			  String url = this.getClass().getResource("/login.txt").getPath();
+		    			  br = new BufferedReader(new FileReader(url));
+		    			  writer = new PrintWriter(url);
 						  writer.print("");
 						  //add the new user details to the file
 						  writer.print(Nname.getText() +","+newPass1);
