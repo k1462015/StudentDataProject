@@ -122,7 +122,7 @@ public class PDFGenerator {
         table.setWidths(new int[]{30,50});
         // the cell object
         PdfPCell cell;
-        Font fontH1 = FontFactory.getFont("COURIER", 20, Font.BOLD);
+        Font fontH1 = FontFactory.getFont("COURIER", 16, Font.BOLD);
 
         
         cell = new PdfPCell(new Phrase("Name",fontH1));

@@ -345,7 +345,7 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// // New Email Frame
-			if (anonLoaded == true && examLoaded == true) {
+			if (examLoaded == true) {
 				if (!(settingsFile == null)) {// If settings file has been
 												// loaded
 					new SendEmailFrame(students, settingsFile);
@@ -366,8 +366,7 @@ public class MainFrame extends JFrame {
 				JOptionPane
 						.showMessageDialog(
 								null,
-								"Anonymous Markings Codes file needs to be"
-										+ " uploaded \nExam marks file needs to be uploaded ");
+								"Please upload an Exam.CSV file in order to send an email.");
 			}
 
 		}
