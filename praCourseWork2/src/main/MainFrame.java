@@ -441,7 +441,7 @@ public class MainFrame extends JFrame {
 				// object from the arraylist,
 				// gets the average of the student and plots it with their mark.
 				for (int i = 0; i < numOfRecords; i++) {
-					String tempCandKey = (String) currentTable.getValueAt(i, 0);
+					String tempCandKey = (String) currentTable.getValueAt(i, 1);
 					System.out.println(tempCandKey);
 					Student tempStu = findStudent(tempCandKey, students);
 					// The student of a specific row
@@ -452,7 +452,7 @@ public class MainFrame extends JFrame {
 					if (!(tempStu == null)) {
 						System.out.println(tempStu.toString());
 						int stuMarkInt = (Integer) currentTable
-								.getValueAt(i, 3);
+								.getValueAt(i, 4);
 						// double stuMark = (double) stuMarkInt;
 						// System.out.println(stuMark);
 						tempStu.calcAverage();
@@ -462,7 +462,7 @@ public class MainFrame extends JFrame {
 					}
 				}
 
-				String modCode = (String) currentTable.getValueAt(0, 2);
+				String modCode = (String) currentTable.getValueAt(0, 3);
 				System.out.println("Making chart...");
 				ScatterPlot scatter = new ScatterPlot("Graph",
 						"Comparison of Average in Assessment", modCode, data);

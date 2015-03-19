@@ -70,6 +70,7 @@ public class SendEmailFrame extends JFrame {
 	private JTextArea footerField;
 	private JTextArea prevField;
 	private JFrame progressFrame;
+	private JLabel sending;
 	private JProgressBar progBar;
 
 	public SendEmailFrame(ArrayList<Student> student, File settings) {
@@ -233,6 +234,8 @@ public class SendEmailFrame extends JFrame {
 
 					@Override
 					public void run() {
+						sending = new JLabel("Sending Email...",SwingConstants.CENTER);
+						sending.setFont(new Font("Calibri",Font.BOLD,20));
 						progressFrame = new JFrame("Progress bar");
 						progBar = new JProgressBar();
 						progBar.setValue(0);
@@ -248,8 +251,9 @@ public class SendEmailFrame extends JFrame {
 								}
 							}
 						});
-						progressFrame.add(progBar);
-						progressFrame.setSize(300, 150);
+						progressFrame.add(sending,BorderLayout.NORTH);
+						progressFrame.add(progBar,BorderLayout.CENTER);
+						progressFrame.setSize(300, 100);
 						progressFrame.setLocationRelativeTo(null);
 						progressFrame.setVisible(true);
 
@@ -423,6 +427,7 @@ public class SendEmailFrame extends JFrame {
 					AuthenticationFailedException, MessagingException {
 				for (Student s : selectedStudents) {
 					try {
+						sending.setText("Sending to: "+s.getName());
 						String toAddress = s.getEmail();
 						String body = createEmail(s);
 
