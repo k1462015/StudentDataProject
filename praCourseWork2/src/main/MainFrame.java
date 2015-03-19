@@ -44,7 +44,6 @@ import data.ServerConnect;
 import email.EmailSettingsFrame;
 import email.SendEmailFrame;
 import email.Settings;
-import extraFeatures.EditLogin;
 import extraFeatures.PDFGenerator;
 import graph.ScatterPlot;
 
@@ -171,21 +170,10 @@ public class MainFrame extends JFrame {
 
 		// /////Extra Menu
 		JMenuItem pdf = new JMenuItem("Generate PDF");
-		JMenuItem userEdit = new JMenuItem("User settings");
 		JMenuItem exportCSV = new JMenuItem("Export selected table");
 		pdf.addActionListener(new PDFListener());
-		userEdit.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				JFrame userSet = new EditLogin();
-
-			}
-
-		});
 		exportCSV.addActionListener(new CSVExporter());
-		extra.add(userEdit);
 		extra.add(pdf);
 		extra.add(exportCSV);
 
