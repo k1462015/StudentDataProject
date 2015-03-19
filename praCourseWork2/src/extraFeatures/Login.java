@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -63,8 +64,8 @@ public class Login extends JFrame{
 				BufferedReader br;
 				try {
 					//get the login file 
-					String url = this.getClass().getResource("/login.txt").getPath();
-					br = new BufferedReader(new FileReader(url));
+					InputStreamReader ir = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("login.txt"));
+					br = new BufferedReader(ir);
 
 					StringBuilder sb = new StringBuilder();
 			        String line = br.readLine();
