@@ -254,7 +254,7 @@ public class MainFrame extends JFrame {
 		// loops through each assesment and creates a tab and a table for that
 		// assessment
 		for (Assessment a : assesments) {
-			String name = (a.getIndex(count).getModuleCode()).replaceAll("\"", "")+ " " + a.getIndex(count).getAssessment()+" "+a.getIndex(count).getYear();
+			String name = (a.getResultAtIndex(count).getModuleCode()).replaceAll("\"", "")+ " " + a.getResultAtIndex(count).getAssessment()+" "+a.getResultAtIndex(count).getYear();
 			for(int i = 0; i < tabbedPane.getTabCount();i++){
 				if(tabbedPane.getTitleAt(i).equals(name)){
 					checkExists = true;

@@ -16,7 +16,7 @@ public class Assessment {
 	}
 	
 	/**
-	 * Adds result to ArrayList of results
+	 * Adds to ArrayList of results
 	 * @param r - result object 
 	 */
 	public void addResult(Result r){
@@ -25,15 +25,15 @@ public class Assessment {
 	
 	/**
 	 * Retrieves results from ArrayList of results using index number
-	 * @param index
-	 * @return
+	 * @param index - index required from ArrayList of results
+	 * @return Results corresponding index
 	 */
-	public Result getIndex(int index){
+	public Result getResultAtIndex(int index){
 		return results.get(index);
 	}
 	
 	/**
-	 * 
+	 * Returns Results ArrayList from Assessment class
 	 * @return Results ArrayList
 	 */
 	public ArrayList<Result> getResults(){

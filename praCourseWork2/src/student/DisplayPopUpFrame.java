@@ -14,31 +14,28 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
 /**
- * Popup frame containing student info
+ * Popup frame that displays student information
  * @author TMH
  *
  */
 public class DisplayPopUpFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
-	private JLabel name;
-	private JLabel emailAddress;
-	private JLabel studentNumber;
-	private JLabel tutor;
-	private JLabel results;
-	private JPanel main;
-	private JPanel bottom;
-	private ArrayList<String> marks;
-	private ArrayList<String> participation;
-
+	private JLabel name,emailAddress,studentNumber,tutor,results;
+	private JPanel main,bottom;
+	private ArrayList<String> marks,participation;
+	
+	/**
+	 * Uses student object to extra student information and constructs UI
+	 * @param student - Student Object
+	 */
 	public DisplayPopUpFrame(Student student) {
 		super(student.getName() + " - Information Card");
-		// Initialises all required fields with constructor arguments
-		this.name = new JLabel(student.getName());
-		this.emailAddress = new JLabel(student.getEmail());
-		this.studentNumber = new JLabel("Student No. :   "
-				+ student.getStudentNumber());
-		this.tutor = new JLabel("Tutor:     " + student.getTutor());
-		this.marks = student.getAssessMarks();
+		// Initializes all required fields with constructor arguments
+		name = new JLabel(student.getName());
+		emailAddress = new JLabel(student.getEmail());
+		studentNumber = new JLabel("Student No. :   "+ student.getStudentNumber());
+		tutor = new JLabel("Tutor:     " + student.getTutor());
+		marks = student.getAssessMarks();
 		participation = student.getParticipationArray();
 
 		// Calls Popup method to make required JPanel
@@ -47,29 +44,26 @@ public class DisplayPopUpFrame extends JFrame {
 	}
 	
 	private void makePopUp() {
-		// Initialises required JPanels
+		// Initializes required JPanels
 		main = new JPanel();
 		bottom = new JPanel();
 
-		// Sets JPanel to BoxLayout
-		// setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+		// Sets JPanel to BorderLayout
 		main.setLayout(new BorderLayout());
 
 		// Sets font size
-		name.setFont(this.name.getFont().deriveFont(30.0f));
-		// this.emailAddress.setFont (this.emailAddress.getFont ().deriveFont
-		// (40.0f));
-		studentNumber.setFont(this.studentNumber.getFont().deriveFont(20.0f));
-		tutor.setFont(this.tutor.getFont().deriveFont(20.0f));
+		Font h1 = new Font("Calibri", Font.PLAIN, 40);
+		Font h2 = new Font("Calibri", Font.PLAIN, 25);
+		name.setFont(h1);
+		emailAddress.setFont(new Font("Calibri",Font.ITALIC,35));
+		studentNumber.setFont(h2);
+		tutor.setFont(h2);
 
 		// Aligns all JLabels
 		name.setHorizontalAlignment(SwingConstants.CENTER);
 		emailAddress.setHorizontalAlignment(SwingConstants.CENTER);
 		studentNumber.setHorizontalAlignment(SwingConstants.LEFT);
 		tutor.setHorizontalAlignment(SwingConstants.LEFT);
-
-		// Sets email address to italics
-		emailAddress.setFont(new Font("Arial", Font.ITALIC, 30));
 
 		// Adds sNumber and tutor email to bottom JPanel
 		bottom.setLayout(new BoxLayout(bottom, BoxLayout.PAGE_AXIS));
@@ -86,7 +80,7 @@ public class DisplayPopUpFrame extends JFrame {
 		for (String s : participation) {
 			JLabel temp = new JLabel("Last Access: " + s);
 			temp.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
-			temp.setFont(temp.getFont().deriveFont(18.0f));
+			temp.setFont(new Font("Calibri",Font.PLAIN,30));
 			JPanel tempHolder = new JPanel(new BorderLayout());
 			tempHolder.add(temp, BorderLayout.CENTER);
 			bottom.add(tempHolder);
@@ -123,7 +117,7 @@ public class DisplayPopUpFrame extends JFrame {
 		// Required JFrame
 		getRootPane().setBorder(new LineBorder(Color.BLACK, 5));
 		setBackground(Color.white);
-		setSize(550, 300);
+		setSize(650, 350);
 		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
