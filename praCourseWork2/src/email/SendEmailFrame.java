@@ -68,7 +68,7 @@ public class SendEmailFrame extends JFrame {
 	private JLabel sending;
 	private JProgressBar progBar;
 	/**
-	 * 
+	 * Creates Send Email Frame using student data for 
 	 * @param student - ArrayList of students
 	 * @param settings - Settings file containing Email Settings
 	 */
@@ -85,17 +85,15 @@ public class SendEmailFrame extends JFrame {
 		loadedSettings = new Settings().findSettingsFile();
 
 		LineBorder firstPageBorder = new LineBorder(Color.BLACK, 1);
-		Font btnFont = new Font("Century Gothic", Font.BOLD, 15);
+		Font btnFont = new Font("Calibri", Font.BOLD, 15);
 		// First Page
-		// //JList
+		/////JList
 		firstPage = new JPanel(new BorderLayout());
-		// ///////JList of students
+		/////////JList of students
 		JPanel leftPanel = new JPanel(new BorderLayout());
 		leftPanel.setBorder(firstPageBorder);
 		listPanel = new JPanel(new BorderLayout());
-
 		listPanel.add(createTable(false), BorderLayout.CENTER);
-
 		leftPanel.add(listPanel, BorderLayout.CENTER);
 
 		// Select all/none buttons
@@ -136,15 +134,15 @@ public class SendEmailFrame extends JFrame {
 		rightPane.setBorder(firstPageBorder);
 		// /////////Header and footer
 		JLabel header = new JLabel("Header", SwingConstants.LEFT);
-		header.setFont(new Font("Century Gothic", Font.BOLD, 30));
+		header.setFont(new Font("Calibri", Font.BOLD, 30));
 		headerField = new JTextArea();
-		headerField.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		headerField.setFont(new Font("Calibri", Font.BOLD, 20));
 		headerField.setBorder(firstPageBorder);
 
 		JLabel footer = new JLabel("Footer", SwingConstants.LEFT);
-		footer.setFont(new Font("Century Gothic", Font.BOLD, 30));
+		footer.setFont(new Font("Calibri", Font.BOLD, 30));
 		footerField = new JTextArea();
-		footerField.setFont(new Font("Century Gothic", Font.BOLD, 20));
+		footerField.setFont(new Font("Calibri", Font.BOLD, 20));
 		footerField.setBorder(firstPageBorder);
 
 		rightPane.add(header);
@@ -186,12 +184,12 @@ public class SendEmailFrame extends JFrame {
 		JPanel preview = new JPanel(new BorderLayout());
 		prevField = new JTextArea();
 		prevField.setEditable(false);
-		prevField.setFont(new Font("Century Gothic", Font.PLAIN, 30));
+		prevField.setFont(new Font("Calibri", Font.PLAIN, 30));
 		preview.add(prevField, BorderLayout.CENTER);
 		prevField.setBorder(secondPageBorder);
 		secondPage.add(new JScrollPane(preview), BorderLayout.CENTER);
 
-		// ///////Bottom email info Panel and buttons
+		/////////Bottom email info Panel and buttons
 		JPanel bottomPanel = new JPanel(new BorderLayout());
 		secondPage.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -202,9 +200,9 @@ public class SendEmailFrame extends JFrame {
 		JPanel passwordPanel = new JPanel(new BorderLayout());
 
 		JLabel email = new JLabel("Email:");
-		email.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		email.setFont(new Font("Calibri", Font.BOLD, 15));
 		JLabel pass = new JLabel("Password:");
-		pass.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		pass.setFont(new Font("Calibri", Font.BOLD, 15));
 
 		emailField = new JTextField();
 		password = new JPasswordField();
@@ -219,7 +217,7 @@ public class SendEmailFrame extends JFrame {
 		infoPanel.add(passwordPanel);
 		bottomPanel.add(infoPanel, BorderLayout.CENTER);
 
-		// ////Preview and Send button
+		//////Preview and Send button
 		JPanel buttonPanel = new JPanel();
 		JButton previous = new JButton("Previous");
 		previous.setFont(btnFont);
@@ -267,7 +265,6 @@ public class SendEmailFrame extends JFrame {
 				} catch (AuthenticationFailedException e1) {
 					System.out.println("Incorrect user or password");
 				} catch (MessagingException e1) {
-					// TODO Auto-generated catch block
 					System.out.println("Something wrong with message");
 				}
 
@@ -290,16 +287,14 @@ public class SendEmailFrame extends JFrame {
 		JPanel buttonPostionRight = new JPanel(new BorderLayout());
 		buttonPostionRight.add(buttonPanel, BorderLayout.EAST);
 		bottomPanel.add(buttonPostionRight, BorderLayout.SOUTH);
-
+		
+		//If settings are loaded, sets email field to corresponding email
 		if (!(loadedSettings == null)) {
-			// System.out.println("hello");
 			String[] temp = new Settings().settingsData(loadedSettings);
 			if (temp.length == 4) {
 				settingsArray = temp;
 				emailField.setText(settingsArray[2]);
 			}
-		} else {
-			System.out.println("No loaded settings file");
 		}
 
 		// Default JFrame Stuff
@@ -310,40 +305,27 @@ public class SendEmailFrame extends JFrame {
 		setVisible(true);
 	}
 
-	public String[] settingsData(File settings) {
-
-		BufferedReader br;
+	private String[] settingsData(File settings) throws IOException {
+		//Reads settings data
 		String[] settingsArray = {};
-		try {
-			br = new BufferedReader(new FileReader(settings));
-			String s = br.readLine();
-			br.close();
-			System.out.println(s);
-			settingsArray = s.split(",");
-			return settingsArray;
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
+		BufferedReader br = new BufferedReader(new FileReader(settings));
+		String s = br.readLine();
+		br.close();
+		settingsArray = s.split(",");
 		return settingsArray;
-
 	}
 
 	private JScrollPane createTable(boolean b) {
 		MyTableModel model = new MyTableModel();
-
 		for (Student s : student) {
 			model.addRow(new Object[] { s.getName().replaceAll("\"", ""), b });
 		}
 		table = new JTable(model);
-		table.setFont(new Font("Century Gothic", Font.BOLD, 12));
-
+		table.setFont(new Font("Calibri", Font.BOLD, 12));
+		
+		//Sets color of headings
 		JTableHeader header = table.getTableHeader();
-		header.setFont(new Font("Century Gothic", Font.BOLD, 15));
+		header.setFont(new Font("Calibri", Font.BOLD, 15));
 		header.setBackground(Color.black);
 		header.setForeground(Color.WHITE);
 		//table settings
@@ -361,11 +343,11 @@ public class SendEmailFrame extends JFrame {
 	}
 
 	private class MyTableModel extends DefaultTableModel {
-
+		//Allows you to display Student Name in first column and checkbox in second column
 		public MyTableModel() {
 			super(new String[] { "Student Name", "Check" }, 0);
 		}
-
+		//If index is 0, then it will return a string else if it's 1 it will return a boolean value which represents a checked check box
 		@Override
 		public Class<?> getColumnClass(int columnIndex) {
 			Class thisClass = String.class;
@@ -379,16 +361,14 @@ public class SendEmailFrame extends JFrame {
 			}
 			return thisClass;
 		}
-
 		@Override
 		public boolean isCellEditable(int row, int column) {
 			return column == 1;
 		}
-
+		
 		@Override
 		public void setValueAt(Object aValue, int row, int column) {
 			if (aValue instanceof Boolean && column == 1) {
-				System.out.println(aValue);
 				Vector rowData = (Vector) getDataVector().get(row);
 				rowData.set(1, (boolean) aValue);
 				fireTableCellUpdated(row, column);
@@ -396,52 +376,46 @@ public class SendEmailFrame extends JFrame {
 		}
 
 	}
-
+	
 	private void getCheckedStudents() {
-		//first get all the selected rows and get the string 
+		//First gets all the selected rows and gets the string 
 		ArrayList<String> selectedRows = new ArrayList<String>();
 		for (int i = 0; i < table.getRowCount(); i++) {
 			if ((Boolean) table.getValueAt(i, 1)) {
 				selectedRows.add((String) table.getValueAt(i, 0));
 			}
 		}
-		// then for each string match it to a students and get the student object
+		//Then for each string match it to a students and get the student object
 		for (Student temp : student) {
 			for (String h : selectedRows) {
 				if (temp.getName().equals(h)) {
-					System.out.println(temp.getName() + "checked students");
 					selectedStudents.add(temp);
 				}
 			}
 		}
 	}
 
-	public void sendEmail() throws UnsupportedEncodingException,
-			AuthenticationFailedException, MessagingException {
+	public void sendEmail() throws UnsupportedEncodingException,AuthenticationFailedException, MessagingException {
 		SwingWorker<Boolean, Double> worker = new SwingWorker<Boolean, Double>() {
 
 			@Override
-			protected Boolean doInBackground()
-					throws UnsupportedEncodingException,
-					AuthenticationFailedException, MessagingException {
+			protected Boolean doInBackground(){
 				for (Student s : selectedStudents) {
 					try {
 						sending.setText("Sending to: "+s.getName());
 						String toAddress = s.getEmail();
 						String body = createEmail(s);
 
-						System.out.println(toAddress);
 						String email = body;
 						String to = toAddress;
-						// default settings
+						//Default settings
 						String hostAddress = "outlook.office365.com";
-						// IP address in the form of DNS name
+						//IP address in the form of DNS name
 						String port = "587";
 						String from = emailField.getText();// change accordingly
 						String startTls = "true";
 
-						// if the settings were loaded correctly, then the
-						// default settings will be changed
+						//If the settings were loaded correctly, then the default settings will be changed
 						if (!(settingsArray == null)) {
 							hostAddress = settingsArray[0];
 							port = settingsArray[1];
@@ -451,13 +425,6 @@ public class SendEmailFrame extends JFrame {
 						// Holds the server default settings for outlook
 						Properties prop = System.getProperties();
 						prop.put("mail.smtp.auth", "true");
-
-						if (!hostAddress.equals("smtp.mail.yahoo.com")) {
-							// If it isn't yahoo add these properties
-							prop.put("mail.smtp.socketFactory.port", port);
-							prop.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
-						}
-
 						prop.put("mail.smtp.starttls.enable", startTls);
 						prop.put("mail.smtp.host", hostAddress);
 						prop.put("mail.smtp.port", port);
@@ -473,34 +440,28 @@ public class SendEmailFrame extends JFrame {
 
 						);
 
-						// compose the message
-
+						//Compose the message
 						MimeMessage message = new MimeMessage(session);
 						message.setFrom(new InternetAddress(from));
 						message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
 						message.setSubject("Results");
 						message.setText(email);
 
-						// Send message
+						//Send message
 						Transport transport = session.getTransport("smtp");
 						transport.connect();
 						transport.sendMessage(message,message.getAllRecipients());
 						transport.close();
-						System.out.println("message sent successfully....");
-
+						
 						double currentIndex = selectedStudents.indexOf(s);
 						double totalSize = selectedStudents.size() - 1;
 						double percent = (currentIndex / totalSize) * 100;
 						publish(percent);
 					} catch (AuthenticationFailedException e1) {
-						// TODO Auto-generated catch block
-						System.out.println("Incorrect user or password");
 						JOptionPane.showMessageDialog(null, "Incorrect user or password");
 						progressFrame.dispose();
 						break;
 					} catch (MessagingException e1) {
-						// TODO Auto-generated catch block
-						System.out.println("Something wrong with message");
 						JOptionPane.showMessageDialog(null, "Something wrong with message");
 						progressFrame.dispose();
 						break;
@@ -512,7 +473,6 @@ public class SendEmailFrame extends JFrame {
 
 			@Override
 			protected void process(List<Double> chunks) {
-				// TODO Auto-generated method stub
 				if (selectedStudents.size() == 1) {
 					progBar.setValue(100);
 				}
@@ -532,8 +492,8 @@ public class SendEmailFrame extends JFrame {
 	}
 
 	private String createEmail(Student s) {
+		//Uses header and footer to create message body (with results)
 		ArrayList<String> marks = new ArrayList<String>();
-
 		String email = "";
 		email = headerField.getText() + "\r\n";
 		marks.addAll(s.getAssessMarks());
