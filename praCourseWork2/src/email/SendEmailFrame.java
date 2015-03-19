@@ -425,6 +425,10 @@ public class SendEmailFrame extends JFrame {
 						// Holds the server default settings for outlook
 						Properties prop = System.getProperties();
 						prop.put("mail.smtp.auth", "true");
+						prop.put("mail.smtp.socketFactory.port", port);
+						prop.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+						
+						
 						prop.put("mail.smtp.starttls.enable", startTls);
 						prop.put("mail.smtp.host", hostAddress);
 						prop.put("mail.smtp.port", port);
