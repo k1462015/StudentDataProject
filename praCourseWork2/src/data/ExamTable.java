@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -291,6 +292,7 @@ public class ExamTable {
 
 			writer.flush();
 			writer.close();
+			JOptionPane.showMessageDialog(null, "Table data successfully exported as CSV file");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
