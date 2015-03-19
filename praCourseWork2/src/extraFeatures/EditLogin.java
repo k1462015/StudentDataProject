@@ -152,7 +152,7 @@ public class EditLogin extends JFrame {
 	      } else {
 	    	  // check if the current username and paswword are correct
 	    	  if (!(Cname.getText().equals(details.get(0)) && passText.equals(details.get(1)))){
-	    			  JOptionPane.showMessageDialog(null,"useranme or password is wrong");
+	    			  JOptionPane.showMessageDialog(null,"username or password is wrong");
 	    	  } else {
 	    		  //check if the new password and retype new passwords fields are the same 
 	    		  if(newPass1.equals(newPass2)){

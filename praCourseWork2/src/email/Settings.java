@@ -49,17 +49,20 @@ public class Settings {
 		// write settings to
 		// that file
 		
-		String currentDirectory = new File("").getAbsolutePath();
-        currentDirectory += "\\settings.ini";
+//		String currentDirectory = new File("").getAbsolutePath();
+//        currentDirectory += "\\settings.ini";
         
-        File newFile = new File(currentDirectory);
-        newFile.getParentFile().mkdirs();
+//        File newFile = new File(currentDirectory);
+//        newFile.getParentFile().mkdirs();
+		
+		ClassLoader classLoader = getClass().getClassLoader();
+		File settingsFile = new File(classLoader.getResource("settings.ini").getFile());
         
     	try {
-			newFile.createNewFile();
+			settingsFile.createNewFile();
 			System.out.println("File created");
 
-			PrintWriter writer = new PrintWriter(newFile);
+			PrintWriter writer = new PrintWriter(settingsFile);
 			writer.println(serverName + "," + portSpinner + "," + userName + "," + true);
 			writer.close();
 			System.out.println("File writed.");
@@ -97,12 +100,12 @@ public class Settings {
 	
 	public File findSettingsFile() {
 		
-        String currentDirectory = new File("").getAbsolutePath();
-        currentDirectory += "\\settings.ini";
+		ClassLoader classLoader = getClass().getClassLoader();
+		File f = new File(classLoader.getResource("settings.ini").getFile());
         
         File settingsFile = null;
         
-        File f = new File(currentDirectory);
+        
         
         if (f.exists() && !f.isDirectory()){
             System.out.println("Settings.ini exists");

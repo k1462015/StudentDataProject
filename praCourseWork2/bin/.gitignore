@@ -1,13 +1,7 @@
-<<<<<<< Updated upstream
-/student/
 /data/
-/main/
 /email/
 /extraFeatures/
 /graph/
 /KEATSScraper/
-=======
-/login.txt
-/extraFeatures/
 /main/
->>>>>>> Stashed changes
+/settings.ini

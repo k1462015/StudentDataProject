@@ -424,7 +424,7 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (examLoaded == true && anonLoaded == true) {
+			if (examLoaded == true) {
 				System.out.println("Plotting graph...");
 				JScrollPane currentScrollPane = (JScrollPane) tabbedPane
 						.getComponentAt(tabbedPane.getSelectedIndex());
@@ -466,16 +466,11 @@ public class MainFrame extends JFrame {
 				ScatterPlot scatter = new ScatterPlot("Graph",
 						"Comparison of Average in Assessment", modCode, data);
 
-			} else if (anonLoaded == true && examLoaded == false) {
+			} else  {
 				JOptionPane
 						.showMessageDialog(rootPane,
 								"You need to load an exam results file, before you can create the chart");
-			} else if (anonLoaded == false && examLoaded == false) {
-				JOptionPane
-						.showMessageDialog(
-								rootPane,
-								"You need to first load an anonymous marking code file, then an exam results file");
-			}
+			} 
 
 		}
 
