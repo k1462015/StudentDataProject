@@ -340,7 +340,6 @@ public class EmailSettingsFrame extends JFrame {
 		String[] settingsArray = {};
 		BufferedReader br = new BufferedReader(new FileReader(settings));
 		String s = br.readLine();
-		System.out.println(s);
 		
 		settingsArray = s.split(",");
 		
@@ -349,6 +348,7 @@ public class EmailSettingsFrame extends JFrame {
 		this.userPreLoaded = settingsArray[2];
 		this.authPreLoaded = settingsArray[3];
 		
+		br.close();
 		return settingsArray;
 		
 	}

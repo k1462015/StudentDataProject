@@ -57,6 +57,7 @@ public class CSVLoader {
 				if (!linesplit[0].matches(".*\\d.*") && (linesplit[0].matches("Year") || linesplit[0].matches("\"Year\""))) {
 					isValidFile = true;
 				}
+				bf.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -128,6 +129,7 @@ public class CSVLoader {
 
 						totalImports++;
 					}
+					bf.close();
 					int failedImports = totalImports - succesImport;
 					String results = "Annonymous marking codes imported. " + succesImport + " codes were \nfor known students; " + failedImports + " were or unknown students";
 					JOptionPane.showMessageDialog(null,results);

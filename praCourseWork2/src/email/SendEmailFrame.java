@@ -7,11 +7,7 @@ import java.awt.Font;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -303,16 +299,6 @@ public class SendEmailFrame extends JFrame {
 		setSize(800, 600);
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-
-	private String[] settingsData(File settings) throws IOException {
-		//Reads settings data
-		String[] settingsArray = {};
-		BufferedReader br = new BufferedReader(new FileReader(settings));
-		String s = br.readLine();
-		br.close();
-		settingsArray = s.split(",");
-		return settingsArray;
 	}
 
 	private JScrollPane createTable(boolean b) {
