@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import static javafx.concurrent.Worker.State.FAILED;
 /**
- * SwingBrowser 
+ * SwingBrowser to display website
  * @author TMH
  *
  */
@@ -48,7 +48,9 @@ public class Browser extends JPanel {
 
 	private static ArrayList<String> emails;
 	private static ArrayList<String> durations;
-
+	/**
+	 * Displays browser
+	 */
 	public Browser() {
 		super();
 		setLayout(new BorderLayout());
@@ -88,8 +90,6 @@ public class Browser extends JPanel {
 		this.add(panel);
 
 		setPreferredSize(new Dimension(1024, 600));
-		// setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// pack();
 
 	}
 
@@ -114,64 +114,45 @@ public class Browser extends JPanel {
 					}
 				});
 
-				engine.locationProperty().addListener(
-						new ChangeListener<String>() {
+				engine.locationProperty().addListener(new ChangeListener<String>() {
+					@Override
+					public void changed(ObservableValue<? extends String> ov,String oldValue, final String newValue) {
+						SwingUtilities.invokeLater(new Runnable() {
 							@Override
-							public void changed(
-									ObservableValue<? extends String> ov,
-									String oldValue, final String newValue) {
-								SwingUtilities.invokeLater(new Runnable() {
-									@Override
-									public void run() {
-										txtURL.setText(newValue);
-									}
-								});
+							public void run() {
+								txtURL.setText(newValue);
 							}
 						});
+					}
+				});
 
-				engine.getLoadWorker().workDoneProperty()
-						.addListener(new ChangeListener<Number>() {
+				engine.getLoadWorker().workDoneProperty().addListener(new ChangeListener<Number>() {
+					@Override
+					public void changed(ObservableValue<? extends Number> observableValue,Number oldValue, final Number newValue) {
+						SwingUtilities.invokeLater(new Runnable() {
 							@Override
-							public void changed(
-									ObservableValue<? extends Number> observableValue,
-									Number oldValue, final Number newValue) {
-								SwingUtilities.invokeLater(new Runnable() {
-									@Override
-									public void run() {
-										progressBar.setValue(newValue
-												.intValue());
-									}
-								});
+							public void run() {
+								progressBar.setValue(newValue
+										.intValue());
 							}
 						});
+					}
+				});
 
-				engine.getLoadWorker().exceptionProperty()
-						.addListener(new ChangeListener<Throwable>() {
+				engine.getLoadWorker().exceptionProperty().addListener(new ChangeListener<Throwable>() {
 
-							@Override
-							public void changed(
-									ObservableValue<? extends Throwable> o,
-									Throwable old, final Throwable value) {
-								if (engine.getLoadWorker().getState() == FAILED) {
-									SwingUtilities.invokeLater(new Runnable() {
-										@Override
-										public void run() {
-											JOptionPane
-													.showMessageDialog(
-															panel,
-															(value != null) ? engine
-																	.getLocation()
-																	+ "\n"
-																	+ value.getMessage()
-																	: engine.getLocation()
-																			+ "\nUnexpected error.",
-															"Loading error...",
-															JOptionPane.ERROR_MESSAGE);
-										}
-									});
+					@Override
+					public void changed(ObservableValue<? extends Throwable> o,Throwable old, final Throwable value) {
+						if (engine.getLoadWorker().getState() == FAILED) {
+							SwingUtilities.invokeLater(new Runnable() {
+								@Override
+								public void run() {
+									JOptionPane.showMessageDialog(panel,	(value != null) ? engine.getLocation()+ "\n"+ value.getMessage(): engine.getLocation()+ "\nUnexpected error.","Loading error...",JOptionPane.ERROR_MESSAGE);
 								}
-							}
-						});
+							});
+						}
+					}
+				});
 
 				jfxPanel.setScene(new Scene(view));
 			}
@@ -180,7 +161,7 @@ public class Browser extends JPanel {
 	
 	/**
 	 * Loads url into browser
-	 * @param url
+	 * @param url - URL of website
 	 */
 	public void loadURL(final String url) {
 		Platform.runLater(new Runnable() {
@@ -205,89 +186,70 @@ public class Browser extends JPanel {
 		}
 	}
 	/**
-	 * Reads data from website and filters out email and duration times
+	 * Reads document and filters out email and duration times
 	 * @param doc - currentPage
 	 * @param out
 	 * @throws IOException
 	 * @throws TransformerException
 	 */
-	public static void printDocument(Document doc)
-			throws IOException, TransformerException {
-		System.out.println("Retreiving document data");
+	public static void printDocument(Document doc)throws IOException, TransformerException {
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer = tf.newTransformer();
 		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
 		transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 		transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-		transformer.setOutputProperty(
-				"{http://xml.apache.org/xslt}indent-amount", "4");
-
-		// transformer.transform(new DOMSource(doc),
-		// new StreamResult(new OutputStreamWriter(out, "UTF-8")));
+		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
 
 		StringWriter writer = new StringWriter();
 		transformer.transform(new DOMSource(doc), new StreamResult(writer));
+		
 		String[] output = writer.toString().split("\\n");
 		emails = new ArrayList<String>();
 		durations = new ArrayList<String>();
+		//Loop through all lines of text taken from website
 		for (int i = 0; i < output.length; i++) {
-			if (output[i].contains("@")
-					&& (output[i].contains(".com") || output[i]
-							.contains(".co.uk"))) {
+			//Checks if line contains email
+			if (output[i].contains("@")&& (output[i].contains(".com") || output[i].contains(".co.uk"))) {
 				emails.add(output[i].substring(
 						output[i].lastIndexOf("c3\">") + 4,
 						output[i].indexOf("</TD>")));
 			}
-
-			if ((output[i].contains("mins") || output[i].contains("secs")
-					|| output[i].contains("hours")
-					|| output[i].contains("days") || output[i].contains("now")
-					|| output[i].contains("hour") || output[i].contains("day"))
+			//Checks if lines contains access time
+			if ((output[i].contains("mins") || output[i].contains("secs")|| output[i].contains("hours")
+				|| output[i].contains("days") || output[i].contains("now")|| output[i].contains("hour") || output[i].contains("day"))
 					&& output[i].contains("participants")) {
-				durations.add(output[i].substring(
-						output[i].lastIndexOf("c6\">") + 4,
-						output[i].indexOf("</TD>")));
+				durations.add(output[i].substring(output[i].lastIndexOf("c6\">") + 4,output[i].indexOf("</TD>")));
 			}
 
 		}
 
 	}
-
+	/**
+	 * Turns website into a document and then reads text
+	 */
 	public void readDocument() {
 		try {
 			printDocument(engine.getDocument());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Returns ArrayList of all emails fetched from website
+	 * @return emails - ArrayList of emails
+	 */
 	public ArrayList<String> getEmails() {
 		return emails;
 	}
-
-	public ArrayList<String> getDurations() {
+	/**
+	 * Returns ArrayList of all access times from website
+	 * @return - Arraylist of access times
+	 */
+	public ArrayList<String> getAccessTimes() {
 		return durations;
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-
-			@Override
-			public void run() {
-				JFrame temp = new JFrame();
-				Browser browser = new Browser();
-				temp.add(browser);
-				temp.setVisible(true);
-				temp.pack();
-				temp.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-				// browser.setVisible(true);
-				browser.loadURL("google.co.uk");
-			}
-		});
-	}
 }

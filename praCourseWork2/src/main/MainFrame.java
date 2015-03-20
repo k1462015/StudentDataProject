@@ -510,13 +510,13 @@ public class MainFrame extends JFrame {
 							JOptionPane.OK_CANCEL_OPTION);
 				}
 				WebviewFrame wb = new WebviewFrame(urlField.getText());
-				wb.btnFetch.addActionListener(new ActionListener() {
+				wb.getButton().addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						wb.browser.readDocument();
+						wb.getBrowser().readDocument();
 						emails = wb.getEmails();
-						durations = wb.getDurations();
+						durations = wb.getAccessTimes();
 
 						System.out.println("Emails size is " + emails.size()
 								+ " and duration size is " + durations.size());
