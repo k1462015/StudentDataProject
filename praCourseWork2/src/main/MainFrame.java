@@ -342,6 +342,7 @@ public class MainFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (examLoaded == true) {
 				//If settings file has been loaded shows sendEmailFrame
+				settingsFile = new Settings().findSettingsFile();
 				if (!(settingsFile == null)) {
 					new SendEmailFrame(students, settingsFile);
 				} else {
