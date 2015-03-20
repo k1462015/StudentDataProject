@@ -1,30 +1,22 @@
 package student;
 /**
- * Contains student results data
+ * Class to hold student result data
  * @author TMH
  *
  */
 public class Result {
-	private String year;
-	private String name;
-	private String moduleCode;
-	private String assessment;
-	private String candKey;
+	private String year,name,moduleCode,assessment,candKey,grade;
 	private int mark;
-	private String grade;
 	
 	/**
-	 * Initializes all required fields for results class
-	 * @param year
-	 * @param period
-	 * @param moduleCode
-	 * @param occ
-	 * @param map
-	 * @param assessment
-	 * @param candKey
-	 * @param name
-	 * @param mark
-	 * @param grade
+	 * 
+	 * @param year - Year
+	 * @param moduleCode - Module Code
+	 * @param assessment - Assessment Number
+	 * @param candKey - Candidate Key
+	 * @param name - Student Name
+	 * @param mark - Student mark
+	 * @param grade - Student grde
 	 */
 	public Result(String year,String moduleCode,String assessment,String candKey,String name,int mark,String grade){
 		this.moduleCode = moduleCode;
@@ -39,51 +31,51 @@ public class Result {
 	}
 	
 	/**
-	 * 
+	 * Returns module code
 	 * @return moduleCode
 	 */
 	public String getModuleCode(){
 		return moduleCode;
 	}
 	/**
-	 * 
-	 * @return Assessment number as string
+	 * Returns Assessment Number
+	 * @return assessment- Assessment number as string
 	 */
 	public String getAssessment(){
 		return assessment;
 	}
 	/**
-	 * 
-	 * @return candidate key
+	 * Returns Candidate Key
+	 * @return candKye - Candidate Key
 	 */
 	public String getCandKey(){
 		return candKey;
 	}
 	/**
-	 * 
-	 * @return mark
+	 * Returns mark
+	 * @return mark - Mark
 	 */
 	public int getMark(){
 		return mark;
 	}
 	/**
-	 * 
-	 * @return grade
+	 * Returns grade
+	 * @return grade - Grade
 	 */
 	public String getGrade(){
 		return grade;
 	}
 	/**
-	 * 
-	 * @return year
+	 * Return year
+	 * @return year - Year
 	 */
 	public String getYear(){
 		return year;
 	}
 
 	/**
-	 * 
-	 * @return name of Student
+	 * Returns students name
+	 * @return name - Student name
 	 */
 	public String getName(){
 		return name;
