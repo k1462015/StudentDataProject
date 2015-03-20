@@ -247,6 +247,7 @@ public class SendEmailFrame extends JFrame {
 						progressFrame.add(sending,BorderLayout.NORTH);
 						progressFrame.add(progBar,BorderLayout.CENTER);
 						progressFrame.setSize(300, 100);
+						progressFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 						progressFrame.setLocationRelativeTo(null);
 						progressFrame.setVisible(true);
 
