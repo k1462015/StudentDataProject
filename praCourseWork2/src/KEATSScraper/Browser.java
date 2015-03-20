@@ -188,9 +188,8 @@ public class Browser extends JPanel {
 	/**
 	 * Reads document and filters out email and duration times
 	 * @param doc - currentPage
-	 * @param out
-	 * @throws IOException
-	 * @throws TransformerException
+	 * @throws IOException - Throws IOException if can't read file
+	 * @throws TransformerException - Throws if can't transform document 
 	 */
 	public static void printDocument(Document doc)throws IOException, TransformerException {
 		TransformerFactory tf = TransformerFactory.newInstance();

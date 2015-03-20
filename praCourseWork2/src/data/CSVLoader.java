@@ -31,7 +31,7 @@ public class CSVLoader {
 	 * Checks if user has uploaded a valid CSV file, if they have it will call the read the data from the CSV
 	 * @param assesments -ArrayList of assessments
 	 * @return - true if valid file has been uploaded
-	 * @throws IOException
+	 * @throws IOException - Throws IOException if can't read file
 	 */
 	public boolean loadExamCSV(ArrayList<Assessment> assesments) throws IOException{
 		JFileChooser fileChooser = new JFileChooser();

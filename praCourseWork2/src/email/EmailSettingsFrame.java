@@ -49,9 +49,8 @@ public class EmailSettingsFrame extends JFrame {
 	/**
 	 * Checks if settings file exists is valid
 	 * Also initializes frame
-	 * @param settings - Holds file for settings.ini within users directory
-	 * @throws IOException 
-	 * @throws FileNotFoundException 
+	 * @throws IOException - If can't read file
+	 * @throws FileNotFoundException - If cannot find file in directory
 	 */
 	public EmailSettingsFrame() throws FileNotFoundException, IOException {
 		super("SMTP Server");

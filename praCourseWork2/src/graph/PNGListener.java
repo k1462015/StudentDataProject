@@ -24,7 +24,7 @@ public class PNGListener implements ActionListener {
 	/**
 	 * Sets chart and module fields
 	 * @param freeChart - Scatter Plot Graph
-	 * @param module
+	 * @param module - Module Code
 	 */
 	public PNGListener(JFreeChart freeChart, String module){
 		this.chart = freeChart;

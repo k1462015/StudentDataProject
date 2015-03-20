@@ -52,7 +52,7 @@ public class Settings {
 	 * @param serverName - Name of server
 	 * @param userName - Email Address
 	 * @param portSpinner - value of port
-	 * @throws IOException 
+	 * @throws IOException - Throws IOException if unable to read file
 	 */
 	public void writeToFile(String serverName, String userName, int portSpinner) throws IOException {
 		//Create new settings file, save it in user's documents directory and write settings to that file

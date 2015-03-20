@@ -23,7 +23,7 @@ import student.Result;
 import student.Student;
 
 /**
- * Creates JTable using Assessment data & De-anonymises anon codes
+ * Creates JTable using Assessment data and De-anonymises anon codes
  * @author TMH
  *
  */
@@ -50,7 +50,7 @@ public class ExamTable {
 
 	/**
 	 * Generates a JTable using results from Assessment data
-	 * @param assessments - Assessment object
+	 * @param assessment - Assessment object
 	 */
 	public void makeTable(Assessment assessment) {
 		DefaultTableModel model = new DefaultTableModel() {
@@ -107,9 +107,9 @@ public class ExamTable {
 	
 	/**
 	 * Reads data from CSV file and adds to Assessment ArrayList
-	 * @param BufferedReader containing CSV file from file
-	 * @param ArrayList of currently loaded assessments
-	 * @throws IOException
+	 * @param bf - BufferedReader containing CSV file from file
+	 * @param assessments - ArrayList of currently loaded assessments
+	 * @throws IOException - Throws IOException if can't read file
 	 */
 	public void readExamData(BufferedReader bf,ArrayList<Assessment> assessments)throws IOException {
 		// Finds corresponding column indexes
@@ -168,6 +168,7 @@ public class ExamTable {
 	 * Loops through all Assessment Objects within Assessment ArrayList
 	 * If finds existing one, that matches string returns true
 	 * @param assCode - Assessment code to check
+	 * @param assessments - ArrayList of assessments
 	 * @return true - If have existing assessment 
 	 */
 	public boolean checkAllAss(String assCode, ArrayList<Assessment> assessments) {

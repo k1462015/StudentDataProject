@@ -25,7 +25,7 @@ public class DisplayPopUpFrame extends JFrame {
 	private ArrayList<String> marks,participation;
 	
 	/**
-	 * Uses student object to extra student information and constructs UI
+	 * Uses student object to extract student information and constructs UI
 	 * @param student - Student Object
 	 */
 	public DisplayPopUpFrame(Student student) {

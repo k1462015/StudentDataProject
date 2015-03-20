@@ -100,7 +100,7 @@ public class Student {
 	
 	/**
 	 * Adds last Access data
-	 * @param Last Access String
+	 * @param lastAccess - Last Access String
 	 */
 	public void addLastAccess(String lastAccess){
 		lastAccessArray.add(lastAccess);

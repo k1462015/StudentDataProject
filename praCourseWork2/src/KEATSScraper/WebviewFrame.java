@@ -29,7 +29,7 @@ public class WebviewFrame extends JFrame {
 	/**
 	 * Displays given URL in a browser
 	 * And constructs frame
-	 * @param url
+	 * @param url - URL to website
 	 */
 	public WebviewFrame(String url){
 		super("KEAT Scraper");

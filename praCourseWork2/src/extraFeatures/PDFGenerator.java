@@ -51,8 +51,8 @@ public class PDFGenerator {
     /**
      * Adds data to PDF document
      * @param students - ArrayList of students
-     * @throws    DocumentException 
-     * @throws    IOException 
+     * @throws  DocumentException - If unable to write to document
+     * @throws  IOException - If unable to read file
      */
     public void addDataPdf(ArrayList<Student> students)
     	throws DocumentException, IOException {
