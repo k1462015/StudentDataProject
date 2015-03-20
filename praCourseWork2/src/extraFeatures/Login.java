@@ -33,7 +33,9 @@ import main.MainFrame;
  */
 public class Login extends JFrame{
 	private final long serialVersionUID = 1L;
-	
+	/**
+	 * Constructs login frame
+	 */
 	public Login(){
 		super("Please login");
 		initUi();
@@ -43,33 +45,38 @@ public class Login extends JFrame{
 	private void initUi(){
 		Font font = new Font("Calibri",Font.BOLD,20);
 		
+		//Initialises required JPanels
 		JPanel main = new JPanel(new BorderLayout());
 		JPanel combine = new JPanel();
 		JPanel userPanel = new JPanel(); 
 		JPanel passPanel = new JPanel();
-		JPanel south = new JPanel(new FlowLayout());
+		
+		//Creates JLabel for username and password 
 		JLabel lblUser = new JLabel("Username:");
 		lblUser.setFont(font);
 		JLabel lblPass = new JLabel("Password:");
 		lblPass.setFont(font);
 		JTextField username = new JTextField(15);
-		
+		//Creates password field for password entry
 		JPasswordField  password = new JPasswordField(15);
+		
+		//Login button
 		JButton btnLogin = new JButton("Login");
 		username.setText("admin");
+		//Checks if username and password are correct
 		btnLogin.addActionListener(new ActionListener(){
 			String userDetails = "";
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				BufferedReader br;
 				try {
-					//get the login file 
+					//Get the login file 
 					InputStreamReader ir = new InputStreamReader(getClass().getClassLoader().getResourceAsStream("login.txt"));
 					br = new BufferedReader(ir);
 
 					StringBuilder sb = new StringBuilder();
 			        String line = br.readLine();
-			        //store the contents of the file as a string
+			        //Store the contents of the file as a string
 			        while (line != null) {
 			            sb.append(line);
 			            sb.append(System.lineSeparator());
@@ -85,9 +92,9 @@ public class Login extends JFrame{
 
 			      ArrayList<String> details = null;
 			      details = new ArrayList(Arrays.asList(str.trim().split("\\s*,\\s*")));
-			      // check if something has been entered for username and password fields
+			      //Check if something has been entered for username and password fields
 				if (username.getText().equals("") || password.getPassword().length == 0){
-					JOptionPane.showMessageDialog(null,"please enter a useranme or password");
+					JOptionPane.showMessageDialog(null,"Please enter a useranme or password");
 				} else {
 					String passText = new String(password.getPassword());				
 					char[] correctPassword = details.get(1).toCharArray();
@@ -96,13 +103,14 @@ public class Login extends JFrame{
 						dispose();
 						JFrame frame = new MainFrame();
 					} else {
-						JOptionPane.showMessageDialog(null,"useranme or password is wrong");
+						JOptionPane.showMessageDialog(null,"Your useranme or password is wrong");
 					}
 				}
 				
 			}
 			
 		});
+		//Adds all components to corresponding panels
 		userPanel.add(lblUser);
 		userPanel.add(username);
 		
@@ -111,12 +119,11 @@ public class Login extends JFrame{
 		
 		combine.add(userPanel);
 		combine.add(passPanel);
-	    south.add(btnLogin);
 		main.add(combine, BorderLayout.CENTER);
-		main.add(south,BorderLayout.SOUTH);
+		main.add(btnLogin,BorderLayout.SOUTH);
 		add(main);
 		
-		//Allows enter to press login button
+		//Allows enter key to press login button
 		username.addActionListener(new ActionListener(){
 
 			@Override
@@ -140,8 +147,7 @@ public class Login extends JFrame{
 		try {
 			URL imgURL = getClass().getResource("/Lock-Icon.png");
 		    ImageIcon ii = new ImageIcon(imgURL);
-		    Image newimg = ii.getImage().getScaledInstance(90, 90,
-					java.awt.Image.SCALE_SMOOTH);
+		    Image newimg = ii.getImage().getScaledInstance(90, 90,java.awt.Image.SCALE_SMOOTH);
 			add(new JLabel(new ImageIcon(newimg)),BorderLayout.NORTH);
 		} catch (Exception e) {
 			System.out.println("Error reading file");

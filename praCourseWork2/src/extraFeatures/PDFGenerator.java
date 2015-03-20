@@ -24,69 +24,60 @@ import com.itextpdf.text.pdf.PdfWriter;
 /**
  * PDF Generator for student data
  */
-public class PDFGenerator {
- 
-    /** Path to the resulting PDF file. */
-    public static final String RESULT
-        = "/Users/tahmidulislam/Desktop/Document2.pdf";
-    
+public class PDFGenerator { 
     /**
      * Creates a pdf file to write to
      * @param filepath - directory to save to
      */
-    public void createPDFFile(String filepath){
+    private void createPDFFile(String filepath){
     	 try {
-	            OutputStream file = new FileOutputStream(new File(filepath));
-	 
-	            Document document = new Document();
-	            PdfWriter.getInstance(document, file);
-	 
-	            document.open();
-	            document.add(new Paragraph("Created new PDF"));
-	            document.add(new Paragraph(new Date().toString()));
-	 
-	            document.close();
-	            file.close();
-	 
-	        } catch (Exception e) {
-	 
-	            e.printStackTrace();
-	        }
+            OutputStream file = new FileOutputStream(new File(filepath));
+ 
+            Document document = new Document();
+            PdfWriter.getInstance(document, file);
+ 
+            document.open();
+            document.add(new Paragraph("Created new PDF"));
+            document.add(new Paragraph(new Date().toString()));
+ 
+            document.close();
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
    
  
     /**
-     * Creates a PDF document.
-     * @param filename the path to the new PDF document
+     * Adds data to PDF document
+     * @param students - ArrayList of students
      * @throws    DocumentException 
      * @throws    IOException 
      */
     public void addDataPdf(ArrayList<Student> students)
-	throws DocumentException, IOException {
-    	//Checks users operating system
-    	//Then creates PDF in desktop
-    	String filename = System.getProperty("user.home") + "/Desktop/"+"studentInfo.pdf";
-    	System.getProperty("os.name");
-    	if(System.getProperty("os.name").equals("Mac OS X")){
-    		filename = System.getProperty("user.home")+"/Desktop/"+"studentInfo.pdf";
-    	}
-    	
-    	createPDFFile(filename);
-
-
-        // Sets orientation to landscape
-        Document document = new Document(PageSize.LETTER.rotate());
-        // Grabs the pdf made on the desktop in order to modify it
-        PdfWriter.getInstance(document, new FileOutputStream(filename));
-        // Opens PDF ready for editing
-        document.open();
-        // Adding pdf properties   
-        document.addTitle("Student details");
-        document.addTitle("Student Info Card");
-        document.addAuthor("TMH");
-        document.addSubject("Contains students details and results");
-        
-        for(int i = 0;i < students.size();i++){
+    	throws DocumentException, IOException {
+			//Checks users operating system then creates PDF in desktop
+			String filename = System.getProperty("user.home") + "/Desktop/"+"studentInfo.pdf";
+			System.getProperty("os.name");
+			if(System.getProperty("os.name").equals("Mac OS X")){
+				filename = System.getProperty("user.home")+"/Desktop/"+"studentInfo.pdf";
+			}
+			
+			createPDFFile(filename);
+		
+		    // Sets orientation to landscape
+		    Document document = new Document(PageSize.LETTER.rotate());
+		    // Grabs the pdf made on the desktop in order to modify it
+		    PdfWriter.getInstance(document, new FileOutputStream(filename));
+		    // Opens PDF ready for editing
+		    document.open();
+		    // Adding pdf properties   
+		    document.addTitle("Student details");
+		    document.addTitle("Student Info Card");
+		    document.addAuthor("TMH");
+		    document.addSubject("Contains students details and results");
+		    
+		    for(int i = 0;i < students.size();i++){
         	Student s = students.get(i);
         	//Adds title to PDF with student name and #Student
             Font fontbold = FontFactory.getFont("COURIER_BOLDOBLIQUE", 20, Font.BOLD + Font.UNDERLINE);
@@ -107,145 +98,132 @@ public class PDFGenerator {
             }
             document.newPage();
         }
-        document.close();
+		    document.close();
     }
     
-    /**
-     * Creates table containing student data
-     * @return studentInfo table
-     * @throws DocumentException 
-     */
-    public static PdfPTable createFirstTable(Student s) throws DocumentException {
-    	// a table with three columns
-        PdfPTable table = new PdfPTable(2);
-        table.setSpacingBefore(5);
-        table.setWidths(new int[]{30,50});
-        // the cell object
-        PdfPCell cell;
-        Font fontH1 = FontFactory.getFont("COURIER", 16, Font.BOLD);
-
-        
-        cell = new PdfPCell(new Phrase("Name",fontH1));
-        cell.setBorderWidth(3);
-        cell.setBackgroundColor(BaseColor.YELLOW);
-        table.addCell(cell);
-        
-        cell = new PdfPCell(new Phrase(s.getName(),fontH1));
-        cell.setLeading(30f, 0f);
-        cell.setBorderWidth(3);
-        cell.setFixedHeight(40f);
-        cell.setPadding(5);
-        cell.setColspan(2);
-        table.addCell(cell);
-        
-        cell = new PdfPCell(new Phrase("Email",fontH1));
-        cell.setBorderWidth(3);
-        cell.setBackgroundColor(BaseColor.YELLOW);
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase(s.getEmail(),fontH1));
-        cell.setFixedHeight(40f);
-        cell.setPadding(5);
-        cell.setBorderWidth(3);
-        cell.setLeading(30f, 0f);
-        cell.setColspan(2);
-        table.addCell(cell);
-        
-        cell = new PdfPCell(new Phrase("Student Number",fontH1));
-        cell.setBorderWidth(3);
-        cell.setBackgroundColor(BaseColor.YELLOW);
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase(s.getStudentNumber()+"",fontH1));
-        cell.setFixedHeight(40f);
-        cell.setPadding(5);
-        cell.setLeading(30f, 0f);
-        cell.setBorderWidth(3);
-        cell.setColspan(2);
-        table.addCell(cell);
-        
-        cell = new PdfPCell(new Phrase("Tutor Email",fontH1));
-        cell.setBorderWidth(3);
-        cell.setBackgroundColor(BaseColor.YELLOW);
-        table.addCell(cell);
-        cell = new PdfPCell(new Phrase(s.getTutor(),fontH1));
-        cell.setFixedHeight(40f);
-        cell.setPadding(5);
-        cell.setBorderWidth(3);
-        cell.setLeading(30f, 0f);
-        cell.setColspan(2);
-        table.addCell(cell);
-
-        return table;
+   
+    private static PdfPTable createFirstTable(Student s) throws DocumentException {
+	    	// a table with three columns
+	        PdfPTable table = new PdfPTable(2);
+	        table.setSpacingBefore(5);
+	        table.setWidths(new int[]{30,50});
+	        // the cell object
+	        PdfPCell cell;
+	        Font fontH1 = FontFactory.getFont("COURIER", 16, Font.BOLD);
+	
+	        
+	        cell = new PdfPCell(new Phrase("Name",fontH1));
+	        cell.setBorderWidth(3);
+	        cell.setBackgroundColor(BaseColor.YELLOW);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase(s.getName(),fontH1));
+	        cell.setLeading(30f, 0f);
+	        cell.setBorderWidth(3);
+	        cell.setFixedHeight(40f);
+	        cell.setPadding(5);
+	        cell.setColspan(2);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase("Email",fontH1));
+	        cell.setBorderWidth(3);
+	        cell.setBackgroundColor(BaseColor.YELLOW);
+	        table.addCell(cell);
+	        cell = new PdfPCell(new Phrase(s.getEmail(),fontH1));
+	        cell.setFixedHeight(40f);
+	        cell.setPadding(5);
+	        cell.setBorderWidth(3);
+	        cell.setLeading(30f, 0f);
+	        cell.setColspan(2);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase("Student Number",fontH1));
+	        cell.setBorderWidth(3);
+	        cell.setBackgroundColor(BaseColor.YELLOW);
+	        table.addCell(cell);
+	        cell = new PdfPCell(new Phrase(s.getStudentNumber()+"",fontH1));
+	        cell.setFixedHeight(40f);
+	        cell.setPadding(5);
+	        cell.setLeading(30f, 0f);
+	        cell.setBorderWidth(3);
+	        cell.setColspan(2);
+	        table.addCell(cell);
+	        
+	        cell = new PdfPCell(new Phrase("Tutor Email",fontH1));
+	        cell.setBorderWidth(3);
+	        cell.setBackgroundColor(BaseColor.YELLOW);
+	        table.addCell(cell);
+	        cell = new PdfPCell(new Phrase(s.getTutor(),fontH1));
+	        cell.setFixedHeight(40f);
+	        cell.setPadding(5);
+	        cell.setBorderWidth(3);
+	        cell.setLeading(30f, 0f);
+	        cell.setColspan(2);
+	        table.addCell(cell);
+	
+	        return table;
     }
-    /**
-     * Takes student results data and adds to a table
-     * @param s - student object
-     * @return
-     * @throws DocumentException
-     */
-    public static PdfPTable createResultsTable(Student s) throws DocumentException {
+    
+    private static PdfPTable createResultsTable(Student s) throws DocumentException {
     		// a table with three columns
-        PdfPTable table = new PdfPTable(1);
-        table.setWidthPercentage(50);
-        table.setSpacingBefore(10);
-        // the cell object
-        PdfPCell cell;
-        
-        Font fontH1 = FontFactory.getFont("COURIER", 20, Font.BOLD);
-        
-        if(s.getAssessMarks().size() > 0){
-        	cell = new PdfPCell(new Phrase("Results",fontH1));
-        	cell.setBackgroundColor(BaseColor.YELLOW);
-        	cell.setBorderWidth(2); 
-            cell.setFixedHeight(40f);
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setLeading(30f, 0f);
-        	table.addCell(cell);
-        }
-        for(int i = 0;i < s.getAssessMarks().size();i++){
-        	cell = new PdfPCell(new Phrase(s.getAssessMarks().get(i),fontH1));
-        	
-        	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setBorderWidth(2); 
-            cell.setFixedHeight(40f);
-            cell.setLeading(30f, 0f);
-            table.addCell(cell);
-        }
+	        PdfPTable table = new PdfPTable(1);
+	        table.setWidthPercentage(50);
+	        table.setSpacingBefore(10);
+	        // the cell object
+	        PdfPCell cell;
+	        
+	        Font fontH1 = FontFactory.getFont("COURIER", 20, Font.BOLD);
+	        
+	        if(s.getAssessMarks().size() > 0){
+	        	cell = new PdfPCell(new Phrase("Results",fontH1));
+	        	cell.setBackgroundColor(BaseColor.YELLOW);
+	        	cell.setBorderWidth(2); 
+	            cell.setFixedHeight(40f);
+	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setLeading(30f, 0f);
+	        	table.addCell(cell);
+	        }
+	        for(int i = 0;i < s.getAssessMarks().size();i++){
+	        	cell = new PdfPCell(new Phrase(s.getAssessMarks().get(i),fontH1));
+	        	
+	        	cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setBorderWidth(2); 
+	            cell.setFixedHeight(40f);
+	            cell.setLeading(30f, 0f);
+	            table.addCell(cell);
+	        }
         
         
     	return table;
     }
     
-    /**
-     * Generates table containg Access times
-     * @param s - student
-     * @return table
-     */
-    public static PdfPTable createAccessTable(Student s){
-    	PdfPTable table = new PdfPTable(1);
-        table.setWidthPercentage(50);
-        table.setSpacingBefore(1);
-        // the cell object
-        PdfPCell cell;
-        
-        Font fontH1 = FontFactory.getFont("COURIER", 20, Font.BOLD);
-        cell = new PdfPCell(new Phrase("Last Access Times",fontH1));
-    	cell.setBackgroundColor(BaseColor.YELLOW);
-    	cell.setBorderWidth(2); 
-        cell.setFixedHeight(40f);
-        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        cell.setLeading(30f, 0f);
-    	table.addCell(cell);
+    
+    private static PdfPTable createAccessTable(Student s){
+	    	PdfPTable table = new PdfPTable(1);
+	        table.setWidthPercentage(50);
+	        table.setSpacingBefore(1);
+	        // the cell object
+	        PdfPCell cell;
+	        
+	        Font fontH1 = FontFactory.getFont("COURIER", 20, Font.BOLD);
+	        cell = new PdfPCell(new Phrase("Last Access Times",fontH1));
+	    	cell.setBackgroundColor(BaseColor.YELLOW);
+	    	cell.setBorderWidth(2); 
+	        cell.setFixedHeight(40f);
+	        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	        cell.setLeading(30f, 0f);
+	    	table.addCell(cell);
     	
     	
-        for(int i = 0;i < s.getLastAccessArray().size();i++){
-        
-        	cell = new PdfPCell(new Phrase(s.getLastAccessArray().get(i),fontH1));
-        	cell.setBorderWidth(2); 
-            cell.setFixedHeight(40f);
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setLeading(30f, 0f);
-        	table.addCell(cell);
-        }
+	        for(int i = 0;i < s.getLastAccessArray().size();i++){
+	        
+	        	cell = new PdfPCell(new Phrase(s.getLastAccessArray().get(i),fontH1));
+	        	cell.setBorderWidth(2); 
+	            cell.setFixedHeight(40f);
+	            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setLeading(30f, 0f);
+	        	table.addCell(cell);
+	        }
     	
 		return table;
     	
