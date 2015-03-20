@@ -1,4 +1,4 @@
-package email;
+ package email;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -144,25 +144,15 @@ public class EmailSettingsFrame extends JFrame {
 		securityPanel.add(security, BorderLayout.WEST);
 		box.add(securityPanel);
 
-		/////Connection security
-		JPanel connectionGrid = new JPanel(new GridLayout(1, 0));
-		JLabel connectionLabel = new JLabel("Connection Security:");
-		connectionLabel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
-		connectionLabel.setFont(font);
-		connectionBox = new JComboBox(connecSecu);
-
-		//connectionGrid.add(connectionLabel);
-		//connectionGrid.add(connectionBox);
-		box.add(connectionGrid);
 
 		//////Authentication Method
 		JPanel authenticationGrid = new JPanel(new GridLayout(1, 0));
-		JLabel authenticationLabel = new JLabel("Authentication Method:");
-		authenticationLabel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
-		authenticationLabel.setFont(font);
+		JLabel connectionLabel = new JLabel("Connection Security:");
+		connectionLabel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
+		connectionLabel.setFont(font);
 		authenticationBox = new JComboBox(authenMeth);
 
-		authenticationGrid.add(authenticationLabel);
+		authenticationGrid.add(connectionLabel);
 		authenticationGrid.add(authenticationBox);
 		box.add(authenticationGrid);
 
@@ -368,10 +358,10 @@ public class EmailSettingsFrame extends JFrame {
 		portSpinner.setValue(portPreLoaded);
 		userField.setText(userPreLoaded);
 		
-		String temp = (String) connectionBox.getSelectedItem();
+		String temp = (String) authenticationBox.getSelectedItem();
 		
 		if (temp.equals(authPreLoaded)){
-			connectionBox.setSelectedItem("StartTSL");
+			authenticationBox.setSelectedItem("StartTSL");
 		}
 		
 	}
