@@ -60,15 +60,16 @@ public class MainFrame extends JFrame {
 	private ArrayList<Assessment> assesments;
 	private JList list;
 	private JTabbedPane tabbedPane;
-	private boolean examLoaded,anonLoaded;
+	private boolean examLoaded, anonLoaded;
 	private File settingsFile;
-
-	ArrayList<String> emails;
-	ArrayList<String> durations;
+	private ArrayList<String> emails, lastAccess;
 	private DisplayPopUpFrame display = null;
 
+	/**
+	 * Constructs MainFrame with student JList and constructs UI
+	 */
 	public MainFrame() {
-		// Initialises frame and sets title to team name
+		// Initializes frame and sets title to team name
 		super("PRA Coursework - TMH");
 		examLoaded = false;
 		anonLoaded = false;
@@ -81,20 +82,21 @@ public class MainFrame extends JFrame {
 		// Adds MenuBar
 		addMenuBar();
 
-		// //Fetches Students and creates JList
+		////Fetches Students and creates JList
 		students = new ArrayList<Student>();
 		ServerConnect sc = new ServerConnect(students);
 		JList list = createJList(students);
 		JTextField search = new JTextField(22);
 		search.addKeyListener(new searchListener());
-		list.setFixedCellHeight(30);// cell formatting
-		list.setFixedCellWidth(260);// same thing
+		// Cell formatting
+		list.setFixedCellHeight(30);
+		list.setFixedCellWidth(260);
 
-		// Initializes required fields
+		//Initializes required fields
 		assesments = new ArrayList<Assessment>();
 		tabbedPane = new JTabbedPane();
 
-		// Adds search and list to LeftPane Panel
+		//Adds search and list to LeftPane Panel
 		JPanel leftPane = new JPanel();
 		leftPane.setLayout(new BorderLayout());
 
@@ -104,7 +106,7 @@ public class MainFrame extends JFrame {
 		add(leftPane, BorderLayout.WEST);
 		add(tabbedPane, BorderLayout.CENTER);
 
-		// Default JFrame settings
+		//Default JFrame settings
 		setSize(1200, 650);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -152,7 +154,8 @@ public class MainFrame extends JFrame {
 		JMenuItem emailStudent = new JMenuItem("Send Email");
 		emailStudent.setToolTipText("Email results to students");
 		JMenuItem compareAverage = new JMenuItem("Compare to Average");
-		compareAverage.setToolTipText("Generates a Scatter Plot Graph for the selected tab");
+		compareAverage
+				.setToolTipText("Generates a Scatter Plot Graph for the selected tab");
 		JMenuItem fetchPart = new JMenuItem("Fetch Participation");
 		fetchPart.setToolTipText("Fetches participation data from KEATS");
 
@@ -163,10 +166,8 @@ public class MainFrame extends JFrame {
 				try {
 					new EmailSettingsFrame();
 				} catch (FileNotFoundException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 
@@ -186,7 +187,8 @@ public class MainFrame extends JFrame {
 		JMenuItem pdf = new JMenuItem("Generate PDF");
 		pdf.setToolTipText("Saves PDF with all existing data to Desktop");
 		JMenuItem exportCSV = new JMenuItem("Export selected table");
-		exportCSV.setToolTipText("Exports current selected table to a CSV file");
+		exportCSV
+				.setToolTipText("Exports current selected table to a CSV file");
 		pdf.addActionListener(new PDFListener());
 		exportCSV.addActionListener(new CSVExporter());
 		extra.add(pdf);
@@ -194,21 +196,18 @@ public class MainFrame extends JFrame {
 
 	}
 
-	
 	private JList createJList(ArrayList<Student> students) {
-
 		DefaultListModel defListMod = new DefaultListModel();
-
-		// Goes through arraylist of Student objects, calls toString and adds the Strings to DefaultListModel (DLM)
+		// Goes through arraylist of Student objects, calls toString and adds
+		// the Strings to DefaultListModel (DLM)
 		for (Student s : students) {
 			defListMod.addElement(s.toString());
 		}
-		//Creates a new JList using the model
+		// Adds model to JList
 		list = new JList(defListMod);
 		list.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// Student findStudent = null;
 				if (e.getClickCount() == 2) {
 					String selectedItem = list.getSelectedValue().toString();
 					generateDisplayPopUp(selectedItem);
@@ -216,77 +215,75 @@ public class MainFrame extends JFrame {
 			}
 		});
 
+		// Sets selection colour of JList
 		list.setSelectionBackground(Color.black);
 		list.setSelectionForeground(Color.WHITE);
 		list.setFont(new Font("Calibri", Font.BOLD, 20));
 		return list;
 	}
 
-
 	private Student findStudent(String studentIdentity,
 			ArrayList<Student> students) {
 		Student found = null;
-
 		for (int i = 0; i < students.size(); i++) {
-			// Checks if searching using student Number or toString
+			//If student Number is used as identity
 			if (!studentIdentity.substring(studentIdentity.length() - 1,
 					studentIdentity.length()).equals(")")) {
-				if (((students.get(i).getStudentNumber()+"").equals(studentIdentity))) {
+				if (((students.get(i).getStudentNumber() + "")
+						.equals(studentIdentity))) {
 					found = students.get(i);
 				}
-			} else {
-				if (students.get(i).toString().equals(studentIdentity)) {
-					found = students.get(i);
-				}
-
 			}
-
+			//If toString used as identity
+			if (students.get(i).toString().equals(studentIdentity)) {
+				found = students.get(i);
+			}
 		}
+		// Returns found student
 		return found;
 
 	}
 
-
 	private void tabbedPane() {
 		int count = 0;
 		boolean checkExists = false;
-		// loops through each assesment and creates a tab and a table for that
-		// assessment
+		// loops through each assesment and creates a tab and a table for that assessment
 		for (Assessment a : assesments) {
-			String name = (a.getResultAtIndex(count).getModuleCode()).replaceAll("\"", "")+ " " + a.getResultAtIndex(count).getAssessment()+" "+a.getResultAtIndex(count).getYear();
-			for(int i = 0; i < tabbedPane.getTabCount();i++){
-				if(tabbedPane.getTitleAt(i).equals(name)){
+			String name = (a.getResultAtIndex(count).getModuleCode()) + " "
+					+ a.getResultAtIndex(count).getAssessment() + " "
+					+ a.getResultAtIndex(count).getYear();
+			//Loops through current tabs and checks if tab already exists
+			for (int i = 0; i < tabbedPane.getTabCount(); i++) {
+				if (tabbedPane.getTitleAt(i).equals(name)) {
 					checkExists = true;
 				}
 			}
-			if(!checkExists){
-			count++;
-			ExamTable jtable = new ExamTable(a, assesments, students);
-			jtable.getTable().addMouseListener(new NameCellListener());
-			tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
-			}else{
-				JOptionPane.showMessageDialog(null, "You have already uploaded this CSV file before.\nPlease upload a different CSV file.");
+			//If tab doesn't exits, creates new tab
+			if (!checkExists) {
+				count++;
+				ExamTable jtable = new ExamTable(a, assesments, students);
+				jtable.getTable().addMouseListener(new NameCellListener());
+				tabbedPane.addTab(name, new JScrollPane(jtable.getTable()));
+			} else {
+				JOptionPane.showMessageDialog(null,"You have already uploaded this CSV file before.\nPlease upload a different CSV file.");
 			}
 
 		}
 		assesments.clear();
 	}
 
-	
-	private void generateDisplayPopUp(String studentName) {
-		Student findStudent = null;
-		findStudent = findStudent(studentName, students);
-		if(findStudent != null){
-		if (display != null) {
-			if (display.getName().equals(findStudent.getName())) {
-				// Debugging purposes
-				System.out.println("Disposed");
-				display.dispose();
+	private void generateDisplayPopUp(String studentIdentity) {
+		//First finds corresponding student
+		Student findStudent = findStudent(studentIdentity, students);
+		if (findStudent != null) {
+			if (display != null) {
+				// This checks if current display Popup is already being displayed
+				// Disposes current display popup if already present
+				if (display.getName().equals(findStudent.getName())) {
+					display.dispose();
+				}
 			}
-		}
-		display = new DisplayPopUpFrame(findStudent);
-		}else{
-			System.out.println("No student found");
+			display = new DisplayPopUpFrame(findStudent);
 		}
 	}
 
@@ -294,15 +291,14 @@ public class MainFrame extends JFrame {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			JTextField search = (JTextField) e.getSource();
-			// clear the list
+			// Clear the list
 			DefaultListModel listModel = (DefaultListModel) list.getModel();
 			listModel.removeAllElements();
-			// get whatever user types into text field
+			//Get whatever user types into text field
 			String buffer = search.getText();
-			// store all matching students in serachStudent arraylist
+			//Adds all matching students with search query in serachStudent ArrayList
 			for (Student i : students) {
-				if (i.getName().toLowerCase().contains(buffer.toLowerCase())
-						|| (i.getStudentNumber() + "").contains(buffer)) {
+				if (i.getName().toLowerCase().contains(buffer.toLowerCase())|| (i.getStudentNumber() + "").contains(buffer)) {
 					listModel.addElement(i);
 				}
 			}
@@ -312,9 +308,9 @@ public class MainFrame extends JFrame {
 	}
 
 	private class LoadAnonListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//If valid Anon code is loaded sets anonLoaded boolean to true
 			if (new CSVLoader().loadAnonCode(students)) {
 				anonLoaded = true;
 			} else {
@@ -325,12 +321,11 @@ public class MainFrame extends JFrame {
 	}
 
 	private class LoadExamListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			try {
+				//Creates table and adds to Tabbed Pane if returns true
 				if (new CSVLoader().loadExamCSV(assesments)) {
-					// Creates table and adds to Tabbed Pane
 					tabbedPane();
 					examLoaded = true;
 				}
@@ -345,29 +340,18 @@ public class MainFrame extends JFrame {
 	private class EmailListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// // New Email Frame
 			if (examLoaded == true) {
-				if (!(settingsFile == null)) {// If settings file has been
-												// loaded
+				//If settings file has been loaded shows sendEmailFrame
+				if (!(settingsFile == null)) {
 					new SendEmailFrame(students, settingsFile);
 				} else {
-					int confirm = JOptionPane
-							.showConfirmDialog(
-									null,
-									"Email Settings have not been configured."
-											+ "\nDefault Outlook Office 365 settings will be used."
-											+ "\nDo you wish to continue?",
-									"Email to Students",
-									JOptionPane.YES_NO_CANCEL_OPTION);
+					int confirm = JOptionPane.showConfirmDialog(null,"Email Settings have not been configured."+ "\nDefault Outlook Office 365 settings will be used."+ "\nDo you wish to continue?","Email to Students",JOptionPane.YES_NO_CANCEL_OPTION);
 					if (confirm == JOptionPane.YES_OPTION) {
 						new SendEmailFrame(students, settingsFile);
 					}
 				}
 			} else {
-				JOptionPane
-						.showMessageDialog(
-								null,
-								"Please upload an Exam.CSV file in order to send an email.");
+				JOptionPane.showMessageDialog(null,"Please upload an Exam.CSV file in order to send an email.");
 			}
 
 		}
@@ -375,43 +359,32 @@ public class MainFrame extends JFrame {
 	}
 
 	private class PDFListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//Grabs all current students loaded and generates PDF
 			try {
 				new PDFGenerator().addDataPdf(students);
 			} catch (DocumentException | IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			JOptionPane
-					.showMessageDialog(
-							null,
-							students.size()
-									+ " Student information succesfully succesfully imported to PDF in desktop");
+			JOptionPane.showMessageDialog(null,students.size()+ " Student information succesfully succesfully imported to PDF in desktop");
 		}
 
 	}
 
 	private class NameCellListener extends MouseAdapter {
-
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			JTable table = (JTable) e.getSource();
 			if (e.getClickCount() == 2) {
 				int row = table.getSelectedRow();
 				int column = table.getSelectedColumn();
-				// Checks if column is student name column
+				//Checks if column is student name column
 				if (column == 0) {
 					// Create Display PopUp
-					String selectedItem = (String) table.getValueAt(row, column+1);
-					System.out.println(selectedItem);
+					String selectedItem = (String) table.getValueAt(row,column + 1);
 					if (!selectedItem.substring(0, 1).equals("#")) {
-						System.out.println("Create Display PopUp");
 						generateDisplayPopUp(selectedItem);
-					} else {
-						System.out
-								.println("Not valid student Number/Anonymous marking code present");
 					}
 
 				}
@@ -425,88 +398,64 @@ public class MainFrame extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//If an exam.csv has been uploaded, will generate a graph
 			if (examLoaded == true) {
-				System.out.println("Plotting graph...");
-				JScrollPane currentScrollPane = (JScrollPane) tabbedPane
-						.getComponentAt(tabbedPane.getSelectedIndex());
+				// Gets current tab from Tabbed Pane
+				JScrollPane currentScrollPane = (JScrollPane) tabbedPane.getComponentAt(tabbedPane.getSelectedIndex());
 				JViewport viewport = currentScrollPane.getViewport();
 				JTable currentTable = (JTable) viewport.getView();
 
-				XYSeries data = new XYSeries("Student");// Will hold our data,
-														// or plot points
-
+				//Holds data from graph
+				XYSeries data = new XYSeries("Student");
 				int numOfRecords = currentTable.getRowCount();
 
-				// Loops through the records, gets the appropriate student
-				// object from the arraylist,
-				// gets the average of the student and plots it with their mark.
+				//Loops through the rows,matching students and calculate average
 				for (int i = 0; i < numOfRecords; i++) {
 					String tempCandKey = (String) currentTable.getValueAt(i, 1);
-					System.out.println(tempCandKey);
 					Student tempStu = findStudent(tempCandKey, students);
-					// The student of a specific row
-					// if the tempStu is not null, then gets their mark from the
-					// table
-					// and then plots the tempStu's average against their
-					// current mark
+					//Finds matching student from row, plots student average against mark of selected Module
 					if (!(tempStu == null)) {
-						System.out.println(tempStu.toString());
-						int stuMarkInt = (Integer) currentTable
-								.getValueAt(i, 4);
-						// double stuMark = (double) stuMarkInt;
-						// System.out.println(stuMark);
+						int stuMarkInt = (Integer) currentTable.getValueAt(i, 4);
 						tempStu.calcAverage();
 						data.add(tempStu.getAverage(), stuMarkInt);
-					} else {
-						System.out.println("Error error error");
 					}
 				}
-
+				
+				//Generates scatter plot
 				String modCode = (String) currentTable.getValueAt(0, 3);
-				System.out.println("Making chart...");
-				ScatterPlot scatter = new ScatterPlot("Graph",
-						"Comparison of Average in Assessment", modCode, data);
+				ScatterPlot scatter = new ScatterPlot("Graph","Comparison of Average in Assessment", modCode, data);
 
-			} else  {
-				JOptionPane
-						.showMessageDialog(rootPane,
-								"You need to load an exam results file, before you can create the chart");
-			} 
+			} else {
+				JOptionPane.showMessageDialog(rootPane,"You need to load an exam results file, before you can create the chart");
+			}
 
 		}
 
 	}
 
 	private class FetchListener implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			emails = new ArrayList<String>();
-			durations = new ArrayList<String>();
+			lastAccess = new ArrayList<String>();
+			
 			JTextField moduleField = new JTextField(6);
 			JTextField urlField = new JTextField(20);
-
+			
+			//Creates JPanel for entry of module code and URL to keats
 			JPanel messagePanel = new JPanel();
-			messagePanel.setLayout(new BoxLayout(messagePanel,
-					BoxLayout.PAGE_AXIS));
+			messagePanel.setLayout(new BoxLayout(messagePanel,BoxLayout.PAGE_AXIS));
 			messagePanel.add(new JLabel("Module:"));
 			messagePanel.add(moduleField);
 			messagePanel.add(new JLabel("URL:"));
 			messagePanel.add(urlField);
 
-			int response = JOptionPane.showConfirmDialog(null, messagePanel,
-					"Please Enter module Code and the URL",
-					JOptionPane.OK_CANCEL_OPTION);
+			int response = JOptionPane.showConfirmDialog(null, messagePanel,"Please Enter module Code and the URL",JOptionPane.OK_CANCEL_OPTION);
 
 			if (response == JOptionPane.OK_OPTION) {
-				System.out.println("Module code is: " + moduleField.getText());
-				System.out.println("URL is : " + urlField.getText());
-				while (moduleField.getText().equals("")
-						&& urlField.getText().equals("")) {
-					response = JOptionPane.showConfirmDialog(null,
-							messagePanel,
-							"Please Enter module Code and the URL",
-							JOptionPane.OK_CANCEL_OPTION);
+				//Re-opens dialogue box if no URL or module is entered
+				while (moduleField.getText().equals("")&& urlField.getText().equals("")) {
+					response = JOptionPane.showConfirmDialog(null,messagePanel,"Please Enter module Code and the URL",JOptionPane.OK_CANCEL_OPTION);
 				}
 				WebviewFrame wb = new WebviewFrame(urlField.getText());
 				wb.getButton().addActionListener(new ActionListener() {
@@ -515,25 +464,15 @@ public class MainFrame extends JFrame {
 					public void actionPerformed(ActionEvent e) {
 						wb.getBrowser().readDocument();
 						emails = wb.getEmails();
-						durations = wb.getAccessTimes();
-
-						System.out.println("Emails size is " + emails.size()
-								+ " and duration size is " + durations.size());
+						lastAccess = wb.getAccessTimes();
 						for (int i = 0; i < emails.size(); i++) {
 							for (Student s : students) {
 								if (s.getEmail().equals(emails.get(i))) {
-									System.out.println("Found email of "
-											+ emails.get(i) + " with duration "
-											+ durations.get(i));
-									s.addLastAccess(moduleField.getText()
-											+ " " + durations.get(i) + " ago");
+									s.addLastAccess(moduleField.getText() + " "+ lastAccess.get(i) + " ago");
 								}
 							}
 						}
-						JOptionPane.showMessageDialog(
-								null,
-								emails.size()
-										+ " participation records were succesfully imported");
+						JOptionPane.showMessageDialog(null,emails.size()+ " participation records were succesfully imported");
 						wb.dispose();
 					}
 				});
@@ -544,13 +483,12 @@ public class MainFrame extends JFrame {
 	}
 
 	private class CSVExporter implements ActionListener {
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (examLoaded) {
 				new ExamTable().exportCSVToFile(tabbedPane);
-			}else{
-				JOptionPane.showMessageDialog(null, "Please upload a exam.CSV file first");
+			} else {
+				JOptionPane.showMessageDialog(null,"Please upload a exam.CSV file first");
 			}
 		}
 
