@@ -21,13 +21,16 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JProgressBar;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -63,6 +66,7 @@ public class SendEmailFrame extends JFrame {
 	private JFrame progressFrame;
 	private JLabel sending;
 	private JProgressBar progBar;
+	private JRadioButton sendTutor,sendStudent;
 	/**
 	 * Creates Send Email Frame using student data for 
 	 * @param student - ArrayList of students
@@ -246,10 +250,11 @@ public class SendEmailFrame extends JFrame {
 						});
 						progressFrame.add(sending,BorderLayout.NORTH);
 						progressFrame.add(progBar,BorderLayout.CENTER);
-						progressFrame.setSize(300, 100);
+						progressFrame.setSize(500, 120);
 						progressFrame.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 						progressFrame.setLocationRelativeTo(null);
 						progressFrame.setVisible(true);
+						
 
 					}
 
@@ -282,7 +287,33 @@ public class SendEmailFrame extends JFrame {
 		buttonPanel.add(previous);
 		buttonPanel.add(send);
 		JPanel buttonPostionRight = new JPanel(new BorderLayout());
+		JPanel options = new JPanel();
+		sendTutor = new JRadioButton("Send to tutor");
+		sendTutor.setSelected(true);
+		sendStudent = new JRadioButton("Send to student");
+		options.add(sendTutor);
+		options.add(sendStudent);
+		sendTutor.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					sendStudent.setSelected(false);
+			}
+			
+		});
+		sendStudent.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					sendTutor.setSelected(false);
+				
+			}
+			
+		});
+		
+		
 		buttonPostionRight.add(buttonPanel, BorderLayout.EAST);
+		buttonPostionRight.add(options,BorderLayout.WEST);
 		bottomPanel.add(buttonPostionRight, BorderLayout.SOUTH);
 		
 		//If settings are loaded, sets email field to corresponding email
@@ -389,12 +420,19 @@ public class SendEmailFrame extends JFrame {
 			protected Boolean doInBackground(){
 				for (Student s : selectedStudents) {
 					try {
-						sending.setText("Sending to: "+s.getName());
-						String toAddress = s.getEmail();
-						String body = createEmail(s);
+						String toAddress = "";
+						System.out.println("Sending email");
+						if(sendTutor.isSelected()){
+							toAddress = s.getTutor();
+							sending.setText("Sending to: "+toAddress);
+							System.out.println("Currently sending to tutor "+toAddress);
+						}else if(sendStudent.isSelected()){
+							toAddress = s.getEmail();
+							sending.setText("Sending to: "+toAddress);
+							System.out.println("Currently sending to student "+toAddress);
+						}
 
-						String email = body;
-						String to = toAddress;
+						String email = createEmail(s);
 						//Default settings
 						String hostAddress = "outlook.office365.com";
 						//IP address in the form of DNS name
@@ -434,7 +472,7 @@ public class SendEmailFrame extends JFrame {
 						//Compose the message
 						MimeMessage message = new MimeMessage(session);
 						message.setFrom(new InternetAddress(from));
-						message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));
+						message.addRecipient(Message.RecipientType.TO,new InternetAddress(toAddress));
 						message.setSubject("Results");
 						message.setText(email);
 
@@ -496,7 +534,6 @@ public class SendEmailFrame extends JFrame {
 
 		email += footerField.getText();
 		System.out.println(email);
-		marks.clear();
 		return email;
 	}
 
