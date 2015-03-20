@@ -33,10 +33,10 @@ import javax.swing.SpinnerNumberModel;
  *
  */
 public class EmailSettingsFrame extends JFrame {
-	private String[] connecSecu,authenMeth;
-	private String serverPreLoaded,userPreLoaded,authPreLoaded;
+	private String[] connectionSec;
+	private String serverPreLoaded,userPreLoaded,connectionPreLoaded;
 	private JTextField serverNameField,userField;
-	private JComboBox connectionBox,authenticationBox;
+	private JComboBox connectionBox;
 	private File settingsFile;
 	private Integer portPreLoaded;
 	private JPanel main;
@@ -69,11 +69,8 @@ public class EmailSettingsFrame extends JFrame {
 	
 	
 	private void setString() {
-		connecSecu = new String[1];
-		connecSecu[0] = "StartTLS";
-
-		authenMeth = new String[1];
-		authenMeth[0] = "StartTLS";
+		connectionSec = new String[1];
+		connectionSec[0] = "StartTLS";
 
 	}
 	
@@ -146,15 +143,15 @@ public class EmailSettingsFrame extends JFrame {
 
 
 		//////Authentication Method
-		JPanel authenticationGrid = new JPanel(new GridLayout(1, 0));
+		JPanel connectionGrid = new JPanel(new GridLayout(1, 0));
 		JLabel connectionLabel = new JLabel("Connection Security:");
 		connectionLabel.setBorder(BorderFactory.createEmptyBorder(0, 40, 0, 0));
 		connectionLabel.setFont(font);
-		authenticationBox = new JComboBox(authenMeth);
+		connectionBox = new JComboBox(connectionSec);
 
-		authenticationGrid.add(connectionLabel);
-		authenticationGrid.add(authenticationBox);
-		box.add(authenticationGrid);
+		connectionGrid.add(connectionLabel);
+		connectionGrid.add(connectionBox);
+		box.add(connectionGrid);
 
 		/////User Name fields
 		JPanel userGrid = new JPanel(new GridLayout(1, 0));
@@ -346,7 +343,7 @@ public class EmailSettingsFrame extends JFrame {
 		this.serverPreLoaded = settingsArray[0];
 		this.portPreLoaded =  Integer.parseInt(settingsArray[1]);
 		this.userPreLoaded = settingsArray[2];
-		this.authPreLoaded = settingsArray[3];
+		this.connectionPreLoaded = settingsArray[3];
 		
 		br.close();
 		return settingsArray;
@@ -358,10 +355,10 @@ public class EmailSettingsFrame extends JFrame {
 		portSpinner.setValue(portPreLoaded);
 		userField.setText(userPreLoaded);
 		
-		String temp = (String) authenticationBox.getSelectedItem();
+		String temp = (String) connectionBox.getSelectedItem();
 		
-		if (temp.equals(authPreLoaded)){
-			authenticationBox.setSelectedItem("StartTSL");
+		if (temp.equals(connectionPreLoaded)){
+			connectionBox.setSelectedItem("StartTSL");
 		}
 		
 	}
