@@ -21,20 +21,26 @@ public class PNGListener implements ActionListener {
 	
 	private JFreeChart chart;
 	private String modCode;
-	
+	/**
+	 * Sets chart and module fields
+	 * @param freeChart - Scatter Plot Graph
+	 * @param module
+	 */
 	public PNGListener(JFreeChart freeChart, String module){
 		this.chart = freeChart;
 		this.modCode = module;
 	}
 	
-	
+	/**
+	 * 
+	 */
 	public void actionPerformed(ActionEvent e) {
 		
 		JMenuItem temp = (JMenuItem) e.getSource(); 
 		
 		JFileChooser chooser = new JFileChooser() {
 			
-			public void approveSelection(){//Here, the behaviour of the approve button of the JFileChooser is altered
+			public void approveSelection(){//Here, the behavior of the approve button of the JFileChooser is altered
 				
 				File filePath = super.getSelectedFile();
 				
@@ -51,7 +57,6 @@ public class PNGListener implements ActionListener {
 					switch (decision){
 					case JOptionPane.YES_OPTION:
 							try {
-								
 									ChartUtilities.saveChartAsPNG(filePath, chart, 600, 400);
 									JOptionPane.showMessageDialog(this, "Chart saved as PNG file", "Success", JOptionPane.INFORMATION_MESSAGE);
 									this.cancelSelection();
@@ -87,7 +92,6 @@ public class PNGListener implements ActionListener {
 		
 		//Sets the text within the file name textfield to the module code, concatenates the file type to the end
 		chooser.setSelectedFile(new File(modCode+"." + temp.getText().toLowerCase())); 
-		
 		chooser.showSaveDialog(null);
 		
 	}

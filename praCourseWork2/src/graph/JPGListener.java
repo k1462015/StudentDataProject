@@ -16,7 +16,11 @@ public class JPGListener implements ActionListener{
 	
 	private JFreeChart chart;
 	private String modCode;
-	
+	/**
+	 * Initiliazes listener with scatter graph and module code
+	 * @param freeChart - Scatter plot
+	 * @param module - Module Code
+	 */
 	public JPGListener(JFreeChart freeChart, String module){
 		this.chart = freeChart;
 		this.modCode = module;

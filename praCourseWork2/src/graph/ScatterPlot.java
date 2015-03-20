@@ -20,7 +20,7 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 /**
- * Frame with generated scatter plot
+ * Frame with scatter plot graph
  * @author TMH
  *
  */
@@ -29,48 +29,53 @@ public class ScatterPlot extends JFrame {
 	private XYSeriesCollection dataset;
 	private JFreeChart chart;
 	private ChartPanel chartPanel;
-	private JMenuBar bar;
+	private JMenuBar menuBar;
 	private JMenu exportMenu;
-	private JMenuItem pngItem;
-	private JMenuItem jpgItem;
+	private JMenuItem pngItem,jpgItem;
 	private String moduleCode;
 
-	
+	/**
+	 * Initiliazes graph information
+	 * @param appTitle - Title of frame
+	 * @param chartTitle - Title of chart
+	 * @param module - Module Code 
+	 * @param data - Holds datapoints of graph
+	 */
 	public ScatterPlot(String appTitle, String chartTitle, String module,XYSeries data){
-		
 		super(appTitle);
 		moduleCode = module;
-		bar = new JMenuBar();
-		exportMenu = new JMenu("Export as...");
-		
-		
-		
 		dataset = new XYSeriesCollection();
 		dataset.addSeries(data);
 		
+		initUi();
+
+		
+	}
+	
+	private void initUi(){
+		menuBar = new JMenuBar();
+		exportMenu = new JMenu("Export as...");
+		
+		//Creates scatter plot with title and axis and plots the datapoints on the graph
 		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", moduleCode + " mark", dataset);
 		chartPanel = new ChartPanel(chart);
 		this.add(chartPanel);
 		
-		PNGListener pngListen = new PNGListener(chart, moduleCode);
-		JPGListener jpgListen = new JPGListener(chart, moduleCode);
-		
+		//Adds PNG and JPG export option to menu and adds corresponding ActionListener 	
 		pngItem = new JMenuItem("PNG");
-		pngItem.addActionListener(pngListen);
-		
+		pngItem.addActionListener(new PNGListener(chart, moduleCode));
 		jpgItem = new JMenuItem("JPG");
-		jpgItem.addActionListener(jpgListen);
+		jpgItem.addActionListener(new JPGListener(chart, moduleCode));
 		
 		exportMenu.add(pngItem); exportMenu.add(jpgItem);
 		
-		bar.add(exportMenu);
 		
-		setJMenuBar(bar);
+		menuBar.add(exportMenu);
+		
+		setJMenuBar(menuBar);
 		setSize(800,400);
 		setLocationRelativeTo(null);
 		setVisible(true);
-
-		
 	}
 	
 	

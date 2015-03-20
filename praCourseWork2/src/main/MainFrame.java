@@ -60,8 +60,7 @@ public class MainFrame extends JFrame {
 	private ArrayList<Assessment> assesments;
 	private JList list;
 	private JTabbedPane tabbedPane;
-	private boolean examLoaded;
-	private boolean anonLoaded;
+	private boolean examLoaded,anonLoaded;
 	private File settingsFile;
 
 	ArrayList<String> emails;
