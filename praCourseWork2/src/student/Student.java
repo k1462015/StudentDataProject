@@ -3,151 +3,151 @@ package student;
 import java.util.ArrayList;
 import java.util.HashMap;
 /**
- * Contains all information on student
+ * Class to store all information on student
  * @author TMH
  *
  */
 public class Student {
-	protected String name;
-	protected String email;
-	protected int studentNumber;
-	private String tutor;
-	protected String aMC;
+	private String name,email,tutor,aMC;
+	private int studentNumber;
 	private ArrayList<String> assessMarks;
-	protected HashMap<String,Integer> marks;
-	protected double average;
-	private ArrayList<String> participation;
+	private HashMap<String,Integer> assessMarksMap;
+	private ArrayList<String> lastAccessArray;
+	private double average;
 
-	
+	/**
+	 * Sets student details
+	 * @param email - Student email
+	 * @param name - Student name
+	 * @param studentNumber - Student Number
+	 * @param tutor - Student Tutor
+	 */
 	public Student(String email,String name,int studentNumber,String tutor){
 		this.name =  name;
 		this.email = email;
 		this.studentNumber = studentNumber;
 		this.tutor = tutor;
-		this.average = 0;
-		setParticipation(new ArrayList<String>());
-
-		
+		average = 0;
 		aMC = "";
-		
-		setAssessMarks(new ArrayList<String>());
-		marks = new HashMap<String,Integer>();
+
+		assessMarks = new ArrayList<String>();
+		assessMarksMap = new HashMap<String,Integer>();
+		lastAccessArray = new ArrayList<String>();
 
 	}
-	
+	/**
+	 * Gets Student Name
+	 * @return name - Student Name
+	 */
 	public String getName(){
 		return name;
 	}
-	
+	/**
+	 * Gets Student Number
+	 * @return studentNumber - Student number
+	 */
 	public int getStudentNumber(){
 		return studentNumber;
 	}
-	
+	/**
+	 * Gets student Email
+	 * @return email - Student Email
+	 */
 	public String getEmail(){
 		return email;
 		
 	}
-	
-	@Override
-	public String toString(){
-		return name + " (" + studentNumber + ")";
-	}
-	
+	/**
+	 * Sets Anonymous Marking code
+	 * @param anon - Anonymous Marking Code
+	 */
 	public void setAMC(String anon){
 		this.aMC = anon;
 	}
-	
+	/**
+	 * Gets Students Anonymous Code
+	 * @return aMC - Student Anonymous Code
+	 */
 	public String getAMC(){
 		return aMC;
 	}
-	
-	public void addMarks(String modAss, int mark){
-		String temp = modAss + " " + mark;
-		System.out.println(temp);
+	/**
+	 * Adds corresponding mark to student
+	 * @param modCode - Module  Code
+	 * @param mark - Module mark
+	 */
+	public void addMarks(String modCode, int mark){
+		String temp = modCode + " " + mark;
 		assessMarks.add(temp);
-		marks.put(modAss, mark);
+		assessMarksMap.put(modCode, mark);
 	}
 	
 	
 	/**
-	 * Calculates average of marks
-	 * @return average mark
+	 * Calculates Average of student marks
+	 * @return average - Student Average Mark
 	 */
 	public double calcAverage(){
-		
-		int temp = 0;//to store total of the marks
-		
-		//Gets all of the keys of the hashmap, loops through each of them and gets 
-		//the value, and finally adds the value to the temp var.
-		for (String mod : marks.keySet()){
-			temp += marks.get(mod);
+		int temp = 0;
+		//Loops through all module marks and calculates running total
+		for (String mod : assessMarksMap.keySet()){
+			temp += assessMarksMap.get(mod);
 		}
-		
-		average = temp/marks.size();
-		System.out.println(average);//testing
+		//Calculates Average
+		average = temp/assessMarksMap.size();
 		return average;
 	}
 	
 	/**
-	 * Adds participation data
-	 * @param participation
+	 * Adds last Access data
+	 * @param Last Access String
 	 */
-	public void addParticipation(String participation){
-		getParticipationArray().add(participation);
+	public void addLastAccess(String lastAccess){
+		lastAccessArray.add(lastAccess);
 	}
 	
 	/**
-	 * 
-	 * @return Arraylist of participation data
+	 * Gets Last Access ArrayList
+	 * @return ArrayList of Last Access
 	 */
-	public ArrayList<String> getParticipationArray() {
-		return participation;
+	public ArrayList<String> getLastAccessArray() {
+		return lastAccessArray;
 	}
 	
 	/**
-	 * 
-	 * @param participation
-	 */
-	public void setParticipation(ArrayList<String> participation) {
-		this.participation = participation;
-	}
-	
-	/**
-	 * 
-	 * @return Assessment marks
+	 * Gets Assessment Mark
+	 * @return assessMarks - Assessment marks
 	 */
 	public ArrayList<String> getAssessMarks() {
 		return assessMarks;
 	}
 	
 	/**
-	 * 
-	 * @param assessMarks
-	 */
-	public void setAssessMarks(ArrayList<String> assessMarks) {
-		this.assessMarks = assessMarks;
-	}
-	/**
-	 * 
-	 * @return tutor
+	 * Gets Students tutor
+	 * @return tutor - Students tutor email
 	 */
 	public String getTutor() {
 		return tutor;
 	}
 	
 	/**
-	 * 
-	 * @param tutor
+	 * Sets students tutor email address
+	 * @param tutor - Tutor Email Address
 	 */
 	public void setTutor(String tutor) {
 		this.tutor = tutor;
 	}
 	/**
-	 * 
-	 * @return average mark
+	 * Returns Students average mark across all modules
+	 * @return average - Student Average Mark
 	 */
 	public double getAverage(){
 		return average;
+	}
+	
+	@Override
+	public String toString(){
+		return name + " (" + studentNumber + ")";
 	}
 
 	

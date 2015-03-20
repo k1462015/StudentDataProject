@@ -36,7 +36,7 @@ public class DisplayPopUpFrame extends JFrame {
 		studentNumber = new JLabel("Student No. :   "+ student.getStudentNumber());
 		tutor = new JLabel("Tutor:     " + student.getTutor());
 		marks = student.getAssessMarks();
-		participation = student.getParticipationArray();
+		participation = student.getLastAccessArray();
 
 		// Calls Popup method to make required JPanel
 		makePopUp();

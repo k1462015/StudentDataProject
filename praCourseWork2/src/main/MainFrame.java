@@ -526,7 +526,7 @@ public class MainFrame extends JFrame {
 									System.out.println("Found email of "
 											+ emails.get(i) + " with duration "
 											+ durations.get(i));
-									s.addParticipation(moduleField.getText()
+									s.addLastAccess(moduleField.getText()
 											+ " " + durations.get(i) + " ago");
 								}
 							}

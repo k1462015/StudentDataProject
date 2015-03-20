@@ -101,7 +101,7 @@ public class PDFGenerator {
             //Adds table that shows results
             document.add(createResultsTable(s));
             
-            if(s.getParticipationArray().size() > 0){
+            if(s.getLastAccessArray().size() > 0){
             	//Adds participation records
             	document.add(createAccessTable(s));
             }
@@ -237,9 +237,9 @@ public class PDFGenerator {
     	table.addCell(cell);
     	
     	
-        for(int i = 0;i < s.getParticipationArray().size();i++){
+        for(int i = 0;i < s.getLastAccessArray().size();i++){
         
-        	cell = new PdfPCell(new Phrase(s.getParticipationArray().get(i),fontH1));
+        	cell = new PdfPCell(new Phrase(s.getLastAccessArray().get(i),fontH1));
         	cell.setBorderWidth(2); 
             cell.setFixedHeight(40f);
             cell.setHorizontalAlignment(Element.ALIGN_CENTER);
