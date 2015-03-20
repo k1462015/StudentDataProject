@@ -232,7 +232,7 @@ public class SendEmailFrame extends JFrame {
 					@Override
 					public void run() {
 						sending = new JLabel("Sending Email...",SwingConstants.CENTER);
-						sending.setFont(new Font("Calibri",Font.BOLD,20));
+						sending.setFont(new Font("Calibri",Font.BOLD,15));
 						progressFrame = new JFrame("Progress bar");
 						progBar = new JProgressBar();
 						progBar.setValue(0);
@@ -269,6 +269,7 @@ public class SendEmailFrame extends JFrame {
 				} catch (MessagingException e1) {
 					System.out.println("Something wrong with message");
 				}
+				
 
 			}
 
@@ -310,8 +311,7 @@ public class SendEmailFrame extends JFrame {
 			}
 			
 		});
-		
-		
+
 		buttonPostionRight.add(buttonPanel, BorderLayout.EAST);
 		buttonPostionRight.add(options,BorderLayout.WEST);
 		bottomPanel.add(buttonPostionRight, BorderLayout.SOUTH);
@@ -421,15 +421,12 @@ public class SendEmailFrame extends JFrame {
 				for (Student s : selectedStudents) {
 					try {
 						String toAddress = "";
-						System.out.println("Sending email");
 						if(sendTutor.isSelected()){
 							toAddress = s.getTutor();
-							sending.setText("Sending to: "+toAddress);
-							System.out.println("Currently sending to tutor "+toAddress);
+							sending.setText("Sending to tutor: "+toAddress);
 						}else if(sendStudent.isSelected()){
 							toAddress = s.getEmail();
-							sending.setText("Sending to: "+toAddress);
-							System.out.println("Currently sending to student "+toAddress);
+							sending.setText("Sending to student: "+toAddress);
 						}
 
 						String email = createEmail(s);
