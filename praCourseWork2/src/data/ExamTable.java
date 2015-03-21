@@ -118,7 +118,6 @@ public class ExamTable {
 		String[] linesplit = line.split(",");
 		int yearCol = 0,nameCol= 0,moduleCol = 0,assCol = 0,candCol = 0,markCol = 0,gradeCol = 0;
 		for (int i = 0; i < linesplit.length; i++) {
-			System.out.println(linesplit[i]);
 			if (linesplit[i].equals("\"#Module\"") || linesplit[i].equals("#Module")) {
 				moduleCol = i;
 			} else if (linesplit[i].equals("\"#Ass#\"") || linesplit[i].equals("#Ass#")) {
@@ -206,6 +205,7 @@ public class ExamTable {
 						}
 					}
 				} else {
+				// If candKey is anon code
 					for (Student s : students) {
 						candKey = candKey.replaceAll("#", "");
 						if (candKey.equals(s.getAMC() + "")) {
