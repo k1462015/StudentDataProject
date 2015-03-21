@@ -21,7 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import main.MainFrame;
+import mainFrame.MainFrame;
 /**
  * Login frame - prevents unauthorized access to system
  * @author TMH
