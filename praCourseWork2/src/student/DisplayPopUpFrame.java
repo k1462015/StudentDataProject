@@ -34,7 +34,7 @@ public class DisplayPopUpFrame extends JFrame {
 		name = new JLabel(student.getName());
 		emailAddress = new JLabel(student.getEmail());
 		studentNumber = new JLabel("Student No. :   "+ student.getStudentNumber());
-		tutor = new JLabel("Tutor:     " + student.getTutor());
+		        tutor = new JLabel("Tutor:               " + student.getTutor());
 		marks = student.getAssessMarks();
 		participation = student.getLastAccessArray();
 
@@ -78,7 +78,7 @@ public class DisplayPopUpFrame extends JFrame {
 
 		// Gets participation data and adds to popup frame
 		for (String s : participation) {
-			JLabel temp = new JLabel("Last Access: " + s);
+			JLabel temp = new JLabel("Last Access:     " + s);
 			temp.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 0));
 			temp.setFont(h2);
 			JPanel tempHolder = new JPanel(new BorderLayout());
@@ -89,7 +89,7 @@ public class DisplayPopUpFrame extends JFrame {
 		if (!marks.isEmpty()) {
 			// Sets font of results label and adds it to the window
 			results = new JLabel("Results:", SwingConstants.CENTER);
-			results.setFont(this.results.getFont().deriveFont(20.0f));
+			results.setFont(h2);
 			JPanel tResult = new JPanel(new BorderLayout());
 			tResult.add(results, BorderLayout.CENTER);
 			bottom.add(tResult);
