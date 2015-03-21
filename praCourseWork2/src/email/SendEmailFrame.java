@@ -67,6 +67,8 @@ public class SendEmailFrame extends JFrame {
 	private JLabel sending;
 	private JProgressBar progBar;
 	private JRadioButton sendTutor,sendStudent;
+	private SwingWorker<Boolean, Double> worker;
+	private JButton send;
 	/**
 	 * Creates Send Email Frame using student data for 
 	 * @param student - ArrayList of students
@@ -221,7 +223,7 @@ public class SendEmailFrame extends JFrame {
 		JPanel buttonPanel = new JPanel();
 		JButton previous = new JButton("Previous");
 		previous.setFont(btnFont);
-		JButton send = new JButton("Send");
+		send = new JButton("Send");
 		send.setFont(btnFont);
 		send.addActionListener(new ActionListener() {
 
@@ -414,7 +416,7 @@ public class SendEmailFrame extends JFrame {
 	}
 
 	public void sendEmail() throws UnsupportedEncodingException,AuthenticationFailedException, MessagingException {
-		SwingWorker<Boolean, Double> worker = new SwingWorker<Boolean, Double>() {
+		worker = new SwingWorker<Boolean, Double>() {
 
 			@Override
 			protected Boolean doInBackground(){
@@ -505,11 +507,14 @@ public class SendEmailFrame extends JFrame {
 				Double value = chunks.get(chunks.size() - 1);
 				System.out.println(value);
 				progBar.setValue(value.intValue());
-				super.process(chunks);
 			}
 
 			@Override
 			protected void done() {
+				if(progBar.getValue() != 100){
+					progressFrame.dispose();
+					send.doClick();	
+				}
 				System.out.println("Completed thread");
 			}
 
