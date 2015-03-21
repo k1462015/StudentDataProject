@@ -58,7 +58,6 @@ public class Login extends JFrame{
 		
 		//Login button
 		JButton btnLogin = new JButton("Login");
-		username.setText("admin");
 		//Checks if username and password are correct
 		btnLogin.addActionListener(new ActionListener(){
 			String userDetails = "";
@@ -90,7 +89,7 @@ public class Login extends JFrame{
 			      details = new ArrayList(Arrays.asList(str.trim().split("\\s*,\\s*")));
 			      //Check if something has been entered for username and password fields
 				if (username.getText().equals("") || password.getPassword().length == 0){
-					JOptionPane.showMessageDialog(null,"Please enter a useranme or password");
+					JOptionPane.showMessageDialog(null,"Please enter a username or password");
 				} else {
 					String passText = new String(password.getPassword());				
 					char[] correctPassword = details.get(1).toCharArray();

@@ -1,1 +1,1 @@
-admin,soap
+admin,pass
