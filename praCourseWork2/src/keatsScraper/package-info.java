@@ -5,4 +5,4 @@
  * @author TMH
  *
  */
-package KEATSScraper;
+package keatsScraper;

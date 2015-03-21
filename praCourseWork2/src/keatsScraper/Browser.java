@@ -1,4 +1,4 @@
-package KEATSScraper;
+package keatsScraper;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

@@ -1,4 +1,4 @@
-package mainFrame;
+package main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -30,12 +30,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 
+import keatsScraper.WebviewFrame;
+
 import org.jfree.data.xy.XYSeries;
 
 import student.Assessment;
 import student.DisplayPopUpFrame;
 import student.Student;
-import KEATSScraper.WebviewFrame;
 
 import com.itextpdf.text.DocumentException;
 
