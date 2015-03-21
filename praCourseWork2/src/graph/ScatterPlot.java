@@ -50,7 +50,7 @@ public class ScatterPlot extends JFrame {
 		exportMenu = new JMenu("Export as...");
 		
 		//Creates scatter plot with title and axis and plots the datapoints on the graph
-		chart = ChartFactory.createScatterPlot("Compare to Average", "Average of Student's Marks", moduleCode + " mark", dataset);
+		chart = ChartFactory.createScatterPlot("Compare Student's " + moduleCode + " Mark to their Average Mark", "Average of Student's Marks", moduleCode + " mark", dataset);
 		chartPanel = new ChartPanel(chart);
 		this.add(chartPanel);
 		
