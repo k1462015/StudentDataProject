@@ -69,6 +69,7 @@ public class SendEmailFrame extends JFrame {
 	private JRadioButton sendTutor,sendStudent;
 	private SwingWorker<Boolean, Double> worker;
 	private JButton send;
+	private boolean emailError;
 	/**
 	 * Creates Send Email Frame using student data for 
 	 * @param student - ArrayList of students
@@ -261,6 +262,8 @@ public class SendEmailFrame extends JFrame {
 					}
 
 				});
+				emailError = false;
+
 
 				try {
 					sendEmail();
@@ -487,10 +490,12 @@ public class SendEmailFrame extends JFrame {
 						publish(percent);
 					} catch (AuthenticationFailedException e1) {
 						JOptionPane.showMessageDialog(null, "Incorrect user or password");
+						emailError = true;
 						progressFrame.dispose();
 						break;
 					} catch (MessagingException e1) {
 						JOptionPane.showMessageDialog(null, "Something wrong with message");
+						emailError = true;
 						progressFrame.dispose();
 						break;
 					}
@@ -511,7 +516,7 @@ public class SendEmailFrame extends JFrame {
 
 			@Override
 			protected void done() {
-				if(progBar.getValue() != 100){
+				if(progBar.getValue() != 100 && !emailError){
 					progressFrame.dispose();
 					send.doClick();	
 				}
