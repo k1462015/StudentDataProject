@@ -2,6 +2,8 @@ package data;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import student.Student;
 import studentdata.Connector;
 import studentdata.DataTable;
@@ -22,6 +24,7 @@ public class ServerConnect {
 
 		if (success == false) {
 			System.out.println("Fatal error: could not open connection to server");
+			JOptionPane.showMessageDialog(null, "Fatal error: could not open connection to server");
 			System.exit(1);
 		}
 
