@@ -470,7 +470,11 @@ public class MainFrame extends JFrame {
 						for (int i = 0; i < emails.size(); i++) {
 							for (Student s : students) {
 								if (s.getEmail().equals(emails.get(i))) {
-									s.addLastAccess(moduleField.getText() + " "+ lastAccess.get(i) + " ago");
+									if(lastAccess.get(i).contains("now")){
+										s.addLastAccess(moduleField.getText() + " "+ lastAccess.get(i));
+									}else{
+										s.addLastAccess(moduleField.getText() + " "+ lastAccess.get(i) + " ago");
+									}
 								}
 							}
 						}
