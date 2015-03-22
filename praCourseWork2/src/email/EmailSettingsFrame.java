@@ -245,6 +245,7 @@ public class EmailSettingsFrame extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						windowsLive.setSelected(false);
+						outlook.setSelected(false);
 						office365.setSelected(false);
 						serverNameField.setText("smtp.gmail.com");
 						portSpinner.setValue(465);
@@ -256,6 +257,7 @@ public class EmailSettingsFrame extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						outlook.setSelected(false);
 						gmail.setSelected(false);
 						office365.setSelected(false);
 						serverNameField.setText("smtp.live.com");
@@ -269,6 +271,7 @@ public class EmailSettingsFrame extends JFrame {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
+						outlook.setSelected(false);
 						gmail.setSelected(false);
 						windowsLive.setSelected(false);
 						serverNameField.setText("outlook.office365.com");
@@ -280,6 +283,7 @@ public class EmailSettingsFrame extends JFrame {
 				
 				profiles.add(windowsLive);
 				profiles.add(office365);
+				profiles.add(outlook);
 				profiles.add(gmail);
 				menubar.add(profiles);
 				
@@ -300,7 +304,7 @@ public class EmailSettingsFrame extends JFrame {
 				writer.println(serverNameField.getText()+","+portSpinner.getValue()+","+userField.getText()+","+true);
 				writer.close();
 				
-				JOptionPane.showMessageDialog(null, "Settings have been saved.\nPlease restart application for changes to take place");
+				JOptionPane.showMessageDialog(null, "Settings have been saved");
 				dispose();
 				
 			} catch (FileNotFoundException e1) {
