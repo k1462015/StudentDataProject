@@ -14,6 +14,7 @@ Our assignment was to design and build an application for working with student d
 * Can export all data in CSV format
 * Print PDF report containing all students exam results
 * Save generated graphs as images
+<img src="https://i.gyazo.com/483585d4dd573c8b255123df2e1ea299.jpg" height="400px" width="700px"/>
 
 ### Total Team Members: 3 ###
 ### Awarded Mark: 100% ###
